@@ -10,13 +10,81 @@ import Foundation
 import UIKit
 import Alamofire
 
+
 class LoginController: UIViewController {
     
+    let emailTextField: UITextField = {
+        let e = UITextField()
+        
+        let attributedPlaceholder = NSAttributedString(string: "email", attributes:
+            [NSAttributedStringKey.foregroundColor : UIColor.white])
+        e.textColor = .white
+        e.attributedPlaceholder = attributedPlaceholder
+        e.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
+        return e
+    }()
     
-
-    @IBOutlet weak var txtEMail: UITextField!
-
-    @IBOutlet weak var txtMdp: UITextField!
+    let passwordTextField: UITextField = {
+        let p = UITextField()
+        let attributedPlaceholder = NSAttributedString(string: "password", attributes:
+            [NSAttributedStringKey.foregroundColor : UIColor.white])
+        p.textColor = .white
+        p.isSecureTextEntry = true
+        p.attributedPlaceholder = attributedPlaceholder
+        p.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
+        return p
+    }()
+    
+    let loginButton: UIButton = {
+        let l = UIButton(type: .system)
+        l.setTitleColor(.white, for: .normal)
+        l.setTitle("Connection", for: .normal)
+        l.layer.cornerRadius = 10
+        l.backgroundColor = GREENBlACK_THEME
+        l.addTarget(self, action: #selector(connexionAction), for: .touchUpInside)
+        return l
+    }()
+    
+    let logo: UIImageView = {
+        let l = UIImageView()
+        //l.image = #imageLiteral(resourceName: "icon")
+        l.contentMode = .scaleAspectFill
+        l.layer.masksToBounds = true
+        l.layer.cornerRadius = 20
+        return l
+    }()
+ 
+    
+    let forgotPassword: UIButton = {
+        let f = UIButton(type: .system)
+        f.setTitleColor(.white, for: .normal)
+        f.setTitle("Mot de passe oublié?", for: .normal)
+        f.backgroundColor = GREEN_THEME
+        return f
+    }()
+    
+    let haveAccountButton: UIButton = {
+        let color = GREENBlACK_THEME
+        let font = UIFont.systemFont(ofSize: 16)
+        
+        let h = UIButton(type: .system)
+        h.backgroundColor = GREEN_THEME
+        let attributedTitle = NSMutableAttributedString(string:
+            "Pas encore de compte? ", attributes: [NSAttributedStringKey.foregroundColor:
+                color, NSAttributedStringKey.font : font ])
+        
+        attributedTitle.append(NSAttributedString(string: "S'inscrire", attributes:
+            [NSAttributedStringKey.foregroundColor: UIColor.white,
+             NSAttributedStringKey.font: font]))
+        
+        h.addTarget(self, action: #selector(signupAction), for: .touchUpInside)
+        h.setAttributedTitle(attributedTitle, for: .normal)
+        return h
+    }()
+    
+    
+var role = String()
+    
     
     public var mutableURLRequest: NSMutableURLRequest!
     public var url: NSURL?
@@ -28,8 +96,110 @@ class LoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        txtEMail.text = "az@gmail.com"
-        txtMdp.text = "az"
+        emailTextField.text = "testem"
+        passwordTextField.text = "a"
+        
+        view.backgroundColor = GREEN_THEME
+        
+        setupAddLogo()
+        setupTextFieldComponents()
+        setupLoginButton()
+        setupForgotPsswdButton()
+        setupHaveAccountButton()
+    
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    
+    @objc func signupAction() {
+        //let signupcontroller = SignupController()
+        //navigationController?.pushViewController(signupcontroller, animated: true)
+    }
+    
+    @objc func connexionAction() {
+        callAPILogin()
+        //let signupcontroller = SignupController()
+        //navigationController?.pushViewController(signupcontroller, animated: true)
+    }
+    
+    fileprivate func setupAddLogo() {
+        view.addSubview(logo)
+        if #available(iOS 11.0, *) {
+            logo.anchors(top: view.safeAreaLayoutGuide.topAnchor, topPad: 64, bottom: nil,
+                         bottomPad: 0, left: nil, leftPad: 0, right: nil, rightPad: 0,
+                         height: 150, width: 150)
+        } else {
+            // Fallback on earlier versions
+        };if #available(iOS 11.0, *) {
+            logo.anchors(top: view.safeAreaLayoutGuide.topAnchor, topPad: 64, bottom: nil,
+                         bottomPad: 0, left: nil, leftPad: 0, right: nil, rightPad: 0,
+                         height: 150, width: 150)
+        } else {
+            // Fallback on earlier versions
+        }
+        logo.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    }
+    
+    fileprivate func setupTextFieldComponents() {
+        setupEmailField()
+        setupPasswordField()
+    }
+    
+    fileprivate func setupEmailField() {
+        view.addSubview(emailTextField)
+        
+        emailTextField.anchors(top: nil, topPad: 0, bottom: nil, bottomPad: 0,
+                               left: view.leftAnchor, leftPad: 24, right: view.rightAnchor,
+                               rightPad: 24, height: 30, width: 0)
+        emailTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
+    
+    fileprivate func setupPasswordField() {
+        view.addSubview(passwordTextField)
+        
+        passwordTextField.anchors(top: emailTextField.bottomAnchor, topPad: 8, bottom: nil,
+                                  bottomPad: 0, left: emailTextField.leftAnchor, leftPad: 0,
+                                  right: emailTextField.rightAnchor, rightPad: 0, height: 30, width: 0)
+    }
+    
+    fileprivate func setupLoginButton() {
+        view.addSubview(loginButton)
+        
+        loginButton.anchors(top: passwordTextField.bottomAnchor, topPad: 12, bottom: nil,
+                            bottomPad: 0, left: passwordTextField.leftAnchor, leftPad: 0,
+                            right: passwordTextField.rightAnchor, rightPad: 0, height: 50, width: 0)
+    }
+    
+    fileprivate func setupForgotPsswdButton() {
+        view.addSubview(forgotPassword)
+        
+        forgotPassword.anchors(top: loginButton.bottomAnchor, topPad: 8, bottom: nil,
+                               bottomPad: 0, left: loginButton.leftAnchor, leftPad: 0,
+                               right: loginButton.rightAnchor, rightPad: 0, height: 30, width: 0)
+    }
+    
+    fileprivate func setupHaveAccountButton() {
+        view.addSubview(haveAccountButton)
+        
+        if #available(iOS 11.0, *) {
+            haveAccountButton.anchors(top: nil, topPad: 0, bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                                      bottomPad: 8, left: view.leftAnchor, leftPad: 12, right: view.rightAnchor,
+                                      rightPad: 12, height: 30, width: 0)
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidLoad()
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        
+        // Do any additional setup after loading the view, typically from a nib.
     }
     
     
@@ -38,10 +208,7 @@ class LoginController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    @IBAction func btnLogin(_ sender: Any) {
-        callAPILogin()
-    }
+
     
     
     func callAPILogin() {
@@ -51,7 +218,7 @@ class LoginController: UIViewController {
         let request = NSMutableURLRequest(url: url4)
         request.httpMethod = "POST"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        let paramString = String(format:"email=%@&password=%@",txtEMail.text!,txtMdp.text!)
+        let paramString = String(format:"email=%@&password=%@",emailTextField.text!,passwordTextField.text!)
         request.httpBody = paramString.data(using: String.Encoding.utf8)
         
         
@@ -67,7 +234,6 @@ class LoginController: UIViewController {
                 return
             }
             let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            //print("Response : \n \(dataString)") //JSONSerialization in String
             
             
             //JSONSerialization in Object
@@ -75,10 +241,9 @@ class LoginController: UIViewController {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
                 DispatchQueue.main.async()
                     {
-                        if let apiKey = json["apiKey"]
+                        if let apiKey = json["apiKey"], let role = json["role"]
                         {
-                            
-                            self.passData(apiKey: apiKey as! String)
+                            self.passData(role: role as! String, apiKey: apiKey as! String)
                         }
                         
                         if let messageError = json["message"]
@@ -102,47 +267,50 @@ class LoginController: UIViewController {
         ;task.resume()
     }
     
-    func passData(apiKey : String) {
+    func passData(role:String, apiKey : String) {
         print(apiKey)
-        
-        
-        
+        print(role)
         
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
         
-        
-        /////////****** 1er controller
-        //Convertie la tabViewController en UINavigationController
-        let navigation = tabVc.viewControllers?[0] as! UINavigationController
-        
-        //Convertie la UINavigationController en UIViewController (Home)
-        let homeController = navigation.topViewController as? HomeController
-        
-        //Envoie le nom et le mot de passe à la page statistique
-        homeController?.passapikey = apiKey
-        
-        
-        /////////****** 2nd controller
-        //Chart
-        /*
-         let chartsViewController = tabVc.viewControllers![1] as! ChartsViewController
-         //Envoie l'apikey à la page ChartsViewController
-         chartsViewController.passapikey = apiKey
-         
-         //Change la page vers Statistique
-         self.present(tabVc, animated: true, completion: nil)
-         */
-        /*
-        //Remplissage
-        let remplissageController = tabVc.viewControllers![1] as! RemplissageController
-        
-        //Envoie l'apikey à la page ChartsViewController
-        remplissageController.passapikey = apiKey
-        
- */
-        //Change la page vers Statistique
-        self.present(tabVc, animated: true, completion: nil)
+        switch role {
+        case "president"  :
+            let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
+            
+            
+            /////////****** 1er controller
+            //Convertie la tabViewController en UINavigationController
+            let navigation = tabVc.viewControllers?[0] as! UINavigationController
+            
+            //Convertie la UINavigationController en UIViewController (Home)
+            let homeController = navigation.topViewController as? HomeController
+            
+            //Envoie le nom et le mot de passe à la page statistique
+            homeController?.passapikey = apiKey
+            
+            //Change la page vers Home
+            self.present(tabVc, animated: true, completion: nil)
+        case "coach"  :
+            let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
+            
+            /////////****** 1er controller
+            //Convertie la tabViewController en UINavigationController
+            let navigation = tabVc.viewControllers?[0] as! UINavigationController
+            
+            //Convertie la UINavigationController en UIViewController (Home)
+            let homeController = navigation.topViewController as? HomeController
+            
+            //Envoie le nom et le mot de passe à la page statistique
+            homeController?.passapikey = apiKey
+            
+            //Change la page vers Home
+            self.present(tabVc, animated: true, completion: nil)
+        case "supp"  :
+            print( "Value of index is 5")
+        default :
+            print( "default case")
+        }
+
     }
     
     func alerteMessage(message : String) {
@@ -163,6 +331,12 @@ class LoginController: UIViewController {
         
         
         
+    }
+    
+    //Enleve le clavier
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //passworkTxt.resignFirstResponder()
+        view.endEditing(true)
     }
     
     

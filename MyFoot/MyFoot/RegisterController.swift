@@ -114,6 +114,13 @@ class RegisterController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    
+    //Enleve le clavier
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //passworkTxt.resignFirstResponder()
+        view.endEditing(true)
+    }
+    
     func alerteMessage(message : String) {
         
         var newMessage = ""

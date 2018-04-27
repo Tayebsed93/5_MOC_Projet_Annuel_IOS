@@ -31,6 +31,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         super.viewDidLoad()
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
         
         self.title = "Liste des clubs"
         //Recuperer Donnée de la BDD
@@ -56,10 +57,6 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        
-        print("Club nb ")
-        print(clubsStruct.count)
         return (clubsStruct.count)
         
     }
@@ -70,26 +67,6 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
         
-        /*
-        var mainImageView = cell?.viewWithTag(1) as! UIImageView
-        if let profileImageName = UIImage(named: (players?[indexPath.row].name)!) {
-            mainImageView.image = UIImage(named: (players?[indexPath.row].name)!)
-        }
-        else{
-            mainImageView.image = UIImage(named: "profile")
-        }
-        
-        // Nom du joueur
-        let name:String
-        let labelName = cell?.viewWithTag(2) as! UILabel
-        labelName.text = players?[indexPath.row].name
-        
-        // Age
-        let labelAge = cell?.viewWithTag(3) as! UILabel
-        let a = Int((players?[indexPath.row].age)!)
-        let b: String = String(a)
-        labelAge.text = b + " Ans"
-        */
         
         let labelName = cell?.viewWithTag(2) as! UILabel
         labelName.text = clubsStruct[indexPath.row].name
@@ -99,27 +76,15 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         paysImage.image = UIImage(named: "France")
         
         var clubImage = cell?.viewWithTag(1) as! UIImageView
-        clubImage.image = UIImage(named: "psg")
-        
+        if let profileImageName = clubsStruct[indexPath.row].logo {
+            clubImage.image = clubsStruct[indexPath.row].logo
+        } else{
+            clubImage.image = UIImage(named: "France")
+        }
         return cell!
     }
     
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //getting the index path of selected row
-        let indexPath = tableView.indexPathForSelectedRow
-        
-        //getting the current cell from the index path
-        let currentCell = tableView.cellForRow(at: indexPath!)! as UITableViewCell
-        
-        //getting the text of that cell
-        let currentItem = currentCell.viewWithTag(2) as! UILabel
-        
-        //self.curentName = currentItem.text!
-        
-        
-        
-    }
+
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .default, title: "Supprimer") { (action, indexPath) in
@@ -153,14 +118,11 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
     func callAPIClub() {
         
         let urlToRequest = addressUrlString+clubUrlString
-        print(urlToRequest)
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
         request.httpMethod = "GET"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        let name = ""
-        let logo = ""
         
         let task = session4.dataTask(with: request as URLRequest)
         { (data, response, error) in
@@ -184,23 +146,11 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                         if let clubs = json["clubs"] as? [[String: Any]] {
                             
                             for clubjson in clubs {
-                                /*
-                                if let name = club["nom"]{
-                                    
-                                    //self.names.append(name as! String)
-                                    
+                                if let name = clubjson["nom"], let logo = clubjson["logo"]{
+                                    let myImage = UIImage(named:logo as! String)
+                                    self.clubsStruct.append(club.init(logo: myImage, name: name as! String))
                                 }
-                                if let logo = club["logo"]{
-                                    //self.ages.append(age as! Double)
-                                }
- */
-                                let name = clubjson["nom"]
-                                let logo = clubjson["logo"]
-                                let myImage = UIImage(named:logo as! String)
-                                self.clubsStruct.append(club.init(logo: myImage, name: name as! String))
-                                
-                                
-                                print(clubs.count)
+
                                 self.tableView.reloadData()
                             }
                         }
@@ -211,8 +161,6 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                         }
                         
                 }
-                
-                
                 
             } catch let error as NSError {
                 print("Failed to load: \(error.localizedDescription)")
@@ -239,6 +187,56 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         }
         
         
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //getting the index path of selected row
+        let indexPath = tableView.indexPathForSelectedRow
+        
+        let name = clubsStruct[(indexPath?.row)!].name
+        
+        let alertController = UIAlertController(title: name, message: "Selectionner votre rôle", preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "President", style: .default) { (action) in
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as? LoginController {
+                if let navigator = self.navigationController {
+                    viewController.role = "president"
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
+        }
+        let action2 = UIAlertAction(title: "Supporter", style: .default) { (action) in
+            let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
+            
+            /////////****** 1er controller
+            //Convertie la tabViewController en UINavigationController
+            let navigation = tabVc.viewControllers?[0] as! UINavigationController
+            
+            //Convertie la UINavigationController en UIViewController (Home)
+            let homeController = navigation.topViewController as? HomeController
+            
+            //Change la page vers Home
+            self.present(tabVc, animated: true, completion: nil)
+            
+        }
+        let action3 = UIAlertAction(title: "Coach", style: .default) { (action) in
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as? LoginController {
+                if let navigator = self.navigationController {
+                    viewController.role = "coach"
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
+            
+        }
+        let action4 = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        }
+
+        alertController.addAction(action1)
+        alertController.addAction(action2)
+        alertController.addAction(action3)
+        alertController.addAction(action4)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {

@@ -14,6 +14,8 @@ struct userClub {
     let name : String!
 }
 
+
+
 class CreateClubController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var players: [Player]?
@@ -28,6 +30,9 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var imageLogo: UIImageView!
     @IBOutlet weak var imageLicense: UIImageView!
+    @IBOutlet weak var createClubBtn: UIButton!
+    @IBOutlet weak var logoBtn: UIButton!
+    @IBOutlet weak var licenseBtn: UIButton!
     
     
     var clubsStruct = [userClub]()
@@ -41,6 +46,24 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         super.viewDidLoad()
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        //Boutton cree
+        createClubBtn.setTitleColor(.white, for: .normal)
+        createClubBtn.setTitle("Ajouter votre club !", for: .normal)
+        createClubBtn.layer.cornerRadius = 10
+        createClubBtn.backgroundColor = GREENBlACK_THEME
+        
+        //Boutton logo
+        logoBtn.setTitleColor(.white, for: .normal)
+        logoBtn.setTitle("Photo", for: .normal)
+        logoBtn.layer.cornerRadius = 10
+        logoBtn.backgroundColor = GREENBlACK_THEME
+        
+        //Boutton license
+        licenseBtn.setTitleColor(.white, for: .normal)
+        licenseBtn.setTitle("Photo", for: .normal)
+        licenseBtn.layer.cornerRadius = 10
+        licenseBtn.backgroundColor = GREENBlACK_THEME
+        
         
         //Recuperer Donnée de la BDD
         //callAPIClub()
@@ -59,9 +82,12 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         request.httpMethod = "POST"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
         
+        /*
         guard let nameClub = nameClub.text else {
             return
         }
+        
+        print(imageLogo.image)
         
         guard let imageLicense = imageLicense.image else {
             return
@@ -69,7 +95,23 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         guard let imageLogo = imageLogo.image else {
             return
         }
-        let paramString = String(format:"nom=%@&logo=%@&name=%@&email=%@&password=%@&license=%@",nameClub,imageLogo,namePresident.text!, email.text!, motdepasse.text!,imageLicense)
+ */
+        
+
+        
+        var imageStr:String = ""
+        if (imageLogo.isEqual(nil)) {
+            imageLogo = nil
+            
+        } else {
+            let imageData:Data = UIImagePNGRepresentation(imageLogo.image!)!
+            imageStr = imageData.base64EncodedString()
+            
+        }
+        
+        //let paramString = String(format:"nom=%@&logo=%@&name=%@&email=%@&password=%@&license=%@",nameClub,imageLogo,namePresident.text!, email.text!, motdepasse.text!,imageLicense)
+        let paramString = String(format:"nom=%@&logo=%@&name=%@&email=%@&password=%@&license=%@",nameClub.text!,imageStr ,namePresident.text!, email.text!, motdepasse.text!,"")
+        print(paramString)
         request.httpBody = paramString.data(using: String.Encoding.utf8)
         
         let task = session4.dataTask(with: request as URLRequest)
@@ -91,20 +133,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
                 DispatchQueue.main.async()
                     {
                         print(json)
-                        if let clubs = json["clubs"] as? [[String: Any]] {
-                            
-                            for clubjson in clubs {
-                                let message_user = clubjson["message_user"]
-                                let logo = clubjson["id"]
-                                let name = clubjson["name"]
-                                let email = clubjson["email"]
-                                let apiKey = clubjson["apiKey"]
-                                let role = clubjson["role"]
-                                let message_club = clubjson["message_club"]
-                                
-
-                            }
-                        }
                         
                         if let messageError = json["message"]
                         {
@@ -197,11 +225,13 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
                 self.imageLicense.image  = image
             }
             
+            
+            
+            
            
         }
         picker.dismiss(animated: true)
     }
-    
     
     
     func alerteMessage(message : String) {
