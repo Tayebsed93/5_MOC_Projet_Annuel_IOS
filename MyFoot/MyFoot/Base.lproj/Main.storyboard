@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Lde-FC-T63">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Lde-FC-T63">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="AppleSDGothicNeo.ttc">
-            <string>AppleSDGothicNeo-Regular</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Tab Bar Controller-->
         <scene sceneID="5tE-1M-YqL">
@@ -780,6 +775,7 @@
         <!--Login Controller-->
         <scene sceneID="AQX-gR-JW1">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lhj-z7-qnz" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="LoginController" id="2Qt-cc-IRn" customClass="LoginController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nyV-vk-GCo"/>
@@ -792,7 +788,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="b8r-YM-xZo"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Lhj-z7-qnz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-408.80000000000001" y="33.990147783251231"/>
         </scene>

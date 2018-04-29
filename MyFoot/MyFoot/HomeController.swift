@@ -23,6 +23,7 @@ class HomeController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var btnItaly: UIButton!
     
     public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
+    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
     public var compositionUrlString = "/composition"
     
     var nationality = String()
@@ -109,7 +110,7 @@ class HomeController: UIViewController, UITextFieldDelegate {
     func callAPIComposition() {
         
         //let config = URLSessionConfiguration.default
-        let urlToRequest = addressUrlString+compositionUrlString
+        let urlToRequest = addressUrlStringProd+compositionUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)

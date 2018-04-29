@@ -24,6 +24,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
 
     public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
+    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
     public var clubUrlString = "/club"
     
     
@@ -42,6 +43,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.reloadData()
+        
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -117,7 +119,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
     
     func callAPIClub() {
         
-        let urlToRequest = addressUrlString+clubUrlString
+        let urlToRequest = addressUrlStringProd+clubUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
@@ -143,12 +145,23 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                 DispatchQueue.main.async()
                     {
                         print(json)
-                        if let clubs = json["clubs"] as? [[String: Any]] {
+                        if let clubs = json["0"] as? [[String: Any]] {
                             
                             for clubjson in clubs {
                                 if let name = clubjson["nom"], let logo = clubjson["logo"]{
-                                    let myImage = UIImage(named:logo as! String)
-                                    self.clubsStruct.append(club.init(logo: myImage, name: name as! String))
+                                    let mainImageURL =  URL(string: logo as! String)
+                                    let mainImageData = NSData(contentsOf: mainImageURL!)
+                                    if mainImageData != nil {
+                                        let mainImage = UIImage(data: mainImageData as! Data)
+                                        self.clubsStruct.append(club.init(logo: mainImage, name: name as! String))
+                                    }
+                                    else {
+                                        let messageError = "Une erreur technique est survenue. Veuillez nous excuser !"
+                                        self.alerteMessage(message: messageError as! String)
+                                    }
+                                    
+                                    //let myImage = UIImage(named:logo as! String)
+                                    
                                 }
 
                                 self.tableView.reloadData()
@@ -239,6 +252,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         self.present(alertController, animated: true, completion: nil)
     }
     
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -246,4 +260,3 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
     
     
 }
-

@@ -19,6 +19,7 @@ class ScoreController: UIViewController {
     // MARK: -
     var passapikey = String()
     public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
+    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
     public var playerUrlString = "/user"
     
     var names = [String]()
@@ -138,7 +139,7 @@ extension ScoreController: UITableViewDataSource {
         
         let apiKey = passapikey
         //let config = URLSessionConfiguration.default
-        let urlToRequest = addressUrlString+playerUrlString
+        let urlToRequest = addressUrlStringProd+playerUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)

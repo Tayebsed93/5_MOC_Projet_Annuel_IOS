@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Alamofire
 
 struct userClub {
     let logo : UIImage!
@@ -20,6 +21,7 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     
     var players: [Player]?
     var imageclick = ""
+    var spinner = UIActivityIndicatorView()
     
     
     @IBOutlet weak var nameClub: UITextField!
@@ -39,6 +41,7 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var searchBar: UISearchBar!
     
     public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
+    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
     public var clubUrlString = "/club"
     
     
@@ -63,6 +66,7 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         licenseBtn.setTitle("Photo", for: .normal)
         licenseBtn.layer.cornerRadius = 10
         licenseBtn.backgroundColor = GREENBlACK_THEME
+    
         
         
         //Recuperer Donnée de la BDD
@@ -108,8 +112,7 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
             imageStr = imageData.base64EncodedString()
             
         }
-        
-        //let paramString = String(format:"nom=%@&logo=%@&name=%@&email=%@&password=%@&license=%@",nameClub,imageLogo,namePresident.text!, email.text!, motdepasse.text!,imageLicense)
+    
         let paramString = String(format:"nom=%@&logo=%@&name=%@&email=%@&password=%@&license=%@",nameClub.text!,imageStr ,namePresident.text!, email.text!, motdepasse.text!,"")
         print(paramString)
         request.httpBody = paramString.data(using: String.Encoding.utf8)
@@ -149,8 +152,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
                         
                 }
                 
-                
-                
             } catch let error as NSError {
                 print("Failed to load: \(error.localizedDescription)")
             }
@@ -159,9 +160,123 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         ;task.resume()
     }
     
+
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().uuidString)"
+    }
+    
+    
+    func createBodyWithParameters(nameClub: String?, parameters: [String: String]?, filePathKey: String?, filePathKeyLicence: String?, imageDataKey: NSData, imageLicenseDataKey: NSData, boundary: String) -> NSData {
+        let body = NSMutableData();
+        
+        if parameters != nil {
+            for (key, value) in parameters! {
+                
+                body.appendString(string: "--\(boundary)\r\n")
+                body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.appendString(string: "\(value)\r\n")
+            }
+        }
+        
+        let filename = nameClub! + "-club.jpg"
+        let filelicense = nameClub! + "-license.jpg"
+        let mimetype = "image/png"
+        
+        body.appendString(string: "--\(boundary)\r\n")
+        body.appendString(string: "Content-Disposition: form-data; name=\"\(filePathKey!)\"; filename=\"\(filename)\"\r\n")
+        //body.appendString(string: "Content-Disposition: form-data; name=\"\(filePathKeyLicence!)\"; filename=\"\(filelicense)\"\r\n")
+        body.appendString(string: "Content-Type: \(mimetype)\r\n\r\n")
+        body.append(imageDataKey as Data)
+        //body.append(imageLicenseDataKey as Data)
+        
+        body.appendString(string: "\r\n")
+        
+        
+        body.appendString(string: "--\(boundary)--\r\n")
+        
+        
+        
+        return body
+    }
+    
+    func myImageUploadRequest()
+    {
+        
+        let myUrl = NSURL(string: addressUrlStringProd+clubUrlString);
+        
+        let request = NSMutableURLRequest(url:myUrl as! URL);
+        request.httpMethod = "POST";
+
+        let param = [
+            "nom"  : nameClub.text!,
+            "name"    : namePresident.text!,
+            "password"    : motdepasse.text!,
+            "email"    : email.text!
+        ]
+        
+        let boundary = generateBoundaryString()
+        
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        let imageData = UIImagePNGRepresentation(imageLogo.image!)!
+        let imageLicenseData = UIImagePNGRepresentation(self.imageLicense.image!)!
+        
+        
+        if(imageData==nil)  { return; }
+        if(imageLicenseData==nil)  { return; }
+         print("Image ", imageData)
+        print("License", imageLicenseData)
+        request.httpBody = createBodyWithParameters(nameClub: nameClub.text, parameters: param, filePathKey: "logo", filePathKeyLicence: "license", imageDataKey: imageData as NSData, imageLicenseDataKey: imageLicenseData as NSData, boundary: boundary) as Data
+        
+        
+        showActivityIndicatory()
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest) {
+            data, response, error in
+            
+            if error != nil {
+                print("error=\(error)")
+                return
+            }
+            
+            // You can print out response object
+            print("Response = \(response)")
+            
+            // Print out reponse body
+            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            print("Response data = \(responseString!)")
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+                print(json)
+                if let messageError = json!["message"]
+                {
+                    self.alerteMessage(message: messageError as! String)
+                }
+                
+                DispatchQueue.main.async()
+                    {
+                        self.spinner.stopAnimating()
+                        //self.myImageView.image = nil;
+                    }
+
+                
+            }catch
+            {
+                print(error)
+            }
+            
+        }
+        
+        task.resume()
+    }
+
     
     @IBAction func boutonCreeClub(_ sender: Any) {
-        callAPIClub()
+        //callAPIClub()
+        //callAPI()
+        myImageUploadRequest()
+        
     }
     
     
@@ -257,6 +372,27 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
+    func showActivityIndicatory() {
+        self.spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        spinner.center = view.center
+        spinner.hidesWhenStopped = true
+        spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        spinner.color = GREEN_THEME
+        view.addSubview(spinner)
+        spinner.startAnimating()
+  
+    }
+    
+    
+}
+
+
+extension NSMutableData {
+    
+    func appendString(string: String) {
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: true)
+        append(data!)
+    }
 }
 
 
