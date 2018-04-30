@@ -125,14 +125,11 @@
 		6D2570511F698BC9000AE4C3 /* MyFoot */ = {
 			isa = PBXGroup;
 			children = (
+				6DB70E9D2097781A0012796B /* Supporter */,
 				6DCD831820928B8F00FB4AC3 /* Utils */,
 				6DCD83152092492800FB4AC3 /* President */,
 				6DCD83102090C5EB00FB4AC3 /* Club */,
-				6D2426441F85694C00157787 /* Score */,
 				6D61C7091F77E70300F17A63 /* Login */,
-				6D61C7081F77E6F400F17A63 /* Home */,
-				6D61C6FF1F75C3EF00F17A63 /* Liste Player */,
-				6D2E8F901F75ADC0004F5E30 /* Composition */,
 				6D2570521F698BC9000AE4C3 /* AppDelegate.swift */,
 				6D2426421F85654E00157787 /* NavigationController.swift */,
 				6D2570561F698BC9000AE4C3 /* Main.storyboard */,
@@ -187,6 +184,17 @@
 				6D9B7EB41F698DB200846BA0 /* LoginController.swift */,
 			);
 			name = Login;
+			sourceTree = "<group>";
+		};
+		6DB70E9D2097781A0012796B /* Supporter */ = {
+			isa = PBXGroup;
+			children = (
+				6D2E8F901F75ADC0004F5E30 /* Composition */,
+				6D61C6FF1F75C3EF00F17A63 /* Liste Player */,
+				6D61C7081F77E6F400F17A63 /* Home */,
+				6D2426441F85694C00157787 /* Score */,
+			);
+			name = Supporter;
 			sourceTree = "<group>";
 		};
 		6DCD83102090C5EB00FB4AC3 /* Club */ = {

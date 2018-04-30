@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 struct club {
-    let logo : UIImage!
+    let logo : String!
     let name : String!
 }
 
@@ -40,9 +40,9 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         callAPIClub()
         searchBar.text = ""
         
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.reloadData()
+        //self.tableView.delegate = self
+        //self.tableView.dataSource = self
+        //self.tableView.reloadData()
         
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -77,9 +77,10 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         var paysImage = cell?.viewWithTag(4) as! UIImageView
         paysImage.image = UIImage(named: "France")
         
+        //Club logo
         var clubImage = cell?.viewWithTag(1) as! UIImageView
-        if let profileImageName = clubsStruct[indexPath.row].logo {
-            clubImage.image = clubsStruct[indexPath.row].logo
+        if let clubImageURLString = clubsStruct[indexPath.row].logo {
+            clubImage.loadImageUsingUrlString(urlString: clubImageURLString)
         } else{
             clubImage.image = UIImage(named: "France")
         }
@@ -149,19 +150,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                             
                             for clubjson in clubs {
                                 if let name = clubjson["nom"], let logo = clubjson["logo"]{
-                                    let mainImageURL =  URL(string: logo as! String)
-                                    let mainImageData = NSData(contentsOf: mainImageURL!)
-                                    if mainImageData != nil {
-                                        let mainImage = UIImage(data: mainImageData as! Data)
-                                        self.clubsStruct.append(club.init(logo: mainImage, name: name as! String))
-                                    }
-                                    else {
-                                        let messageError = "Une erreur technique est survenue. Veuillez nous excuser !"
-                                        self.alerteMessage(message: messageError as! String)
-                                    }
-                                    
-                                    //let myImage = UIImage(named:logo as! String)
-                                    
+                                    self.clubsStruct.append(club.init(logo: logo as! String, name: name as! String))
                                 }
 
                                 self.tableView.reloadData()
@@ -210,15 +199,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         let name = clubsStruct[(indexPath?.row)!].name
         
         let alertController = UIAlertController(title: name, message: "Selectionner votre rôle", preferredStyle: .alert)
-        let action1 = UIAlertAction(title: "President", style: .default) { (action) in
-            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as? LoginController {
-                if let navigator = self.navigationController {
-                    viewController.role = "president"
-                    navigator.pushViewController(viewController, animated: true)
-                }
-            }
-        }
-        let action2 = UIAlertAction(title: "Supporter", style: .default) { (action) in
+        let action1 = UIAlertAction(title: "Supporter", style: .default) { (action) in
             let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
             
@@ -231,24 +212,21 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
             
             //Change la page vers Home
             self.present(tabVc, animated: true, completion: nil)
-            
         }
-        let action3 = UIAlertAction(title: "Coach", style: .default) { (action) in
+        let action2 = UIAlertAction(title: "Acteur interne", style: .default) { (action) in
             if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as? LoginController {
                 if let navigator = self.navigationController {
-                    viewController.role = "coach"
                     navigator.pushViewController(viewController, animated: true)
                 }
             }
             
         }
-        let action4 = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        let action3 = UIAlertAction(title: "Annuler", style: .cancel) { (action) in
         }
 
         alertController.addAction(action1)
         alertController.addAction(action2)
         alertController.addAction(action3)
-        alertController.addAction(action4)
         self.present(alertController, animated: true, completion: nil)
     }
     

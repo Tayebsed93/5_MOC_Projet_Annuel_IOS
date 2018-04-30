@@ -38,7 +38,7 @@ class LoginController: UIViewController {
     let loginButton: UIButton = {
         let l = UIButton(type: .system)
         l.setTitleColor(.white, for: .normal)
-        l.setTitle("Connection", for: .normal)
+        l.setTitle("Connexion", for: .normal)
         l.layer.cornerRadius = 10
         l.backgroundColor = GREENBlACK_THEME
         l.addTarget(self, action: #selector(connexionAction), for: .touchUpInside)
@@ -83,12 +83,13 @@ class LoginController: UIViewController {
     }()
     
     
-var role = String()
+
     
     
     public var mutableURLRequest: NSMutableURLRequest!
     public var url: NSURL?
     public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
+    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
     var test = ""
     public var loginUrlString = "/login"
     var api:Bool = false
@@ -96,8 +97,8 @@ var role = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        emailTextField.text = "testem"
-        passwordTextField.text = "a"
+        emailTextField.text = "mc@om.fr"
+        passwordTextField.text = "azerty"
         
         view.backgroundColor = GREEN_THEME
         
@@ -212,7 +213,7 @@ var role = String()
     
     
     func callAPILogin() {
-        let urlToRequest = addressUrlString+loginUrlString
+        let urlToRequest = addressUrlStringProd+loginUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
@@ -275,18 +276,18 @@ var role = String()
         
         switch role {
         case "president"  :
-            let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
             
+            let tabVc = storyboard.instantiateViewController(withIdentifier: "tbControllerAdministrateur") as! UITabBarController
             
             /////////****** 1er controller
             //Convertie la tabViewController en UINavigationController
             let navigation = tabVc.viewControllers?[0] as! UINavigationController
             
             //Convertie la UINavigationController en UIViewController (Home)
-            let homeController = navigation.topViewController as? HomeController
+            //let homeController = navigation.topViewController as? HomeController
             
             //Envoie le nom et le mot de passe à la page statistique
-            homeController?.passapikey = apiKey
+            //homeController?.passapikey = apiKey
             
             //Change la page vers Home
             self.present(tabVc, animated: true, completion: nil)
