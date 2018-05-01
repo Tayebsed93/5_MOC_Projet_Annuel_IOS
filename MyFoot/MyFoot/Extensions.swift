@@ -66,10 +66,12 @@ extension UIImageView {
         
         image = nil
         
+        
         if let imageFromCache = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
             self.image = imageFromCache
             return
         }
+        
         let task = URLSession.shared.dataTask(with: url! as URL, completionHandler: { data,response,error in
             if error != nil{
                 print(error!.localizedDescription)
@@ -81,12 +83,32 @@ extension UIImageView {
                     if imageUrlString == urlString {
                         self.image = imageToCache
                     }
-                    imageCache.setObject(imageCache, forKey: urlString as AnyObject)
+                    imageCache.setObject(imageToCache!, forKey: urlString as AnyObject)
                 }
+            
+            
         })
         task.resume()
         
     }
+}
+
+
+extension UITableViewCell {
+    
+    var isSeparatorHidden: Bool {
+        get {
+            return self.separatorInset.right != 0
+        }
+        set {
+            if newValue {
+                self.separatorInset = UIEdgeInsetsMake(0, self.bounds.size.width, 0, 0)
+            } else {
+                self.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
+            }
+        }
+    }
+    
 }
 
 

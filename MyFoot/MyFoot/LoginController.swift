@@ -275,11 +275,11 @@ class LoginController: UIViewController {
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
         switch role {
-        case "president"  :
-            
+        case "president"  : break
+            /*
             let tabVc = storyboard.instantiateViewController(withIdentifier: "tbControllerAdministrateur") as! UITabBarController
             
-            /////////****** 1er controller
+            ///////// 1er controller
             //Convertie la tabViewController en UINavigationController
             let navigation = tabVc.viewControllers?[0] as! UINavigationController
             
@@ -291,6 +291,7 @@ class LoginController: UIViewController {
             
             //Change la page vers Home
             self.present(tabVc, animated: true, completion: nil)
+ */
         case "coach"  :
             let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
             

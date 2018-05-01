@@ -9,54 +9,63 @@
 import UIKit
 import AVFoundation
 
-struct club {
+
+struct classement {
     let logo : String!
     let name : String!
 }
 
-class ClubListController: UITableViewController, UISearchBarDelegate {
+protocol MyProtocol: class {
+    func sendData(date: String)
+}
+
+class ResultatMatchController: UITableViewController, MyProtocol {
+
     
 
-    var clubsStruct = [club]()
-    @IBOutlet weak var searchBar: UISearchBar!
-
+    var date: String?
+    func sendData(date: String) {
+        self.date = date
+        print(date)
+    }
+    
+    var testValue: String = ""
+    var classementStruct = [classement]()
+    
     public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
     public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
     public var clubUrlString = "/club"
     
     
+
+    override func viewDidAppear(_ animated: Bool) {
+        print("Tayeb")
+        print(date)
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
         
-        self.title = "Liste des clubs"
+        self.title = "Résultat des matchs"
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.white]
         //Recuperer Donnée de la BDD
-        clubsStruct = []
-        callAPIClub()
-        searchBar.text = ""
+        classementStruct = []
+        //callAPIClub()
         
+
         //self.tableView.delegate = self
         //self.tableView.dataSource = self
         //self.tableView.reloadData()
-        
-        
+
         // Do any additional setup after loading the view, typically from a nib.
     }
     
     
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let keywords = searchBar.text
-        
-        
-        self.view.endEditing(true)
-        self.tableView.reloadData()
-    }
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (clubsStruct.count)
+        //return (classementStruct.count)
+        return 10
         
     }
     
@@ -66,36 +75,40 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
         
+        //Club logo gauche
+        var clubImage = cell?.viewWithTag(10) as! UIImageView
+        //if let clubImageURLString = classementStruct[indexPath.row].logo {
+        //    clubImage.loadImageUsingUrlString(urlString: clubImageURLString)
+        //} else{
+            clubImage.image = UIImage(named: "psg")
+        //}
         
-        let labelName = cell?.viewWithTag(2) as! UILabel
-        labelName.text = clubsStruct[indexPath.row].name
+        //Nom club gauche
+        let labelClubGauche = cell?.viewWithTag(1) as! UILabel
+        //labelHeure.text = classementStruct[indexPath.row].name
+        labelClubGauche.text = "Real Madrid"
         
+        //Horloge logo
+        var horlogeImage = cell?.viewWithTag(2) as! UIImageView
+            horlogeImage.image = UIImage(named: "horloge")
         
-        var paysImage = cell?.viewWithTag(4) as! UIImageView
-        paysImage.image = UIImage(named: "France")
+
         
-        //Club logo
-        var clubImage = cell?.viewWithTag(1) as! UIImageView
-        if let clubImageURLString = clubsStruct[indexPath.row].logo {
-            clubImage.loadImageUsingUrlString(urlString: clubImageURLString)
-        } else{
-            clubImage.image = UIImage(named: "France")
-        }
         return cell!
+  
     }
     
-
-    /*
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .default, title: "Supprimer") { (action, indexPath) in
-            print("Suprime", indexPath)
-            self.tableView.reloadData()
-            
-        }
-        
-        return [delete]
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 60
     }
- */
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Mardi 25 septembre 2018"
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 3
+    }
     
     
     
@@ -103,11 +116,11 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateClubController") as? CreateClubController {
             /*
-            viewController.nationality = self.nationality
-            viewController.isPlayer = false
-            viewController.curentName = self.curentName
-            viewController.curentTag = self.curentTag
- */
+             viewController.nationality = self.nationality
+             viewController.isPlayer = false
+             viewController.curentName = self.curentName
+             viewController.curentTag = self.curentTag
+             */
             if let navigator = navigationController {
                 navigator.pushViewController(viewController, animated: true)
             }
@@ -148,9 +161,9 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                             
                             for clubjson in clubs {
                                 if let name = clubjson["nom"], let logo = clubjson["logo"]{
-                                    self.clubsStruct.append(club.init(logo: logo as! String, name: name as! String))
+                                    self.classementStruct.append(classement.init(logo: logo as! String, name: name as! String))
                                 }
-
+                                
                                 self.tableView.reloadData()
                             }
                         }
@@ -189,19 +202,19 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
     }
     
-    
+    /*
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //getting the index path of selected row
         let indexPath = tableView.indexPathForSelectedRow
         
-        let name = clubsStruct[(indexPath?.row)!].name
+        let name = classementStruct[(indexPath?.row)!].name
         
         let alertController = UIAlertController(title: name, message: "Selectionner votre rôle", preferredStyle: .alert)
         let action1 = UIAlertAction(title: "Supporter", style: .default) { (action) in
             let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
             
-            /////////****** 1er controller
+            ///////// 1er controller
             //Convertie la tabViewController en UINavigationController
             let navigation = tabVc.viewControllers?[0] as! UINavigationController
             
@@ -221,13 +234,15 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         }
         let action3 = UIAlertAction(title: "Annuler", style: .cancel) { (action) in
         }
-
+        
         alertController.addAction(action1)
         alertController.addAction(action2)
         alertController.addAction(action3)
         self.present(alertController, animated: true, completion: nil)
     }
+ */
     
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

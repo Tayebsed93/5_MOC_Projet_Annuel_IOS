@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyFoot/ScoreController.swift"
-            timestampString = "546797575.0963219"
+            timestampString = "546880792.873791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
             landmarkName = "loadView()"
             landmarkType = "7">
          </BreakpointContent>

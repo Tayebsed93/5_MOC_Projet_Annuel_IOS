@@ -9,6 +9,12 @@
 import UIKit
 import DGElasticPullToRefresh
 
+struct scorestruct {
+    let name : String!
+    let email : String!
+    let score : Int!
+}
+
 class ScoreController: UIViewController {
     
     // MARK: -
@@ -21,29 +27,19 @@ class ScoreController: UIViewController {
     public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
     public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
     public var playerUrlString = "/user"
-    
-    var names = [String]()
-    var scoresresult = [Double]()
-    var scores: [Score]?
+    var scoresStruct = [scorestruct]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear( animated)
         
-        //callAPIScore()
-        //loadData()
     }
     
     override func loadView() {
         super.loadView()
         
+        scoresStruct = []
         callAPIScore()
         
-        loadData()
-        
-        
-        print("load",scores?.count)
-        
-
         
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -62,9 +58,8 @@ class ScoreController: UIViewController {
         loadingView.tintColor = UIColor(red: 78/255.0, green: 221/255.0, blue: 200/255.0, alpha: 1.0)
         tableView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
-                
-                //self?.callAPIScore()
-                //self?.loadData()
+                self?.scoresStruct = []
+                self?.callAPIScore()
                 
                 self?.tableView.dg_stopLoading()
                 self?.tableView.reloadData()
@@ -77,8 +72,6 @@ class ScoreController: UIViewController {
     
     deinit {
         //tableView.dg_removePullToRefresh()
-
-        
     }
     
 }
@@ -94,8 +87,8 @@ extension ScoreController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if scores?.count != nil {
-            return (scores?.count)!
+        if scoresStruct.count != nil {
+            return (scoresStruct.count)
         }
         else {
             return 0
@@ -106,26 +99,22 @@ extension ScoreController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "cellIdentifier"
         var cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
-        //var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
         
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
-            //cell!.contentView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
             cell!.contentView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 0)
         }
         
         if let cell = cell {
             var label = UILabel(frame: CGRect(x: 280.0, y: 14.0, width: 100.0, height: 30.0))
             
-            //label.text = "\((indexPath as NSIndexPath).row)"
-            let a = Int((scores?[indexPath.row].score)!)
+            let a = Int((scoresStruct[indexPath.row].score)!)
             let b: String = String(a)
             label.text = b + " Point"
             label.tag = indexPath.row
             cell.contentView.addSubview(label)
             
-            //cell.textLabel?.text = "Tayeb Sedraia"
-            cell.textLabel?.text = scores?[indexPath.row].name
+            cell.textLabel?.text = scoresStruct[indexPath.row].name
             cell.imageView?.image = UIImage(named: "profile")
             
             return cell
@@ -138,13 +127,11 @@ extension ScoreController: UITableViewDataSource {
         
         
         let apiKey = passapikey
-        //let config = URLSessionConfiguration.default
         let urlToRequest = addressUrlStringProd+playerUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
-        //config.httpAdditionalHeaders = ["Authorization" : apiKey]
-        request.addValue("226f791098549052f704eb37b2ae7999", forHTTPHeaderField: "Authorization")
+        //request.addValue("226f791098549052f704eb37b2ae7999", forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
         
@@ -167,16 +154,14 @@ extension ScoreController: UITableViewDataSource {
                 DispatchQueue.main.async()
                     {
                         
-                        if let users = json["users"] as? [[String: Any]] {
-                            for user in users {
-                                if let name = user["name"]{
-                                    
-                                    self.names.append(name as! String)
-                                    
+                        if let scores = json["0"] as? [[String: Any]] {
+                            
+                            for scorejson in scores {
+                                if let name = scorejson["name"], let email = scorejson["email"], let score = scorejson["score"]{
+                                    self.scoresStruct.append(scorestruct.init(name: name as! String, email: email as! String, score: score as! Int))
                                 }
-                                if let age = user["score"]{
-                                    self.scoresresult.append(age as! Double)
-                                }
+                                
+                                self.tableView.reloadData()
                             }
                         }
                         
@@ -185,14 +170,8 @@ extension ScoreController: UITableViewDataSource {
                             self.alerteMessage(message: messageError as! String)
                         }
                         
-
-                        self.setupData(_name: self.names, _score: self.scoresresult)
-                        
-                        //self.isPlayer = false
                 }
-                
-                
-                
+
             } catch let error as NSError {
                 print("Failed to load: \(error.localizedDescription)")
             }
@@ -216,8 +195,6 @@ extension ScoreController: UITableViewDataSource {
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-        
-        
     }
 }
 
