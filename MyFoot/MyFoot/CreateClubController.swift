@@ -22,6 +22,7 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     var players: [Player]?
     var imageclick = ""
     var spinner = UIActivityIndicatorView()
+    let imagePicker = UIImagePickerController()
     
     
     @IBOutlet weak var nameClub: UITextField!
@@ -294,44 +295,36 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         view.endEditing(true)
     }
     
+    func openPhotoLibrary() {
+        guard UIImagePickerController.isSourceTypeAvailable(.photoLibrary) else {
+            print("can't open photo library")
+            return
+        }
+        
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        
+        present(imagePicker, animated: true)
+    }
+    
     //Clique sur le bouton ajouter logo
     @IBAction func boutonAjoutLicense(_ sender: Any) {
         imageclick = "License"
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-            let picker = UIImagePickerController()
-            
-            
-            picker.sourceType = .photoLibrary
-            picker.allowsEditing = true
-            picker.delegate = self as! UIImagePickerControllerDelegate & UINavigationControllerDelegate
-            self.present(picker, animated: true)
-            
-        } else {
-            print("Erreur")
-        }
+        openPhotoLibrary()
     }
     
     
     //Clique sur le bouton ajouter logo
     @IBAction func boutonAjoutLogo(_ sender: Any) {
     imageclick = "Logo"
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                let picker = UIImagePickerController()
-                
-                
-                picker.sourceType = .photoLibrary
-                picker.allowsEditing = true
-                picker.delegate = self as! UIImagePickerControllerDelegate & UINavigationControllerDelegate
-                self.present(picker, animated: true)
-                
-            } else {
-                print("Erreur")
-            }
+    openPhotoLibrary()
     }
     
     //Fonction qui récupère l'image
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+        //if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+
             print(imageclick)
             if imageclick == "Logo" {
                 self.imageLogo.image  = image

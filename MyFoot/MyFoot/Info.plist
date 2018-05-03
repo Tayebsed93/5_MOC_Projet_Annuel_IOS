@@ -49,5 +49,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>MyFoot souhaite accéder à votre bibliothèque de photo</string>
 </dict>
 </plist>

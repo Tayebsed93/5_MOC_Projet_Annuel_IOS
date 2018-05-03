@@ -126,11 +126,10 @@
 		6D2570511F698BC9000AE4C3 /* MyFoot */ = {
 			isa = PBXGroup;
 			children = (
+				6DCD83152092492800FB4AC3 /* President */,
+				6DBB3880209B2B2D000BAA9A /* All Person */,
 				6DB70E9D2097781A0012796B /* Supporter */,
 				6DCD831820928B8F00FB4AC3 /* Utils */,
-				6DCD83152092492800FB4AC3 /* President */,
-				6DCD83102090C5EB00FB4AC3 /* Club */,
-				6D61C7091F77E70300F17A63 /* Login */,
 				6D2570521F698BC9000AE4C3 /* AppDelegate.swift */,
 				6D2426421F85654E00157787 /* NavigationController.swift */,
 				6D2570561F698BC9000AE4C3 /* Main.storyboard */,
@@ -205,6 +204,15 @@
 				6DBB387B20989836000BAA9A /* ResultatMatchController.swift */,
 			);
 			name = ResultatMatch;
+			sourceTree = "<group>";
+		};
+		6DBB3880209B2B2D000BAA9A /* All Person */ = {
+			isa = PBXGroup;
+			children = (
+				6D61C7091F77E70300F17A63 /* Login */,
+				6DCD83102090C5EB00FB4AC3 /* Club */,
+			);
+			name = "All Person";
 			sourceTree = "<group>";
 		};
 		6DCD83102090C5EB00FB4AC3 /* Club */ = {
