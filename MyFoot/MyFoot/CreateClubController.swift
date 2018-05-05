@@ -39,10 +39,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     var clubsStruct = [userClub]()
     @IBOutlet weak var searchBar: UISearchBar!
     
-    public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
-    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
-    public var clubUrlString = "/club"
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()

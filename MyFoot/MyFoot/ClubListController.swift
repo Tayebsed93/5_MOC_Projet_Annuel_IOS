@@ -19,10 +19,6 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
 
     var clubsStruct = [club]()
     @IBOutlet weak var searchBar: UISearchBar!
-
-    public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
-    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
-    public var clubUrlString = "/club"
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -206,7 +202,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
             //Change la page vers Home
             self.present(tabVc, animated: true, completion: nil)
         }
-        let action2 = UIAlertAction(title: "Acteur interne", style: .default) { (action) in
+        let action2 = UIAlertAction(title: "Membre", style: .default) { (action) in
             if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as? LoginController {
                 if let navigator = self.navigationController {
                     navigator.pushViewController(viewController, animated: true)

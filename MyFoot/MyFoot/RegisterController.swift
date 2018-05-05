@@ -21,10 +21,9 @@ class RegisterController: UIViewController {
     
     public var mutableURLRequest: NSMutableURLRequest!
     public var url: NSURL?
-    public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
     
     var test = ""
-    public var loginUrlString = "/register"
+    
     var api:Bool = false
     
     override func viewDidLoad() {
@@ -44,7 +43,7 @@ class RegisterController: UIViewController {
     }
     
     func callAPIRegister() {
-        let urlToRequest = addressUrlString+loginUrlString
+        let urlToRequest = addressUrlString+registerUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)

@@ -22,7 +22,11 @@ protocol MyProtocol: class {
 class ResultatMatchController: UITableViewController, MyProtocol {
 
     
-
+public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=get_leagues&country_id=173&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
+    
+    public var adressUrlTeamStringExterne = "https://apifootball.com/api/?action=get_standings&league_id=128&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
+    
+    
     var date: String?
     func sendData(date: String) {
         self.date = date
@@ -32,15 +36,12 @@ class ResultatMatchController: UITableViewController, MyProtocol {
     var testValue: String = ""
     var classementStruct = [classement]()
     
-    public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
-    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
-    public var clubUrlString = "/club"
+
     
     
 
     override func viewDidAppear(_ animated: Bool) {
-        print("Tayeb")
-        print(date)
+
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
@@ -52,7 +53,7 @@ class ResultatMatchController: UITableViewController, MyProtocol {
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.white]
         //Recuperer Donnée de la BDD
         classementStruct = []
-        //callAPIClub()
+        callAPI()
         
 
         //self.tableView.delegate = self
@@ -128,10 +129,9 @@ class ResultatMatchController: UITableViewController, MyProtocol {
         
     }
     
-    
-    func callAPIClub() {
+    func callAPI() {
         
-        let urlToRequest = addressUrlStringProd+clubUrlString
+        let urlToRequest = adressUrlCountryStringExterne
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
@@ -150,28 +150,25 @@ class ResultatMatchController: UITableViewController, MyProtocol {
             }
             let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             
+            
             //JSONSerialization in Object
             do {
                 
-                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
+                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as? [[String:Any]]
                 DispatchQueue.main.async()
+
                     {
-                        print(json)
-                        if let clubs = json["0"] as? [[String: Any]] {
-                            
-                            for clubjson in clubs {
-                                if let name = clubjson["nom"], let logo = clubjson["logo"]{
-                                    self.classementStruct.append(classement.init(logo: logo as! String, name: name as! String))
+                        if let nb = json?.count {
+                            for i in 0..<nb {
+                                if let league_id = json![i]["league_id"], let league_name = json![i]["league_name"] {
+                                    print(league_id)
+                                    self.tableView.reloadData()
                                 }
-                                
-                                self.tableView.reloadData()
+                                    
                             }
                         }
-                        
-                        if let messageError = json["message"]
-                        {
-                            self.alerteMessage(message: messageError as! String)
-                        }
+ 
+ 
                         
                 }
                 
@@ -183,6 +180,7 @@ class ResultatMatchController: UITableViewController, MyProtocol {
         ;task.resume()
     }
     
+
     func alerteMessage(message : String) {
         
         var newMessage = ""

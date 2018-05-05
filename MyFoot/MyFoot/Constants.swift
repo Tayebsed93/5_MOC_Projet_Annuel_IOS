@@ -15,3 +15,15 @@ let LOGO_CONSTANTE = "logo"
 let LICENSE_CONSTANTE = "license"
 let ERROR_CONSTANTE = "Une erreur technique est survenue. Veuillez-nous excuser pour la gêne occasionnée"
 
+
+//API URL
+public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
+public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
+
+//LOGIN ENDPOINT
+public var registerUrlString = "/register"
+public var loginUrlString = "/login"
+//CLUB ENDPOINT
+public var clubUrlString = "/club"
+
+

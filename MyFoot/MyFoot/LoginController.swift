@@ -91,7 +91,7 @@ class LoginController: UIViewController {
     public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
     public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
     var test = ""
-    public var loginUrlString = "/login"
+    
     var api:Bool = false
     
     override func viewDidLoad() {
@@ -269,8 +269,6 @@ class LoginController: UIViewController {
     }
     
     func passData(role:String, apiKey : String) {
-        print(apiKey)
-        print(role)
         
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
