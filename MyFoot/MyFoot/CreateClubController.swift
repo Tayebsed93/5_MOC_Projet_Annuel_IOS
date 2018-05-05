@@ -15,8 +15,6 @@ struct userClub {
     let name : String!
 }
 
-
-
 class CreateClubController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var players: [Player]?
@@ -76,97 +74,11 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    
-    func callAPIClub() {
-        
-        let urlToRequest = addressUrlString+clubUrlString
-        print(urlToRequest)
-        let url4 = URL(string: urlToRequest)!
-        let session4 = URLSession.shared
-        let request = NSMutableURLRequest(url: url4)
-        request.httpMethod = "POST"
-        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        
-        /*
-        guard let nameClub = nameClub.text else {
-            return
-        }
-        
-        print(imageLogo.image)
-        
-        guard let imageLicense = imageLicense.image else {
-            return
-        }
-        guard let imageLogo = imageLogo.image else {
-            return
-        }
- */
-        
-
-        
-        var imageStr:String = ""
-        if (imageLogo.isEqual(nil)) {
-            imageLogo = nil
-            
-        } else {
-            let imageData:Data = UIImagePNGRepresentation(imageLogo.image!)!
-            imageStr = imageData.base64EncodedString()
-            
-        }
-    
-        let paramString = String(format:"nom=%@&logo=%@&name=%@&email=%@&password=%@&license=%@",nameClub.text!,imageStr ,namePresident.text!, email.text!, motdepasse.text!,"")
-        print(paramString)
-        request.httpBody = paramString.data(using: String.Encoding.utf8)
-        
-        let task = session4.dataTask(with: request as URLRequest)
-        { (data, response, error) in
-            guard let _: Data = data, let _: URLResponse = response, error == nil else
-            {
-                
-                print("ERROR: \(error?.localizedDescription)")
-                
-                self.alerteMessage(message: (error?.localizedDescription)!)
-                return
-            }
-            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            
-            //JSONSerialization in Object
-            do {
-                
-                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
-                DispatchQueue.main.async()
-                    {
-                        print(json)
-                        
-                        if let messageError = json["message"]
-                        {
-                            self.alerteMessage(message: messageError as! String)
-                        }
-                        if let messageError = json["message_user"]
-                        {
-                            self.alerteMessage(message: messageError as! String)
-                        }
-                        if let messageError = json["message_club"]
-                        {
-                            self.alerteMessage(message: messageError as! String)
-                        }
-                        
-                }
-                
-            } catch let error as NSError {
-                print("Failed to load: \(error.localizedDescription)")
-            }
-            
-        }
-        ;task.resume()
-    }
-    
-
     func generateBoundaryString() -> String {
         return "Boundary-\(NSUUID().uuidString)"
     }
     
-    
+    /*
     func createBodyWithParameters(nameClub: String?, parameters: [String: String]?, filePathKey: String?, filePathKeyLicence: String?, imageDataKey: NSData, imageLicenseDataKey: NSData, boundary: String) -> NSData {
         let body = NSMutableData();
         
@@ -192,17 +104,47 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         
         body.appendString(string: "\r\n")
         
-        
         body.appendString(string: "--\(boundary)--\r\n")
         
+        return body
+    }
+ */
+    
+    
+    func createBodyWithParameters(nameClub: String?, parameters: [String: String]?, parametersFile: [String: NSData]?, boundary: String) -> NSData {
+        let body = NSMutableData();
         
+        if parameters != nil {
+            for (key, value) in parameters! {
+                
+                body.appendString(string: "--\(boundary)\r\n")
+                body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.appendString(string: "\(value)\r\n")
+            }
+        }
+
+        let mimetype = "image/png"
         
+        var fileName = String()
+        if parametersFile != nil {
+            for (key, value) in parametersFile! {
+                if key == LICENSE_CONSTANTE {
+                    fileName = nameClub! + "-license.jpg"
+                } else { fileName = nameClub! + "-club.jpg" }
+                
+                body.appendString(string: "--\(boundary)\r\n")
+                body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"; filename=\"\(fileName)\"\r\n")
+                body.appendString(string: "Content-Type: \(mimetype)\r\n\r\n")
+                body.append(value as Data)
+                body.appendString(string: "\r\n")
+                body.appendString(string: "--\(boundary)--\r\n")
+            }
+        }
         return body
     }
     
     func myImageUploadRequest()
     {
-        
         let myUrl = NSURL(string: addressUrlStringProd+clubUrlString);
         
         let request = NSMutableURLRequest(url:myUrl as! URL);
@@ -219,16 +161,28 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
-        let imageData = UIImagePNGRepresentation(imageLogo.image!)!
-        let imageLicenseData = UIImagePNGRepresentation(self.imageLicense.image!)!
+        var imageData = NSData()
+        var imageLicenseData = NSData()
+        if imageLogo.image != nil
+        {
+            imageData = UIImagePNGRepresentation(imageLogo.image!)! as NSData
+        }
         
+        if imageLicense.image != nil
+        {
+            imageLicenseData = UIImagePNGRepresentation(imageLicense.image!)! as NSData
+        }
+    
         
-        if(imageData==nil)  { return; }
-        if(imageLicenseData==nil)  { return; }
-         print("Image ", imageData)
-        print("License", imageLicenseData)
-        request.httpBody = createBodyWithParameters(nameClub: nameClub.text, parameters: param, filePathKey: "logo", filePathKeyLicence: "license", imageDataKey: imageData as NSData, imageLicenseDataKey: imageLicenseData as NSData, boundary: boundary) as Data
+        let paramFile = [
+            LOGO_CONSTANTE  : imageData,
+            LICENSE_CONSTANTE    : imageLicenseData
+        ]
         
+        print("Taille ", imageData.length)
+        print("Taille ", imageLicenseData.length)
+        
+        request.httpBody = createBodyWithParameters(nameClub: nameClub.text, parameters: param, parametersFile: paramFile, boundary: boundary) as Data
         
         showActivityIndicatory()
         
@@ -244,29 +198,38 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
             print("Response = \(response)")
             
             // Print out reponse body
-            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            print("Response data = \(responseString!)")
+            if let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) {
+                print("Response data = \(responseString)")
+                
+            }
+            
             
             do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                print(json)
+                let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary
                 if let messageError = json!["message"]
                 {
                     self.alerteMessage(message: messageError as! String)
+                }
+                if let messageSucess = json!["message_club"]
+                {
+                    self.alerteMessage(message: messageSucess as! String)
                 }
                 
                 DispatchQueue.main.async()
                     {
                         self.spinner.stopAnimating()
-                        //self.myImageView.image = nil;
                     }
 
-                
+            
             }catch
             {
+                DispatchQueue.main.async()
+                {
+                    self.alerteMessage(message: ERROR_CONSTANTE as! String)
+                    self.spinner.stopAnimating()
+                }
                 print(error)
             }
-            
         }
         
         task.resume()
@@ -274,8 +237,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
 
     
     @IBAction func boutonCreeClub(_ sender: Any) {
-        //callAPIClub()
-        //callAPI()
         myImageUploadRequest()
         
     }
@@ -309,34 +270,27 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     
     //Clique sur le bouton ajouter logo
     @IBAction func boutonAjoutLicense(_ sender: Any) {
-        imageclick = "License"
+        imageclick = LICENSE_CONSTANTE
         openPhotoLibrary()
     }
     
     
     //Clique sur le bouton ajouter logo
     @IBAction func boutonAjoutLogo(_ sender: Any) {
-    imageclick = "Logo"
+    imageclick = LOGO_CONSTANTE
     openPhotoLibrary()
     }
     
     //Fonction qui récupère l'image
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        //if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-
-            print(imageclick)
-            if imageclick == "Logo" {
+            if imageclick == LOGO_CONSTANTE {
                 self.imageLogo.image  = image
             }
-            else if imageclick == "License" {
+            else if imageclick == LICENSE_CONSTANTE {
                 self.imageLicense.image  = image
             }
             
-            
-            
-            
-           
         }
         picker.dismiss(animated: true)
     }

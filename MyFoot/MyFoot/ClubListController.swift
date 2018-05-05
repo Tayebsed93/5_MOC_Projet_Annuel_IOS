@@ -37,10 +37,6 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         callAPIClub()
         searchBar.text = ""
         
-        //self.tableView.delegate = self
-        //self.tableView.dataSource = self
-        //self.tableView.reloadData()
-        
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -72,14 +68,14 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
         
         var paysImage = cell?.viewWithTag(4) as! UIImageView
-        paysImage.image = UIImage(named: "France")
+        paysImage.image = UIImage(named: DRAPEAU_FRANCE_IMG)
         
         //Club logo
         var clubImage = cell?.viewWithTag(1) as! UIImageView
         if let clubImageURLString = clubsStruct[indexPath.row].logo {
             clubImage.loadImageUsingUrlString(urlString: clubImageURLString)
         } else{
-            clubImage.image = UIImage(named: "France")
+            clubImage.image = UIImage(named: DRAPEAU_FRANCE_IMG)
         }
         return cell!
     }
@@ -112,7 +108,6 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                 navigator.pushViewController(viewController, animated: true)
             }
         }
-        
     }
     
     

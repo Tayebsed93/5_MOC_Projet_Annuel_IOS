@@ -111,6 +111,13 @@ extension UITableViewCell {
     
 }
 
+extension NSData
+{
+    func toString() -> String
+    {
+        return String(data: self as Data, encoding: .utf8)!
+    }
+}
 
 
 
