@@ -122,11 +122,14 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         let mimetype = "image/png"
         
         var fileName = String()
+        var nameClubNoSpace = String()
         if parametersFile != nil {
             for (key, value) in parametersFile! {
                 if key == LICENSE_CONSTANTE {
-                    fileName = nameClub! + "-license.jpg"
-                } else { fileName = nameClub! + "-club.jpg" }
+                    nameClubNoSpace = (nameClub?.replacingOccurrences(of: " ", with: "_",
+                                                                      options: NSString.CompareOptions.literal, range:nil))!
+                    fileName = nameClubNoSpace + "-license.jpg"
+                } else { fileName = nameClubNoSpace + "-club.jpg" }
                 
                 body.appendString(string: "--\(boundary)\r\n")
                 body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"; filename=\"\(fileName)\"\r\n")

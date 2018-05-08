@@ -29,10 +29,9 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
         self.title = "Liste des clubs"
         //Recuperer Donnée de la BDD
-        //clubsStruct = []
-        if clubsStruct.count <= 0 {
-            callAPIClub()
-        }
+        clubsStruct = []
+        callAPIClub()
+
         
         searchBar.text = ""
         
@@ -74,7 +73,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         if let clubImageURLString = clubsStruct[indexPath.row].logo {
             clubImage.loadImageUsingUrlString(urlString: clubImageURLString)
         } else{
-            clubImage.image = UIImage(named: DRAPEAU_FRANCE_IMG)
+            clubImage.image = UIImage(named: EMPTY_LOGO_IMG)
         }
         return cell!
     }
@@ -189,6 +188,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         let indexPath = tableView.indexPathForSelectedRow
         
         let name = clubsStruct[(indexPath?.row)!].name
+        let logo = clubsStruct[(indexPath?.row)!].logo
         
         let alertController = UIAlertController(title: name, message: "Selectionner votre rôle", preferredStyle: .alert)
         let action1 = UIAlertAction(title: "Supporter", style: .default) { (action) in
@@ -203,6 +203,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
             let resultatController = navigation.topViewController as? ResultatMatchController
             
             resultatController?.passnameclub = name!
+            resultatController?.passlogo = logo!
             //Change la page vers Home
             self.present(tabVc, animated: true, completion: nil)
         }

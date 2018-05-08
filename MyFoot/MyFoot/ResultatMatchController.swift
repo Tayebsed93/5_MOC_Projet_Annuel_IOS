@@ -17,6 +17,8 @@ struct calendrier {
     let match_awayteam_score : String!
     let date : [NSDate]!
     let match_time : String!
+    let league_name : String!
+    
 }
 
 
@@ -29,9 +31,10 @@ protocol MyProtocol: class {
 class ResultatMatchController: UITableViewController, MyProtocol {
 
 
-    var sections = Dictionary<String, Array<calendrier>>()
-    var sortedSections = [String]()
+
     var passnameclub = String()
+    var passlogo = String()
+    var spinner = UIActivityIndicatorView()
     
 public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=get_leagues&country_id=173&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
 
@@ -41,12 +44,11 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         self.date = date
         print(date)
     }
-    
-    var testValue: String = ""
+
     var calendrierStruct = [calendrier]()
     
-    let mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
     
+    @IBOutlet var outlet_table: UITableView!
     
     
 
@@ -67,8 +69,8 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
             callAPI()
         }
         
-        
-        
+        self.showActivityIndicatory()
+
         
       
 /*
@@ -89,13 +91,27 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
         
-        //Club logo gauche
-        var clubImage = cell?.viewWithTag(10) as! UIImageView
-        //if let clubImageURLString = classementStruct[indexPath.row].logo {
-        //    clubImage.loadImageUsingUrlString(urlString: clubImageURLString)
-        //} else{
-        clubImage.image = UIImage(named: "psg")
-        //}
+        //Club logo Domicile
+        var clubImageDomicile = cell?.viewWithTag(10) as! UIImageView
+
+        if (calendrierStruct[indexPath.section].match_hometeam_name == self.passnameclub && passlogo != nil) {
+            clubImageDomicile.loadImageUsingUrlString(urlString: self.passlogo)
+        } else {
+        clubImageDomicile.image = UIImage(named: EMPTY_LOGO_IMG)
+        }
+        
+        
+        
+        
+        //Club logo Exterieur
+        var clubImageExterieur = cell?.viewWithTag(4) as! UIImageView
+        
+        if (calendrierStruct[indexPath.section].match_awayteam_name == self.passnameclub && passlogo != nil) {
+            clubImageExterieur.loadImageUsingUrlString(urlString: self.passlogo)
+        } else {
+            clubImageExterieur.image = UIImage(named: EMPTY_LOGO_IMG)
+        }
+ 
         
         //Nom club domicile
         let match_hometeam_name = cell?.viewWithTag(1) as! UILabel
@@ -105,16 +121,30 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         let match_awayteam_name = cell?.viewWithTag(5) as! UILabel
         match_awayteam_name.text = calendrierStruct[indexPath.section].match_awayteam_name
         
-        //Horloge logo
-        var horlogeImage = cell?.viewWithTag(2) as! UIImageView
-        horlogeImage.image = UIImage(named: "horloge")
         
-        //Heure du match label
-        var match_time = cell?.viewWithTag(3) as! UILabel
-        match_time.text = calendrierStruct[indexPath.section].match_time
-        //match_time.text = calendrierStruct[indexPath.section].date[indexPath.row]
+        //Score/Heure du match label
+        let home_score = calendrierStruct[indexPath.section].match_hometeam_score+"-"
+        let away_score = calendrierStruct[indexPath.section].match_awayteam_score
+        let string_score = home_score+away_score!
+        var match_time = cell?.viewWithTag(11) as! UILabel
+        if calendrierStruct[indexPath.section].match_hometeam_score != "" {
+            match_time.text = string_score } else {
+            match_time.text = calendrierStruct[indexPath.section].match_time
+        }
+
+        //Ligue name
+        let league_name = cell?.viewWithTag(12) as! UILabel
+        league_name.text = calendrierStruct[indexPath.section].league_name
         
-  
+        //Date match
+        let date_match = cell?.viewWithTag(13) as! UILabel
+        for date_m in calendrierStruct[indexPath.section].date {
+            date_match.text = date_m.getDateName()
+        }
+        
+    
+        
+
         return cell!
   
     }
@@ -136,7 +166,7 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         
     }
     
-    
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         let ok = calendrierStruct[section].date
@@ -317,12 +347,13 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                     {
                         if let nb = json?.count {
                             for i in 0..<nb {
-                                if let match_hometeam_name = json![i]["match_hometeam_name"], let match_awayteam_name = json![i]["match_awayteam_name"], let match_hometeam_score = json![i]["match_hometeam_score"], let match_awayteam_score = json![i]["match_awayteam_score"], let match_date = json![i]["match_date"], let match_time = json![i]["match_time"] {
+                                if let match_hometeam_name = json![i]["match_hometeam_name"], let match_awayteam_name = json![i]["match_awayteam_name"], let match_hometeam_score = json![i]["match_hometeam_score"], let match_awayteam_score = json![i]["match_awayteam_score"], let match_date = json![i]["match_date"], let match_time = json![i]["match_time"], let league_name = json![i]["league_name"] {
 
                                     let match_hometeam_name = String(describing: match_hometeam_name)
                                     let match_awayteam_name = String(describing: match_awayteam_name)
                                     let match_hometeam_score = String(describing: match_hometeam_score)
                                     let match_awayteam_score = String(describing: match_awayteam_score)
+                                    let league_name = String(describing: league_name)
                                     let date = String(describing: match_date)
                                     let match_time = String(describing: match_time)
                                     if match_hometeam_name == self.passnameclub || match_awayteam_name == self.passnameclub  {
@@ -334,7 +365,7 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                                         
                        
                                         
-                                        self.calendrierStruct.append(calendrier.init(match_hometeam_name: match_hometeam_name, match_awayteam_name: match_awayteam_name, match_hometeam_score: match_hometeam_score, match_awayteam_score: match_awayteam_score, date: date_array, match_time: match_time))
+                                        self.calendrierStruct.append(calendrier.init(match_hometeam_name: match_hometeam_name, match_awayteam_name: match_awayteam_name, match_hometeam_score: match_hometeam_score, match_awayteam_score: match_awayteam_score, date: date_array, match_time: match_time, league_name: league_name))
                                         
                                         
                                         
@@ -342,6 +373,11 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                                         
                                     }
                                     self.tableView.reloadData()
+                                }
+                                
+                                DispatchQueue.main.async()
+                                    {
+                                        self.spinner.stopAnimating()
                                 }
                             }
                         }
@@ -352,6 +388,10 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                 
             } catch let error as NSError {
                 print("Failed to load: \(error.localizedDescription)")
+                DispatchQueue.main.async()
+                    {
+                        self.spinner.stopAnimating()
+                    }
             }
             
         }
@@ -377,6 +417,18 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         let s = String(describing: league_id)
         url = "https://apifootball.com/api/?action=get_events&from="+DATE_DEBUT_SAISON+"&to="+DATE_FIN_SAISON+"&league_id="+s+"&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
         return url
+    }
+    
+    
+    func showActivityIndicatory() {
+        self.spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        spinner.center = view.center
+        spinner.hidesWhenStopped = true
+        spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        spinner.color = GREEN_THEME
+        view.addSubview(spinner)
+        spinner.startAnimating()
+        
     }
     
 

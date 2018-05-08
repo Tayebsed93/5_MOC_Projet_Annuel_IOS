@@ -11,6 +11,7 @@ import UIKit
 let GREEN_THEME = UIColor.rgb(r: 109, g: 201, b: 149)
 let GREENBlACK_THEME = UIColor.rgb(r: 89, g: 156, b: 120)
 let DRAPEAU_FRANCE_IMG = "France"
+let EMPTY_LOGO_IMG = "empty-logo"
 let LOGO_CONSTANTE = "logo"
 let LICENSE_CONSTANTE = "license"
 let ERROR_CONSTANTE = "Une erreur technique est survenue. Veuillez-nous excuser pour la gêne occasionnée"
@@ -29,5 +30,8 @@ public var clubUrlString = "/club"
 //DATE DEBUT SAISON
 let DATE_DEBUT_SAISON = "2017-08-01"
 let DATE_FIN_SAISON = "2018-07-01"
+
+
+
 
 

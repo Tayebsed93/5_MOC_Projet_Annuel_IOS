@@ -131,6 +131,15 @@ extension NSDate {
         return strMonth
     }
     
+    func getDateName() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "fr_FR")
+        //print(dateFormatter.string(from: date)) // 2 janv. 2001
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        let strMonth = dateFormatter.string(from: self as Date)
+        return strMonth
+    }
+    
     
 }
 

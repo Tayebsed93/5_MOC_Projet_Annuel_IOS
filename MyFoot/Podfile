@@ -8,5 +8,6 @@ target 'MyFoot' do
   # Pods for MyFoot
   pod 'Alamofire'
   pod 'DGElasticPullToRefresh'
+  pod 'SnapSliderFilters'
 
 end
