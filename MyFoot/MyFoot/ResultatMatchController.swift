@@ -491,6 +491,10 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
     }
  */
     
+    @IBAction func DeconnexionButton(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
 
     
     override func didReceiveMemoryWarning() {

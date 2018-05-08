@@ -51,5 +51,9 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>MyFoot souhaite accéder à votre bibliothèque de photo</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>MyFoot souhaite insérer une photo dans votre bibliothèque</string>
+	<key>NSCameraUsageDescription</key>
+	<string>MyFoot souhaite accèder à votre caméra</string>
 </dict>
 </plist>

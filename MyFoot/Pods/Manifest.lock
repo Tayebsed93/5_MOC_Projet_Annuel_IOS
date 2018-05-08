@@ -1,15 +1,24 @@
 PODS:
   - Alamofire (4.5.1)
   - DGElasticPullToRefresh (1.1)
+  - SnapSliderFilters (2.0)
 
 DEPENDENCIES:
   - Alamofire
   - DGElasticPullToRefresh
+  - SnapSliderFilters
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - DGElasticPullToRefresh
+    - SnapSliderFilters
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   DGElasticPullToRefresh: 28f11a6026302a90f8ffebbc6e24748e584dddd3
+  SnapSliderFilters: 7f571683b05cf70b8d398e4a0e45691bd9f03a33
 
-PODFILE CHECKSUM: 56cfda5699bf0e2ff8017d86bc71fb1ab7281b67
+PODFILE CHECKSUM: 6270576231aedc7929f2033361968a3271077c9d
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.5.0

@@ -57,7 +57,7 @@
         <!--Item-->
         <scene sceneID="bRO-lX-Lfd">
             <objects>
-                <viewController id="Mae-BQ-9RG" sceneMemberID="viewController">
+                <viewController id="Mae-BQ-9RG" customClass="SnapFilterViewController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="a00-rL-GXf"/>
                         <viewControllerLayoutGuide type="bottom" id="gYs-3n-bC2"/>
@@ -1070,6 +1070,9 @@
                     <navigationItem key="navigationItem" id="hQ3-Pp-NsL">
                         <barButtonItem key="leftBarButtonItem" style="plain" systemItem="stop" id="u8m-PH-kPe">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="DeconnexionButton:" destination="8k8-dE-h45" id="dX5-bI-vE4"/>
+                            </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Date" id="cBa-Zv-C3T">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
