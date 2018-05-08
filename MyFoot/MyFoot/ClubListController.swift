@@ -29,8 +29,11 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
         self.title = "Liste des clubs"
         //Recuperer Donnée de la BDD
-        clubsStruct = []
-        callAPIClub()
+        //clubsStruct = []
+        if clubsStruct.count <= 0 {
+            callAPIClub()
+        }
+        
         searchBar.text = ""
         
         
@@ -197,8 +200,9 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
             let navigation = tabVc.viewControllers?[0] as! UINavigationController
             
             //Convertie la UINavigationController en UIViewController (Home)
-            let homeController = navigation.topViewController as? HomeController
+            let resultatController = navigation.topViewController as? ResultatMatchController
             
+            resultatController?.passnameclub = name!
             //Change la page vers Home
             self.present(tabVc, animated: true, completion: nil)
         }

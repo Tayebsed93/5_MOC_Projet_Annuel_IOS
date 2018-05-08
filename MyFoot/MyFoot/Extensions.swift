@@ -119,5 +119,39 @@ extension NSData
     }
 }
 
+extension NSDate {
+    
+    func getMonthName() -> String {
+        let dateFormatter = DateFormatter()
+        //dateFormatter.locale = Locale(identifier: "fr_FR")
+        //print(dateFormatter.string(from: date)) // 2 janv. 2001
+        //dateFormatter.dateFormat = "dd-MM-yyyy"
+        dateFormatter.dateFormat = "MMM"
+        let strMonth = dateFormatter.string(from: self as Date)
+        return strMonth
+    }
+    
+    
+}
+
+
+extension DateFormatter {
+    
+    convenience init (format: String) {
+        self.init()
+        dateFormat = format
+        locale = Locale.current
+    }
+}
+
+extension String {
+    
+    func toDate (format: String) -> Date? {
+        return DateFormatter(format: format).date(from: self)
+        
+    }
+    
+}
+
 
 

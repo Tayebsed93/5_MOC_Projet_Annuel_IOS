@@ -10,22 +10,31 @@ import UIKit
 import AVFoundation
 
 
-struct classement {
-    let logo : String!
-    let name : String!
+struct calendrier {
+    let match_hometeam_name : String!
+    let match_awayteam_name : String!
+    let match_hometeam_score : String!
+    let match_awayteam_score : String!
+    let date : [NSDate]!
+    let match_time : String!
 }
+
 
 protocol MyProtocol: class {
     func sendData(date: String)
 }
 
+
+
 class ResultatMatchController: UITableViewController, MyProtocol {
 
+
+    var sections = Dictionary<String, Array<calendrier>>()
+    var sortedSections = [String]()
+    var passnameclub = String()
     
 public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=get_leagues&country_id=173&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
-    
-    public var adressUrlTeamStringExterne = "https://apifootball.com/api/?action=get_standings&league_id=128&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
-    
+
     
     var date: String?
     func sendData(date: String) {
@@ -34,9 +43,10 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
     }
     
     var testValue: String = ""
-    var classementStruct = [classement]()
+    var calendrierStruct = [calendrier]()
     
-
+    let mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+    
     
     
 
@@ -52,23 +62,26 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         self.title = "Résultat des matchs"
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.white]
         //Recuperer Donnée de la BDD
-        classementStruct = []
-        callAPI()
+        //calendrierStruct = []
+        if (calendrierStruct.count <= 0) {
+            callAPI()
+        }
         
-
-        //self.tableView.delegate = self
-        //self.tableView.dataSource = self
-        //self.tableView.reloadData()
+        
+        
+        
+      
+/*
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.reloadData()
+ */
 
         // Do any additional setup after loading the view, typically from a nib.
     }
     
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return (classementStruct.count)
-        return 10
-        
-    }
+
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -81,35 +94,68 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         //if let clubImageURLString = classementStruct[indexPath.row].logo {
         //    clubImage.loadImageUsingUrlString(urlString: clubImageURLString)
         //} else{
-            clubImage.image = UIImage(named: "psg")
+        clubImage.image = UIImage(named: "psg")
         //}
         
-        //Nom club gauche
-        let labelClubGauche = cell?.viewWithTag(1) as! UILabel
-        //labelHeure.text = classementStruct[indexPath.row].name
-        labelClubGauche.text = "Real Madrid"
+        //Nom club domicile
+        let match_hometeam_name = cell?.viewWithTag(1) as! UILabel
+        match_hometeam_name.text = calendrierStruct[indexPath.section].match_hometeam_name
+        
+        //Nom club exterieur
+        let match_awayteam_name = cell?.viewWithTag(5) as! UILabel
+        match_awayteam_name.text = calendrierStruct[indexPath.section].match_awayteam_name
         
         //Horloge logo
         var horlogeImage = cell?.viewWithTag(2) as! UIImageView
-            horlogeImage.image = UIImage(named: "horloge")
+        horlogeImage.image = UIImage(named: "horloge")
         
-
+        //Heure du match label
+        var match_time = cell?.viewWithTag(3) as! UILabel
+        match_time.text = calendrierStruct[indexPath.section].match_time
+        //match_time.text = calendrierStruct[indexPath.section].date[indexPath.row]
         
+  
         return cell!
   
     }
     
+    
+    //HEADER
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
     }
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return calendrierStruct.count
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        
+        return calendrierStruct[section].date.count
+        
+    }
+    
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Mardi 25 septembre 2018"
+        
+        let ok = calendrierStruct[section].date
+        
+        for number in ok! {
+            
+            return number.getMonthName()
+        }
+        
+        return "Match"
+
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 3
     }
+    
+    //FIN HEADER
+
     
     
     
@@ -161,8 +207,9 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                         if let nb = json?.count {
                             for i in 0..<nb {
                                 if let league_id = json![i]["league_id"], let league_name = json![i]["league_name"] {
-                                    print(league_id)
-                                    self.tableView.reloadData()
+                                    let url = self.leagueIdURL(league_id: league_id)
+                                    self.callAPITeam(urlTeam: url)
+                   
                                 }
                                     
                             }
@@ -178,6 +225,158 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
             
         }
         ;task.resume()
+    }
+    
+    
+    func callAPITeam(urlTeam: String) {
+        
+        let urlToRequest = urlTeam
+        let url4 = URL(string: urlToRequest)!
+        let session4 = URLSession.shared
+        let request = NSMutableURLRequest(url: url4)
+        request.httpMethod = "GET"
+        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+        
+        let task = session4.dataTask(with: request as URLRequest)
+        { (data, response, error) in
+            guard let _: Data = data, let _: URLResponse = response, error == nil else
+            {
+                
+                print("ERROR: \(error?.localizedDescription)")
+                
+                self.alerteMessage(message: (error?.localizedDescription)!)
+                return
+            }
+            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            
+            
+            //JSONSerialization in Object
+            do {
+                
+                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as? [[String:Any]]
+                DispatchQueue.main.async()
+                    
+                    {
+                        if let nb = json?.count {
+                            for i in 0..<nb {
+                                if let team_name = json![i]["team_name"], let league_name = json![i]["league_name"], let league_id = json![i]["league_id"] {
+                                    print(team_name)
+                                    let club = String(describing: team_name)
+                                    if club == self.passnameclub {
+                                        print("OK")
+                                        let url = self.leagueIdURLToLiveMatch(league_id: league_id)
+                                        self.callAPIResultat(urlResult: url)
+                                        break
+                                    }
+
+                                }
+                            }
+                        }
+                        
+                        print("FIN")
+                        
+                }
+                
+            } catch let error as NSError {
+                print("Failed to load: \(error.localizedDescription)")
+            }
+            
+        }
+        ;task.resume()
+    }
+    
+    
+    func callAPIResultat(urlResult: String) {
+        
+        let urlToRequest = urlResult
+        let url4 = URL(string: urlToRequest)!
+        let session4 = URLSession.shared
+        let request = NSMutableURLRequest(url: url4)
+        request.httpMethod = "GET"
+        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+        
+        let task = session4.dataTask(with: request as URLRequest)
+        { (data, response, error) in
+            guard let _: Data = data, let _: URLResponse = response, error == nil else
+            {
+                
+                print("ERROR: \(error?.localizedDescription)")
+                
+                self.alerteMessage(message: (error?.localizedDescription)!)
+                return
+            }
+            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            
+            
+            //JSONSerialization in Object
+            do {
+                
+                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as? [[String:Any]]
+                DispatchQueue.main.async()
+                    
+                    {
+                        if let nb = json?.count {
+                            for i in 0..<nb {
+                                if let match_hometeam_name = json![i]["match_hometeam_name"], let match_awayteam_name = json![i]["match_awayteam_name"], let match_hometeam_score = json![i]["match_hometeam_score"], let match_awayteam_score = json![i]["match_awayteam_score"], let match_date = json![i]["match_date"], let match_time = json![i]["match_time"] {
+
+                                    let match_hometeam_name = String(describing: match_hometeam_name)
+                                    let match_awayteam_name = String(describing: match_awayteam_name)
+                                    let match_hometeam_score = String(describing: match_hometeam_score)
+                                    let match_awayteam_score = String(describing: match_awayteam_score)
+                                    let date = String(describing: match_date)
+                                    let match_time = String(describing: match_time)
+                                    if match_hometeam_name == self.passnameclub || match_awayteam_name == self.passnameclub  {
+                                        let format = "yyyy-MM-dd"
+                                        let date_nsdate = date.toDate(format: format)
+                                        
+                                        var date_array = [NSDate]()
+                                        date_array.append(date_nsdate as! NSDate)
+                                        
+                       
+                                        
+                                        self.calendrierStruct.append(calendrier.init(match_hometeam_name: match_hometeam_name, match_awayteam_name: match_awayteam_name, match_hometeam_score: match_hometeam_score, match_awayteam_score: match_awayteam_score, date: date_array, match_time: match_time))
+                                        
+                                        
+                                        
+                                
+                                        
+                                    }
+                                    self.tableView.reloadData()
+                                }
+                            }
+                        }
+                        
+                       
+                        
+                }
+                
+            } catch let error as NSError {
+                print("Failed to load: \(error.localizedDescription)")
+            }
+            
+        }
+        ;task.resume()
+    }
+    
+    func leagueIdURL(league_id: Any) -> String {
+        var url = String()
+        let s = String(describing: league_id)
+        url = "https://apifootball.com/api/?action=get_standings&league_id="+s+"&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
+        return url
+    }
+    
+    func leagueIdURLToLiveMatch(league_id: Any) -> String {
+        let dateFormatter : DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = Date()
+        let dateString = dateFormatter.string(from: date)
+
+        
+        
+        var url = String()
+        let s = String(describing: league_id)
+        url = "https://apifootball.com/api/?action=get_events&from="+DATE_DEBUT_SAISON+"&to="+DATE_FIN_SAISON+"&league_id="+s+"&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
+        return url
     }
     
 

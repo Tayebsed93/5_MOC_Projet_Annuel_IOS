@@ -26,4 +26,8 @@ public var loginUrlString = "/login"
 //CLUB ENDPOINT
 public var clubUrlString = "/club"
 
+//DATE DEBUT SAISON
+let DATE_DEBUT_SAISON = "2017-08-01"
+let DATE_FIN_SAISON = "2018-07-01"
+
 
