@@ -55,5 +55,7 @@
 	<string>MyFoot souhaite insérer une photo dans votre bibliothèque</string>
 	<key>NSCameraUsageDescription</key>
 	<string>MyFoot souhaite accèder à votre caméra</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>MyFoot souhaite accèder à votre micro</string>
 </dict>
 </plist>

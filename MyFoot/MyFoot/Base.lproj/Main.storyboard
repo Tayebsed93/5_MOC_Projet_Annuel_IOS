@@ -247,7 +247,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="scG-GX-Pzu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3561" y="1117"/>
+            <point key="canvasLocation" x="3433" y="1863"/>
         </scene>
         <!--Player Controller-->
         <scene sceneID="vL4-xl-6Z2">
@@ -337,7 +337,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGQ-ea-hNO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4441" y="1117"/>
+            <point key="canvasLocation" x="4265" y="1863"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="muy-KL-hBT">
@@ -901,31 +901,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Huu-OS-rhj" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2586" y="1117"/>
+            <point key="canvasLocation" x="2534" y="1863"/>
         </scene>
         <!--Score Controller-->
-        <scene sceneID="7lY-3F-lVt">
-            <objects>
-                <viewController id="6Gz-Ae-cj9" customClass="ScoreController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="SVY-hH-6MS"/>
-                        <viewControllerLayoutGuide type="bottom" id="4pv-YM-9RH"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Uuy-gx-1S7">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="vud-pN-eWU"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uuy-KL-YEa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2585" y="1863"/>
-        </scene>
-        <!--View Controller-->
         <scene sceneID="Z2u-6P-tbo">
             <objects>
-                <viewController id="Zjb-oW-H83" sceneMemberID="viewController">
+                <viewController id="Zjb-oW-H83" customClass="ScoreController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="OrP-E4-SXA"/>
                         <viewControllerLayoutGuide type="bottom" id="Sgs-oc-Ggi"/>
@@ -954,7 +935,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="azW-tz-fgY" kind="relationship" relationship="rootViewController" id="reS-ws-JmE"/>
+                        <segue destination="tZe-XK-q7W" kind="relationship" relationship="rootViewController" id="iwb-b3-cCF"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CuJ-ig-o3f" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -973,7 +954,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="6Gz-Ae-cj9" kind="relationship" relationship="rootViewController" id="xxJ-I7-xAj"/>
+                        <segue destination="azW-tz-fgY" kind="relationship" relationship="rootViewController" id="dAi-MH-L86"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tq4-YP-MxZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1154,12 +1135,86 @@
             </objects>
             <point key="canvasLocation" x="3432.8000000000002" y="-333.25123152709364"/>
         </scene>
+        <!--Init Snap Cam View Controller-->
+        <scene sceneID="c2N-AS-oGV">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KOt-ys-6lz" sceneMemberID="firstResponder"/>
+                <viewController id="tZe-XK-q7W" customClass="InitSnapCamViewController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1QS-WT-eO4"/>
+                        <viewControllerLayoutGuide type="bottom" id="iEP-Ps-dvZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JOr-iN-5DY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="h6I-Jp-9xY">
+                                <rect key="frame" x="150" y="638" width="75" height="75"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="q9R-2R-YhI">
+                                        <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kSj-OH-7pW">
+                                                <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="dLh-4a-i6V">
+                                                        <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
+                                                        <subviews>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="s3M-eT-Pvp">
+                                                                <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
+                                                                <subviews>
+                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lFq-xR-YK1" customClass="SwiftyRecordButton" customModule="DemoSwiftyCam" customModuleProvider="target">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
+                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    </view>
+                                                                </subviews>
+                                                            </stackView>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XE1-2e-dGh">
+                                <rect key="frame" x="84" y="690" width="30" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="CameraSwitch"/>
+                                <connections>
+                                    <action selector="cameraSwitchTapped:" destination="tZe-XK-q7W" eventType="touchUpInside" id="emb-78-Hjw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bYg-LS-nW2">
+                                <rect key="frame" x="275" y="690" width="18" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="flashOutline"/>
+                                <connections>
+                                    <action selector="toggleFlashTapped:" destination="tZe-XK-q7W" eventType="touchUpInside" id="412-7B-1ja"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="tMI-ca-Bej"/>
+                    <connections>
+                        <outlet property="captureButton" destination="lFq-xR-YK1" id="57Z-xW-ZMj"/>
+                        <outlet property="flashButton" destination="bYg-LS-nW2" id="5Yl-Uy-U5R"/>
+                        <outlet property="flipCameraButton" destination="XE1-2e-dGh" id="5gy-he-Rab"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="2584.8000000000002" y="1116.5024630541873"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="CameraSwitch" width="30" height="22"/>
         <image name="France" width="300" height="200"/>
         <image name="Germany" width="225" height="135"/>
         <image name="Italy" width="225" height="150"/>
         <image name="empty-logo" width="128" height="128"/>
+        <image name="flashOutline" width="17" height="30"/>
         <image name="terrain" width="710" height="1050"/>
         <image name="valider" width="250" height="250"/>
     </resources>

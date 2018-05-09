@@ -2,23 +2,27 @@ PODS:
   - Alamofire (4.5.1)
   - DGElasticPullToRefresh (1.1)
   - SnapSliderFilters (2.0)
+  - SwiftyCam (2.6.0)
 
 DEPENDENCIES:
   - Alamofire
   - DGElasticPullToRefresh
   - SnapSliderFilters
+  - SwiftyCam
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - DGElasticPullToRefresh
     - SnapSliderFilters
+    - SwiftyCam
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   DGElasticPullToRefresh: 28f11a6026302a90f8ffebbc6e24748e584dddd3
   SnapSliderFilters: 7f571683b05cf70b8d398e4a0e45691bd9f03a33
+  SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
 
-PODFILE CHECKSUM: 6270576231aedc7929f2033361968a3271077c9d
+PODFILE CHECKSUM: 990d488a85ab2d7bef3e8ac469e90e11e34173cf
 
 COCOAPODS: 1.5.0
