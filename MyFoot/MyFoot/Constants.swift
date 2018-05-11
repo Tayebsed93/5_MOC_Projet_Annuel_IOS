@@ -16,6 +16,7 @@ let LOGO_CONSTANTE = "logo"
 let LICENSE_CONSTANTE = "license"
 let ERROR_CONSTANTE = "Une erreur technique est survenue. Veuillez-nous excuser pour la gêne occasionnée"
 let FACEBOOK_COLOR_BLUE = UIColor.rgb(r: 59, g: 89, b: 153)
+let MDP_DEFAULT = "azerty"
 
 
 //API URL
@@ -31,6 +32,8 @@ public var clubUrlString = "/club"
 //DATE DEBUT SAISON
 let DATE_DEBUT_SAISON = "2017-08-01"
 let DATE_FIN_SAISON = "2018-07-01"
+
+
 
 
 
