@@ -113,7 +113,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         let request = NSMutableURLRequest(url: url4)
         request.httpMethod = "POST"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        let paramString = String(format:"name=%@&email=%@&password=%@",name,email,MDP_DEFAULT)
+        let paramString = String(format:"name=%@&email=%@&password=%@&role=%@",name,email,MDP_DEFAULT,role_supporter)
         request.httpBody = paramString.data(using: String.Encoding.utf8)
         
         

@@ -33,6 +33,12 @@ public var clubUrlString = "/club"
 let DATE_DEBUT_SAISON = "2017-08-01"
 let DATE_FIN_SAISON = "2018-07-01"
 
+//ROLE
+let role_president = "president"
+let role_joueur = "joueur"
+let role_coach = "coach"
+let role_supporter = "supporter"
+
 
 
 

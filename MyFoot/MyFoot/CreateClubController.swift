@@ -63,10 +63,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         licenseBtn.backgroundColor = GREENBlACK_THEME
     
         
-        
-        //Recuperer Donnée de la BDD
-        //callAPIClub()
-        
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -74,37 +70,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         return "Boundary-\(NSUUID().uuidString)"
     }
     
-    /*
-    func createBodyWithParameters(nameClub: String?, parameters: [String: String]?, filePathKey: String?, filePathKeyLicence: String?, imageDataKey: NSData, imageLicenseDataKey: NSData, boundary: String) -> NSData {
-        let body = NSMutableData();
-        
-        if parameters != nil {
-            for (key, value) in parameters! {
-                
-                body.appendString(string: "--\(boundary)\r\n")
-                body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
-                body.appendString(string: "\(value)\r\n")
-            }
-        }
-        
-        let filename = nameClub! + "-club.jpg"
-        let filelicense = nameClub! + "-license.jpg"
-        let mimetype = "image/png"
-        
-        body.appendString(string: "--\(boundary)\r\n")
-        body.appendString(string: "Content-Disposition: form-data; name=\"\(filePathKey!)\"; filename=\"\(filename)\"\r\n")
-        //body.appendString(string: "Content-Disposition: form-data; name=\"\(filePathKeyLicence!)\"; filename=\"\(filelicense)\"\r\n")
-        body.appendString(string: "Content-Type: \(mimetype)\r\n\r\n")
-        body.append(imageDataKey as Data)
-        //body.append(imageLicenseDataKey as Data)
-        
-        body.appendString(string: "\r\n")
-        
-        body.appendString(string: "--\(boundary)--\r\n")
-        
-        return body
-    }
- */
     
     
     func createBodyWithParameters(nameClub: String?, parameters: [String: String]?, parametersFile: [String: NSData]?, boundary: String) -> NSData {
@@ -153,7 +118,8 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
             "nom"  : nameClub.text!,
             "name"    : namePresident.text!,
             "password"    : motdepasse.text!,
-            "email"    : email.text!
+            "email"    : email.text!,
+            "role"      : role_president
         ]
         
         let boundary = generateBoundaryString()
