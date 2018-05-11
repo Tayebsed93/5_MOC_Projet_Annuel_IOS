@@ -12,5 +12,7 @@ target 'MyFoot' do
   pod 'SwiftyCam'
   pod 'NVActivityIndicatorView'
   pod 'PureLayout', '~> 3.0.1'
+  pod 'FBSDKLoginKit'
+  pod 'FacebookLogin'
 
 end

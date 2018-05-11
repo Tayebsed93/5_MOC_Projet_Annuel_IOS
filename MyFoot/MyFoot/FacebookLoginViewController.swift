@@ -11,10 +11,18 @@ import UIKit
 class FacebookLoginViewController: UIViewController {
 
     @IBOutlet weak var dismissButton: UIButton!
+    @IBOutlet weak var facebookBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        dismissButton.layer.cornerRadius = dismissButton.frame.size.width / 2
+        dismissButton.backgroundColor = .white
+        dismissButton.setTitleColor(FACEBOOK_COLOR_BLUE, for: .normal)
+        
+        facebookBtn.layer.cornerRadius = dismissButton.frame.size.width / 2
+        facebookBtn.backgroundColor = .white
+        facebookBtn.setTitleColor(FACEBOOK_COLOR_BLUE, for: .normal)
+        view.backgroundColor = FACEBOOK_COLOR_BLUE
         // Do any additional setup after loading the view.
     }
 
@@ -23,7 +31,15 @@ class FacebookLoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    @IBAction func dimissAction(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func facebookAction(_ sender: Any) {
+    }
+    
+    
     /*
     // MARK: - Navigation
 

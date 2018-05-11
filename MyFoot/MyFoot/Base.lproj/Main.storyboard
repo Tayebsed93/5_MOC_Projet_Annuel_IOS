@@ -855,6 +855,9 @@
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="F"/>
+                                <connections>
+                                    <segue destination="AAe-N3-ZAQ" kind="showDetail" id="5Uc-1o-zfE"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="valider" translatesAutoresizingMaskIntoConstraints="NO" id="KBv-WF-gd5">
                                 <rect key="frame" x="307" y="183" width="36" height="41"/>
@@ -883,7 +886,7 @@
         <!--Facebook Login View Controller-->
         <scene sceneID="hb2-gu-SU5">
             <objects>
-                <viewController id="AAe-N3-ZAQ" customClass="FacebookLoginViewController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FacebookLoginViewController" id="AAe-N3-ZAQ" customClass="FacebookLoginViewController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Lj6-7t-EXr"/>
                         <viewControllerLayoutGuide type="bottom" id="VkW-mv-Ams"/>
@@ -899,17 +902,34 @@
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="X"/>
+                                <connections>
+                                    <action selector="dimissAction:" destination="AAe-N3-ZAQ" eventType="touchUpInside" id="OgL-5i-LdU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iCj-zW-h8j">
+                                <rect key="frame" x="57" y="389" width="260" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="Continuer avec facebook">
+                                    <color key="titleColor" red="0.0" green="0.42729148527518168" blue="0.88586611675126903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="facebookAction:" destination="AAe-N3-ZAQ" eventType="touchUpInside" id="yhq-Zu-SQ7"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <navigationItem key="navigationItem" id="qrQ-A0-vCt"/>
                     <connections>
                         <outlet property="dismissButton" destination="M9J-zo-SXB" id="3mH-jU-bza"/>
+                        <outlet property="facebookBtn" destination="iCj-zW-h8j" id="2a9-ix-pH3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mhK-Xg-hXJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3356" y="1864"/>
+            <point key="canvasLocation" x="3356" y="1863.5467980295568"/>
         </scene>
         <!--Score Controller-->
         <scene sceneID="Z2u-6P-tbo">

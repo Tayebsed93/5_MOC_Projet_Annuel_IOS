@@ -12,7 +12,7 @@ import UIKit
 import Alamofire
 
 
-class HomeController: UIViewController, UITextFieldDelegate {
+class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTransitioningDelegate {
     
     @IBOutlet weak var France: UIImageView!
     @IBOutlet weak var Germany: UIImageView!
@@ -41,6 +41,7 @@ class HomeController: UIViewController, UITextFieldDelegate {
     }
     
     let defaults = UserDefaults.standard
+    let transition = CircularTransition()
     
     @IBOutlet weak var anneeText: UITextField!
     let button = UIButton(type: UIButtonType.custom)
@@ -51,6 +52,8 @@ class HomeController: UIViewController, UITextFieldDelegate {
         defaults.set(self.passapikey, forKey: defaultsKeys.key11)
         
         self.isPlayer = true
+        facebookButton.layer.cornerRadius = facebookButton.frame.size.width / 2
+        facebookButton.backgroundColor = FACEBOOK_COLOR_BLUE
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -58,7 +61,13 @@ class HomeController: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear( animated)
         callAPIComposition()
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let facebookVC = segue.destination as! FacebookLoginViewController
+        facebookVC.transitioningDelegate = self
+        facebookVC.modalPresentationStyle = .custom
     }
     
     @IBAction func FranceClick(_ sender: Any) {
@@ -207,6 +216,23 @@ class HomeController: UIViewController, UITextFieldDelegate {
         }
         
         
+    }
+    
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .present
+        transition.startingPoint = facebookButton.center
+        transition.circleColor = facebookButton.backgroundColor!
+        
+        return transition
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .dismiss
+        transition.startingPoint = facebookButton.center
+        transition.circleColor = facebookButton.backgroundColor!
+        
+        return transition
     }
     
     
