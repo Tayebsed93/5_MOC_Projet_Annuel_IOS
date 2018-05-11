@@ -21,6 +21,7 @@ class HomeController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var btnFrance: UIButton!
     @IBOutlet weak var btnGermany: UIButton!
     @IBOutlet weak var btnItaly: UIButton!
+    @IBOutlet weak var facebookButton: UIButton!
     
     public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
     public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"

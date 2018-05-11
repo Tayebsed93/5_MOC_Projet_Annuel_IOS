@@ -15,6 +15,7 @@ let EMPTY_LOGO_IMG = "empty-logo"
 let LOGO_CONSTANTE = "logo"
 let LICENSE_CONSTANTE = "license"
 let ERROR_CONSTANTE = "Une erreur technique est survenue. Veuillez-nous excuser pour la gêne occasionnée"
+let FACEBOOK_COLOR_BLUE = UIColor.rgb(r: 59, g: 89, b: 153)
 
 
 //API URL
