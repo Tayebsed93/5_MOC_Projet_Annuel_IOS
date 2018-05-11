@@ -145,12 +145,16 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DGElasticPullToRefresh/DGElasticPullToRefresh.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SnapSliderFilters/SnapSliderFilters.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyCam/SwiftyCam.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DGElasticPullToRefresh/DGElasticPullToRefresh.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SnapSliderFilters/SnapSliderFilters.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyCam/SwiftyCam.framework"
 fi

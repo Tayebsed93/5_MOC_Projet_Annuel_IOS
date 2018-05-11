@@ -28,6 +28,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
         
         self.title = "Liste des clubs"
+        self.tableView.separatorStyle = .none
         //Recuperer Donnée de la BDD
         clubsStruct = []
         callAPIClub()

@@ -57,7 +57,7 @@
         <!--Item-->
         <scene sceneID="bRO-lX-Lfd">
             <objects>
-                <viewController id="Mae-BQ-9RG" customClass="SnapFilterViewController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Mae-BQ-9RG" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="a00-rL-GXf"/>
                         <viewControllerLayoutGuide type="bottom" id="gYs-3n-bC2"/>
@@ -763,7 +763,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n7V-oq-r0X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4349.6000000000004" y="366.50246305418722"/>
+            <point key="canvasLocation" x="-4390" y="367"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="86a-Sf-qQg">
@@ -1138,7 +1138,6 @@
         <!--Init Snap Cam View Controller-->
         <scene sceneID="c2N-AS-oGV">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KOt-ys-6lz" sceneMemberID="firstResponder"/>
                 <viewController id="tZe-XK-q7W" customClass="InitSnapCamViewController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1QS-WT-eO4"/>
@@ -1164,7 +1163,7 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="s3M-eT-Pvp">
                                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
                                                                 <subviews>
-                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lFq-xR-YK1" customClass="SwiftyRecordButton" customModule="DemoSwiftyCam" customModuleProvider="target">
+                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lFq-xR-YK1" customClass="SwiftyRecordButton" customModule="MyFoot" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </view>
@@ -1204,6 +1203,7 @@
                         <outlet property="flipCameraButton" destination="XE1-2e-dGh" id="5gy-he-Rab"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KOt-ys-6lz" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2584.8000000000002" y="1116.5024630541873"/>
         </scene>

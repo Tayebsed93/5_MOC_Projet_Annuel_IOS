@@ -31,6 +31,7 @@ class InitSnapCamViewController: SwiftyCamViewController, SwiftyCamViewControlle
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
         captureButton.delegate = self
     }
     

@@ -10,5 +10,7 @@ target 'MyFoot' do
   pod 'DGElasticPullToRefresh'
   pod 'SnapSliderFilters'
   pod 'SwiftyCam'
+  pod 'NVActivityIndicatorView'
+  pod 'PureLayout', '~> 3.0.1'
 
 end

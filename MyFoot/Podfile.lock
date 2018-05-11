@@ -1,12 +1,18 @@
 PODS:
   - Alamofire (4.5.1)
   - DGElasticPullToRefresh (1.1)
+  - NVActivityIndicatorView (3.7.0):
+    - NVActivityIndicatorView/Presenter (= 3.7.0)
+  - NVActivityIndicatorView/Presenter (3.7.0)
+  - PureLayout (3.0.2)
   - SnapSliderFilters (2.0)
   - SwiftyCam (2.6.0)
 
 DEPENDENCIES:
   - Alamofire
   - DGElasticPullToRefresh
+  - NVActivityIndicatorView
+  - PureLayout (~> 3.0.1)
   - SnapSliderFilters
   - SwiftyCam
 
@@ -14,15 +20,19 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - DGElasticPullToRefresh
+    - NVActivityIndicatorView
+    - PureLayout
     - SnapSliderFilters
     - SwiftyCam
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   DGElasticPullToRefresh: 28f11a6026302a90f8ffebbc6e24748e584dddd3
+  NVActivityIndicatorView: d3738df7e2e476aca0ba6bf32a8c9fbcfc33d64b
+  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   SnapSliderFilters: 7f571683b05cf70b8d398e4a0e45691bd9f03a33
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
 
-PODFILE CHECKSUM: 990d488a85ab2d7bef3e8ac469e90e11e34173cf
+PODFILE CHECKSUM: 47493ab599c2336d2de071eef5a2e9d72abff5c6
 
 COCOAPODS: 1.5.0
