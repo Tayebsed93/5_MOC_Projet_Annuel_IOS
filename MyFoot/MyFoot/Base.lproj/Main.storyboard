@@ -795,7 +795,7 @@
         <!--Home Controller-->
         <scene sceneID="h7v-Ml-Dlx">
             <objects>
-                <viewController id="azW-tz-fgY" customClass="HomeController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeController" id="azW-tz-fgY" customClass="HomeController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="IEF-lG-TaU"/>
                         <viewControllerLayoutGuide type="bottom" id="zLY-km-4id"/>
@@ -856,7 +856,7 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="F"/>
                                 <connections>
-                                    <segue destination="AAe-N3-ZAQ" kind="showDetail" id="5Uc-1o-zfE"/>
+                                    <segue destination="AAe-N3-ZAQ" kind="showDetail" identifier="HomeController" id="5Uc-1o-zfE"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="valider" translatesAutoresizingMaskIntoConstraints="NO" id="KBv-WF-gd5">

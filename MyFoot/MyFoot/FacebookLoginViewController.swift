@@ -11,11 +11,18 @@ import FacebookCore
 import FacebookLogin
 import FBSDKCoreKit
 
+protocol ChildNameDelegate {
+    func dataChanged(name: String, password: String)
+}
+
+
 class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
 
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var imageFacebook: UIImageView!
     @IBOutlet weak var facebookName: UILabel!
+    
+
     
     var dict : [String : AnyObject]!
     
@@ -23,6 +30,15 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         let name : String!
         let picture : String!
     }
+    
+    
+    var delegate: ChildNameDelegate?
+    
+    func whereTheChangesAreMade(name: String, password: String ) {
+        delegate?.dataChanged(name: name, password: password)
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         dismissButton.layer.cornerRadius = dismissButton.frame.size.width / 2
@@ -51,6 +67,8 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
             getFBUserData()
             print("User is logged in with acess token: \(AccessToken.current)")
         }
+        
+        
 
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -63,7 +81,14 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
     }
     
     @IBAction func dimissAction(_ sender: UIButton) {
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let tabVc = storyboard.instantiateViewController(withIdentifier: "HomeController")
+        
+        //self.dismiss(animated: false, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
         self.dismiss(animated: true, completion: nil)
+        
+        
     }
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
@@ -90,7 +115,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
             FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                 if (error == nil){
                     self.dict = result as! [String : AnyObject]
-                    print(self.dict)
+
                     let picture = self.dict["picture"]
                     let email = self.dict["email"]
                     let name = self.dict["name"]
@@ -133,6 +158,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         //let paramString = String(format:"name=%@&email=%@&password=%@&role=%@&picture=%@",name,email,MDP_DEFAULT,role_supporter,picture)
         //request.httpBody = paramString.data(using: String.Encoding.utf8)
         
+        whereTheChangesAreMade(name: name, password: MDP_DEFAULT)
         let param = [
             "name"  : name,
             "email"    : email,
@@ -145,7 +171,6 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.httpBody = createBodyWithParameters(parameters: param, boundary: boundary) as Data
 
-        print("PHOTO ", picture)
         
         let task = session4.dataTask(with: request as URLRequest)
         { (data, response, error) in
@@ -220,15 +245,23 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         
         
     }
-    
-    /*
-    // MARK: - Navigation
 
+    
+    
+    // MARK: - Navigation
+/*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        print("PREPARE")
+        if segue.identifier == "HomeController" {
+            if let destinationVC = segue.destination as? HomeController {
+                destinationVC.loginFB = "LOL"
+                destinationVC.passwordFB = "LOL"
+            }
+        }
     }
-    */
+ */
 
 }

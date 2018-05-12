@@ -12,7 +12,16 @@ import UIKit
 import Alamofire
 
 
-class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTransitioningDelegate {
+class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTransitioningDelegate, ChildNameDelegate {
+    func dataChanged(name: String, password: String) {
+        print("Name ",name)
+        print("Password ",password)
+        self.passapikey = "LOL"
+        defaults.set(self.passapikey, forKey: defaultsKeys.key11)
+        self.isPlayer = true
+        callAPIComposition()
+        print(passapikey)
+    }
     
     @IBOutlet weak var France: UIImageView!
     @IBOutlet weak var Germany: UIImageView!
@@ -34,7 +43,8 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     var isPlayer = Bool()
     
     var nation = [String]()
-    
+    var loginFB = String()
+    var passwordFB = String()
     struct defaultsKeys {
         static let key11 = "11"
         
@@ -49,26 +59,32 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        defaults.set(self.passapikey, forKey: defaultsKeys.key11)
-        
-        self.isPlayer = true
         facebookButton.layer.cornerRadius = facebookButton.frame.size.width / 2
         facebookButton.backgroundColor = FACEBOOK_COLOR_BLUE
+        
         
         // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear( animated)
+        super.viewWillAppear(true)
+        self.passapikey = "LOL"
+        defaults.set(self.passapikey, forKey: defaultsKeys.key11)
+        self.isPlayer = true
         callAPIComposition()
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        print(passapikey)
+    
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let facebookVC = segue.destination as! FacebookLoginViewController
         facebookVC.transitioningDelegate = self
         facebookVC.modalPresentationStyle = .custom
+        facebookVC.delegate = self
     }
+    
     
     @IBAction func FranceClick(_ sender: Any) {
         self.nationality = "France"
@@ -114,6 +130,62 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     
     @IBAction func deconnecteButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func callAPILogin() {
+        let urlToRequest = addressUrlStringProd+loginUrlString
+        let url4 = URL(string: urlToRequest)!
+        let session4 = URLSession.shared
+        let request = NSMutableURLRequest(url: url4)
+        request.httpMethod = "POST"
+        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+        let paramString = String(format:"email=%@&password=%@","emailTextField.text!","passwordTextField.text!")
+        request.httpBody = paramString.data(using: String.Encoding.utf8)
+        
+        
+        
+        let task = session4.dataTask(with: request as URLRequest)
+        { (data, response, error) in
+            guard let _: Data = data, let _: URLResponse = response, error == nil else
+            {
+                
+                print("ERROR: \(error?.localizedDescription)")
+                
+                self.alerteMessage(message: (error?.localizedDescription)!)
+                return
+            }
+            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            
+            
+            //JSONSerialization in Object
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
+                DispatchQueue.main.async()
+                    {
+                        if let apiKey = json["apiKey"], let role = json["role"]
+                        {
+                            //self.passData(role: role as! String, apiKey: apiKey as! String)
+                        }
+                        
+                        if let messageError = json["message"]
+                        {
+                            self.alerteMessage(message: messageError as! String)
+                        }
+                        
+                }
+                /*
+                 DispatchQueue.main.async() {
+                 self.dismiss(animated: true, completion: nil)
+                 }
+                 */
+                
+                
+            } catch let error as NSError {
+                print("Failed to load: \(error.localizedDescription)")
+            }
+            
+        }
+        ;task.resume()
     }
     
     
