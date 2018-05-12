@@ -66,10 +66,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    func generateBoundaryString() -> String {
-        return "Boundary-\(NSUUID().uuidString)"
-    }
-    
     
     
     func createBodyWithParameters(nameClub: String?, parameters: [String: String]?, parametersFile: [String: NSData]?, boundary: String) -> NSData {

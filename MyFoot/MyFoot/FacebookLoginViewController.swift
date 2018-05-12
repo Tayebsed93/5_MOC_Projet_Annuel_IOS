@@ -96,26 +96,56 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
                     let name = self.dict["name"]
                     if let data = picture!["data"] as? [String: Any] {
                         self.facebookName.text = name as! String
-                        self.imageFacebook.loadImageUsingUrlString(urlString: data["url"] as! String) 
+                        self.imageFacebook.loadImageUsingUrlString(urlString: data["url"] as! String)
+                        self.callAPIRegister(name: name as! String, email: email as! String, picture: data["url"] as! String)
                     }
                     
-                    self.callAPIRegister(name: name as! String, email: email as! String)
+                    
                 }
             })
         }
 
     }
     
-    func callAPIRegister(name: String, email: String) {
+    func createBodyWithParameters(parameters: [String: String]?, boundary: String) -> NSData {
+        let body = NSMutableData();
+        
+        if parameters != nil {
+            for (key, value) in parameters! {
+                
+                body.appendString(string: "--\(boundary)\r\n")
+                body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.appendString(string: "\(value)\r\n")
+            }
+        }
+
+        return body
+    }
+    
+    func callAPIRegister(name: String, email: String, picture: String) {
+        
         let urlToRequest = addressUrlStringProd+registerUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
         request.httpMethod = "POST"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        let paramString = String(format:"name=%@&email=%@&password=%@&role=%@",name,email,MDP_DEFAULT,role_supporter)
-        request.httpBody = paramString.data(using: String.Encoding.utf8)
+        //let paramString = String(format:"name=%@&email=%@&password=%@&role=%@&picture=%@",name,email,MDP_DEFAULT,role_supporter,picture)
+        //request.httpBody = paramString.data(using: String.Encoding.utf8)
         
+        let param = [
+            "name"  : name,
+            "email"    : email,
+            "password"    : MDP_DEFAULT,
+            "role"    : role_supporter,
+            "picture"      : picture
+        ]
+        
+        let boundary = generateBoundaryString()
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.httpBody = createBodyWithParameters(parameters: param, boundary: boundary) as Data
+
+        print("PHOTO ", picture)
         
         let task = session4.dataTask(with: request as URLRequest)
         { (data, response, error) in

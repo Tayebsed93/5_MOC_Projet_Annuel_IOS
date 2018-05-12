@@ -40,7 +40,10 @@ let role_coach = "coach"
 let role_supporter = "supporter"
 
 
-
+//FUNCTION
+func generateBoundaryString() -> String {
+    return "Boundary-\(NSUUID().uuidString)"
+}
 
 
 

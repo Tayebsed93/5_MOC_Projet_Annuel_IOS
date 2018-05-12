@@ -13,6 +13,7 @@ struct scorestruct {
     let name : String!
     let email : String!
     let score : Int!
+    let picture : String!
 }
 
 class ScoreController: UIViewController {
@@ -115,7 +116,15 @@ extension ScoreController: UITableViewDataSource {
             cell.contentView.addSubview(label)
             
             cell.textLabel?.text = scoresStruct[indexPath.row].name
-            cell.imageView?.image = UIImage(named: "profile")
+            
+            //Picture
+            if scoresStruct[indexPath.row].picture != "", let pictureURLString = scoresStruct[indexPath.row].picture {
+                cell.imageView?.loadImageUsingUrlString(urlString: pictureURLString)
+            }
+            else{
+                cell.imageView?.image = UIImage(named: "profile")
+            }
+            
             
             return cell
         }
@@ -155,10 +164,9 @@ extension ScoreController: UITableViewDataSource {
                     {
                         
                         if let scores = json["0"] as? [[String: Any]] {
-                            
                             for scorejson in scores {
-                                if let name = scorejson["name"], let email = scorejson["email"], let score = scorejson["score"]{
-                                    self.scoresStruct.append(scorestruct.init(name: name as! String, email: email as! String, score: score as! Int))
+                                if let name = scorejson["name"], let email = scorejson["email"], let score = scorejson["score"], let picture = scorejson["picture"]{
+                                    self.scoresStruct.append(scorestruct.init(name: name as! String, email: email as! String, score: score as! Int, picture: picture as! String))
                                 }
                                 
                                 self.tableView.reloadData()
