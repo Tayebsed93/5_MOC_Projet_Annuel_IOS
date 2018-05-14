@@ -70,7 +70,7 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
         
-        self.title = "Résultat des matchs"
+        //self.title = "Résultat des matchs"
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.white]
         
     }
