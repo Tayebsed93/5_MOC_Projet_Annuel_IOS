@@ -57,6 +57,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     
     
     public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
+    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
     public var playerUrlString = "/player"
     public var playerUrlCompo = "/composition"
     public var playerUrlCompoResult = "/composition/result"
@@ -73,7 +74,6 @@ class CompositionController: UIViewController, UITextFieldDelegate {
             //Supprime tout
             defaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
             defaults.set(self.passapikey, forKey: defaultsKeys.key11)
-            callAPIPlayer()
         }
         else {
             
@@ -184,78 +184,9 @@ class CompositionController: UIViewController, UITextFieldDelegate {
             
     }
     
-    
-    func callAPIPlayer() {
-
-        //let config = URLSessionConfiguration.default
-        let urlToRequest = addressUrlString+playerUrlString
-        let url4 = URL(string: urlToRequest)!
-        let session4 = URLSession.shared
-        let request = NSMutableURLRequest(url: url4)
-        //config.httpAdditionalHeaders = ["Authorization" : apiKey]
-        request.addValue(defaults.string(forKey: defaultsKeys.key11)!, forHTTPHeaderField: "Authorization")
-        request.httpMethod = "POST"
-        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        let paramString = String(format:"nationality=%@",self.nationality)
-        request.httpBody = paramString.data(using: String.Encoding.utf8)
-        
-        
-        let task = session4.dataTask(with: request as URLRequest)
-        { (data, response, error) in
-            guard let _: Data = data, let _: URLResponse = response, error == nil else
-            {
-                
-                print("ERROR: \(error?.localizedDescription)")
-                
-                self.alerteMessage(message: (error?.localizedDescription)!)
-                return
-            }
-            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            
-            //JSONSerialization in Object
-            do {
-                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
-                DispatchQueue.main.async()
-                    {
-                        //print(json)
-                        if let players = json["player"] as? [[String: Any]] {
-                            
-                            for player in players {
-                                if let name = player["Name"]{
-                                  
-                                    self.names.append(name as! String)
-                                
-                                }
-                                if let age = player["Age"]{
-                                    self.ages.append(age as! Double)
-                                }
-                            }
-                        }
-                        
-                        if let messageError = json["message"]
-                        {
-                            self.alerteMessage(message: messageError as! String)
-                        }
-                        
-                        
-                        self.setupData(_name: self.names, _age: self.ages)
-                        
-                        self.isPlayer = false
-                }
-                
-                
-                
-            } catch let error as NSError {
-                print("Failed to load: \(error.localizedDescription)")
-            }
-            
-        }
-        ;task.resume()
-    }
-    
     func callAPICompo() {
         let defaults = UserDefaults.standard
-        let urlToRequest = addressUrlString+playerUrlCompo
+        let urlToRequest = addressUrlStringProd+playerUrlCompo
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
@@ -324,7 +255,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     ////
     func callAPIResultCompo() {
         let defaults = UserDefaults.standard
-        let urlToRequest = addressUrlString+playerUrlCompoResult
+        let urlToRequest = addressUrlStringProd+playerUrlCompoResult
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
@@ -403,7 +334,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     func callAPIScore(newkey:String) {
         print("La nouvelle", newkey)
         let defaults = UserDefaults.standard
-        let urlToRequest = addressUrlString+scoreUrl
+        let urlToRequest = addressUrlStringProd+scoreUrl
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
@@ -464,14 +395,19 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func BtnActionGroup(_ sender: UIButton) {
+        
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PlayerController") as? PlayerController {
             viewController.nationality = self.nationality
+            print(nationality)
             if (((sender as AnyObject).tag == 0))
             {
+                print("Select goal")
                 self.curentTag = 0
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
+                    print("push")
                     navigator.pushViewController(viewController, animated: true)
                 }
             }
@@ -480,6 +416,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                 self.curentTag = 1
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -490,6 +427,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                 self.curentTag = 2
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -500,6 +438,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                 self.curentTag = 3
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -510,6 +449,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                 self.curentTag = 4
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -520,6 +460,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                 self.curentTag = 5
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -530,6 +471,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                 self.curentTag = 6
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -540,6 +482,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                 self.curentTag = 7
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -550,6 +493,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                 self.curentTag = 8
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -560,6 +504,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                 self.curentTag = 9
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -568,7 +513,9 @@ class CompositionController: UIViewController, UITextFieldDelegate {
             else if (((sender as AnyObject).tag == 10))
             {
                 self.curentTag = 10
+                viewController.nationality = self.nationality
                 viewController.curentTag = self.curentTag
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -607,6 +554,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
         
         
     }
+    
     
 }
 

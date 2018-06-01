@@ -10,14 +10,11 @@ import UIKit
 
 class DatePopUpViewController: UIViewController {
 
-    var delegate: MyProtocol?
-    
+    var delegate: PopupDelegate?
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var saveButton: UIButton!
     var showTimePicker: Bool = false
-
-    
 
     
     override func viewDidLoad() {
@@ -27,15 +24,18 @@ class DatePopUpViewController: UIViewController {
         saveButton.backgroundColor = GREENBlACK_THEME
         // Do any additional setup after loading the view.
     }
+    
 
     @IBAction func saveDate_TouchAction(_ sender: UIButton) {
-        delegate?.sendData(date: "25 Janvier")
-        self.dismiss(animated: true) 
-            //
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        var strDate = dateFormatter.string(from: datePicker.date)
+        delegate?.popupValueSelected(value: strDate)
         
-
-        //dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true)
+        
     }
+    
     
     
 }

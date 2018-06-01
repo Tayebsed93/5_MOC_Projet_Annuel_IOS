@@ -22,27 +22,23 @@ struct calendrier {
     
 }
 
-protocol MyProtocol: class {
-    func sendData(date: String)
+struct defaultsKeys {
+    static let league_id = "league_id"
+    static let urlResult = "urlResult"
 }
 
 
-
-class ResultatMatchController: UITableViewController, MyProtocol, NVActivityIndicatorViewable {
-
-
-
+class ResultatMatchController: UITableViewController, NVActivityIndicatorViewable  {
+    
+    let defaults = UserDefaults.standard
     var passnameclub = String()
     var passlogo = String()
     var spinner = UIActivityIndicatorView()
+    var league_id = String()
+    var urlResult = String()
     
 public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=get_leagues&country_id=173&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
 
-    var date: String?
-    func sendData(date: String) {
-        self.date = date
-        print(date)
-    }
 
     var calendrierStruct = [calendrier]()
     
@@ -56,16 +52,18 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
     override func viewDidLoad() {
         self.tableView.separatorStyle = .none
         
+        
         //Init de vue vide
         setupEmptyBackgroundView()
         //Recuperer Donnée de la BDD
         if (calendrierStruct.count <= 0) {
             callAPI()
         }
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewDidLoad()
+        super.viewWillAppear(true)
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
@@ -73,6 +71,9 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         //self.title = "Résultat des matchs"
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.white]
         
+        //Remove persitante variable save
+        defaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+
     }
 
     // MARK: - Empty Data
@@ -195,22 +196,7 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
 
     
     
-    
-    @IBAction func DeconnexionClick(_ sender: Any) {
-        
-        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateClubController") as? CreateClubController {
-            /*
-             viewController.nationality = self.nationality
-             viewController.isPlayer = false
-             viewController.curentName = self.curentName
-             viewController.curentTag = self.curentTag
-             */
-            if let navigator = navigationController {
-                navigator.pushViewController(viewController, animated: true)
-            }
-        }
-        
-    }
+
     
     func callAPI() {
         
@@ -310,7 +296,10 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                                     if club == self.passnameclub {
                                         print("OK")
                                         trouver = true
-                                        let url = self.leagueIdURLToLiveMatch(league_id: league_id)
+                                        let url = self.leagueIdURLToLiveMatch(dateDebut: DATE_DEBUT_SAISON, dateFin: DATE_FIN_SAISON)
+                                        self.defaults.set(self.league_id, forKey: defaultsKeys.league_id)
+                                        self.defaults.set(self.urlResult, forKey: defaultsKeys.urlResult)
+                                        self.defaults.synchronize()
                                         self.callAPIResultat(urlResult: url)
                                         break
                                     }
@@ -341,6 +330,8 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
     
     
     func callAPIResultat(urlResult: String) {
+        
+        print("newcall")
         
         let urlToRequest = urlResult
         let url4 = URL(string: urlToRequest)!
@@ -428,7 +419,7 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         return url
     }
     
-    func leagueIdURLToLiveMatch(league_id: Any) -> String {
+    func leagueIdURLToLiveMatch(dateDebut: String, dateFin: String) -> String {
         let dateFormatter : DateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = Date()
@@ -437,8 +428,8 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         
         
         var url = String()
-        let s = String(describing: league_id)
-        url = "https://apifootball.com/api/?action=get_events&from="+DATE_DEBUT_SAISON+"&to="+DATE_FIN_SAISON+"&league_id="+s+"&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
+        let s = String(describing: self.league_id)
+        url = "https://apifootball.com/api/?action=get_events&from="+dateDebut+"&to="+dateFin+"&league_id="+s+"&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
         return url
     }
     
@@ -463,48 +454,18 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         
     }
     
-    /*
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //getting the index path of selected row
-        let indexPath = tableView.indexPathForSelectedRow
-        
-        let name = classementStruct[(indexPath?.row)!].name
-        
-        let alertController = UIAlertController(title: name, message: "Selectionner votre rôle", preferredStyle: .alert)
-        let action1 = UIAlertAction(title: "Supporter", style: .default) { (action) in
-            let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
-            
-            ///////// 1er controller
-            //Convertie la tabViewController en UINavigationController
-            let navigation = tabVc.viewControllers?[0] as! UINavigationController
-            
-            //Convertie la UINavigationController en UIViewController (Home)
-            let homeController = navigation.topViewController as? HomeController
-            
-            //Change la page vers Home
-            self.present(tabVc, animated: true, completion: nil)
-        }
-        let action2 = UIAlertAction(title: "Acteur interne", style: .default) { (action) in
-            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as? LoginController {
-                if let navigator = self.navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-            }
-            
-        }
-        let action3 = UIAlertAction(title: "Annuler", style: .cancel) { (action) in
-        }
-        
-        alertController.addAction(action1)
-        alertController.addAction(action2)
-        alertController.addAction(action3)
-        self.present(alertController, animated: true, completion: nil)
-    }
- */
-    
     @IBAction func DeconnexionButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func selectTime_TouchUpInside(_ sender: Any) {
+        if let popup = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DatePopUpViewController") as? DatePopUpViewController {
+            popup.showTimePicker = true
+            popup.delegate = self
+           self.present(popup, animated: true)
+            
+        }
+        
     }
     
 
@@ -515,4 +476,13 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
     }
     
     
+}
+
+extension ResultatMatchController: PopupDelegate {
+    func popupValueSelected(value: String) {
+        let url = self.leagueIdURLToLiveMatch(dateDebut: value, dateFin: value)
+        print(url)
+        self.callAPIResultat(urlResult: url)
+        print("Selected Date ", value)
+    }
 }

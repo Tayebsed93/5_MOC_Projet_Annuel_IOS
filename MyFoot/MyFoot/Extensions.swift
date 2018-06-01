@@ -83,7 +83,13 @@ extension UIImageView {
                     if imageUrlString == urlString {
                         self.image = imageToCache
                     }
-                    imageCache.setObject(imageToCache!, forKey: urlString as AnyObject)
+                    do {
+                        imageCache.setObject(imageToCache!, forKey: urlString as AnyObject)
+                    }
+                    catch {
+                        
+                    }
+                    
                 }
             
             

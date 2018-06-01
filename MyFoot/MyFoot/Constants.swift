@@ -28,6 +28,10 @@ public var registerUrlString = "/register"
 public var loginUrlString = "/login"
 //CLUB ENDPOINT
 public var clubUrlString = "/club"
+//PLAYER ENDPOINT
+public var playerUrlString = "/player"
+//COMPSITION ENDPOINT
+public var compositionUrlString = "/composition"
 
 //DATE DEBUT SAISON
 let DATE_DEBUT_SAISON = "2017-08-01"

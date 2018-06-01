@@ -9,28 +9,33 @@
 import UIKit
 import AVFoundation
 
+struct players {
+    let name : String!
+    let age : Int
+}
+
 class PlayerController: UITableViewController, UISearchBarDelegate {
     
-    var players: [Player]?
-    var player: Player?
 
+    var playerStruct = [players]()
     var nb: Int = 0
     var nationality = String()
     var name = String()
-    
+    var apikey = String()
     var curentName = String()
     var curentTag = Int()
     
     @IBOutlet weak var searchBar: UISearchBar!
-    public var addressUrlString = "http://localhost:8888/FootAPI/Pictures"
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
 
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         //Recuperer Donnée de la BDD
-        loadData()
+        callAPIPlayer()
+        
+        
+        //players?.count
         searchBar.text = ""
 
         
@@ -42,22 +47,80 @@ class PlayerController: UITableViewController, UISearchBarDelegate {
         // Do any additional setup after loading the view, typically from a nib.
     }
 
-    
-    
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let keywords = searchBar.text
-        self.loadSearchData(_cleRecherche: keywords!)
+        
         
 
         self.view.endEditing(true)
         self.tableView.reloadData()
     }
     
+    
+    func callAPIPlayer() {
+        
+        //let config = URLSessionConfiguration.default
+        let urlToRequest = addressUrlStringProd+playerUrlString
+        let url4 = URL(string: urlToRequest)!
+        let session4 = URLSession.shared
+        let request = NSMutableURLRequest(url: url4)
+        request.addValue(apikey, forHTTPHeaderField: "Authorization")
+        request.httpMethod = "POST"
+        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+        let paramString = String(format:"nationality=%@",self.nationality)
+        request.httpBody = paramString.data(using: String.Encoding.utf8)
+        
+        
+        let task = session4.dataTask(with: request as URLRequest)
+        { (data, response, error) in
+            guard let _: Data = data, let _: URLResponse = response, error == nil else
+            {
+                
+                print("ERROR: \(error?.localizedDescription)")
+                
+                //self.alerteMessage(message: (error?.localizedDescription)!)
+                return
+            }
+            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            
+            //JSONSerialization in Object
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
+                DispatchQueue.main.async()
+                    {
+                        print(json)
+                        if let clubs = json["0"] as? [[String: Any]] {
+                            
+                            for playerjson in clubs {
+                                if let name = playerjson["Name"], let age = playerjson["Age"]{
+                                    self.playerStruct.append(players.init(name: name as! String, age: age as! Int))
+                                }
+                                
+                                self.tableView.reloadData()
+                            }
+                        
+                        if let messageError = json["message"]
+                        {
+                            //self.alerteMessage(message: messageError as! String)
+                        }
+                        
+                        
+              
+                    }
+                }
+                
+            } catch let error as NSError {
+                print("Failed to load: \(error.localizedDescription)")
+            }
+            
+        }
+        ;task.resume()
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        
-        
-        return (players?.count)!
+        return (playerStruct.count)
         
     }
     
@@ -69,8 +132,8 @@ class PlayerController: UITableViewController, UISearchBarDelegate {
         
     
          var mainImageView = cell?.viewWithTag(1) as! UIImageView
-            if let profileImageName = UIImage(named: (players?[indexPath.row].name)!) {
-                mainImageView.image = UIImage(named: (players?[indexPath.row].name)!)
+        if let profileImageName = UIImage(named: (playerStruct[indexPath.row].name)!) {
+            mainImageView.image = UIImage(named: (playerStruct[indexPath.row].name)!)
             }
             else{
                 mainImageView.image = UIImage(named: "profile")
@@ -79,11 +142,11 @@ class PlayerController: UITableViewController, UISearchBarDelegate {
         // Nom du joueur
         let name:String
         let labelName = cell?.viewWithTag(2) as! UILabel
-        labelName.text = players?[indexPath.row].name
+        labelName.text = playerStruct[indexPath.row].name
         
         // Age
         let labelAge = cell?.viewWithTag(3) as! UILabel
-        let a = Int((players?[indexPath.row].age)!)
+        let a = Int((playerStruct[indexPath.row].age))
         let b: String = String(a)
         labelAge.text = b + " Ans"
         

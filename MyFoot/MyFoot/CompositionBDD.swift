@@ -43,29 +43,30 @@ extension CompositionController {
     func setupData(_name: [String], _age: [Double]) {
         
         clearData()
-        
-     
-        for i in 0 ... self.names.count - 1 {
-        if let context = DataManager.shared.objectContext {
-            
-            
-            let player = NSEntityDescription.insertNewObject(forEntityName: "Player", into: context) as! Player
-            
-
-                player.name = _name[i]
-                player.age = _age[i]
-
-            
-            
-            do {
-                try(context.save())
-            } catch let err {
-                print(err)
+        //if self.names.count != 0 {
+            for i in 0 ... self.names.count - 1 {
+                if let context = DataManager.shared.objectContext {
+                    
+                    
+                    let player = NSEntityDescription.insertNewObject(forEntityName: "Player", into: context) as! Player
+                    
+                    
+                    player.name = _name[i]
+                    player.age = _age[i]
+                    
+                    
+                    
+                    do {
+                        try(context.save())
+                    } catch let err {
+                        print(err)
+                    }
+                }
             }
-        }
-     }
-        
-        loadData()
+            
+            loadData()
+        //}
+
         
     }
     

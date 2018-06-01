@@ -10,17 +10,15 @@ import Foundation
 
 import UIKit
 import Alamofire
+import FacebookCore
+import FBSDKCoreKit
 
 
 class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTransitioningDelegate, ChildNameDelegate {
-    func dataChanged(name: String, password: String) {
-        print("Name ",name)
-        print("Password ",password)
-        self.passapikey = "LOL"
-        defaults.set(self.passapikey, forKey: defaultsKeys.key11)
-        self.isPlayer = true
-        callAPIComposition()
-        print(passapikey)
+    func dataChanged(email: String, password: String, apikey: String) {
+        defaults.set(apikey, forKey: defaultsKeys.key11)
+        defaults.synchronize()
+        
     }
     
     @IBOutlet weak var France: UIImageView!
@@ -32,9 +30,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     @IBOutlet weak var btnItaly: UIButton!
     @IBOutlet weak var facebookButton: UIButton!
     
-    public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
-    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
-    public var compositionUrlString = "/composition"
+
     
     var nationality = String()
     
@@ -62,21 +58,31 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         facebookButton.layer.cornerRadius = facebookButton.frame.size.width / 2
         facebookButton.backgroundColor = FACEBOOK_COLOR_BLUE
         
+        self.isPlayer = true
+        callAPIComposition()
         
+        
+        //if the user is already logged in
+        if let accessToken = AccessToken.current{
+            print("User is logged in with acess token: \(AccessToken.current)")
+        }
+        else {
+            defaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+        }
+       
         // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        self.passapikey = "LOL"
-        defaults.set(self.passapikey, forKey: defaultsKeys.key11)
+        super.viewWillAppear(animated)
         self.isPlayer = true
         callAPIComposition()
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
-        print(passapikey)
+        
     
         
     }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let facebookVC = segue.destination as! FacebookLoginViewController
@@ -91,7 +97,12 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
             viewController.nationality = self.nationality
-            viewController.passapikey = self.passapikey
+            guard var apikey = defaults.string(forKey: defaultsKeys.key11) else {
+                let message = "Access Denied. Invalid Api key"
+                alerteMessage(message: message)
+                return
+            }
+            viewController.passapikey = defaults.string(forKey: defaultsKeys.key11)!
             viewController.isPlayer = true
             if let navigator = navigationController {
                 navigator.pushViewController(viewController, animated: true)
@@ -105,7 +116,12 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
             viewController.nationality = self.nationality
-            viewController.passapikey = self.passapikey
+            guard var apikey = defaults.string(forKey: defaultsKeys.key11) else {
+                let message = "Access Denied. Invalid Api key"
+                alerteMessage(message: message)
+                return
+            }
+            viewController.passapikey = defaults.string(forKey: defaultsKeys.key11)!
             viewController.isPlayer = true
             if let navigator = navigationController {
                 navigator.pushViewController(viewController, animated: true)
@@ -118,7 +134,12 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
             viewController.nationality = self.nationality
-            viewController.passapikey = self.passapikey
+            guard var apikey = defaults.string(forKey: defaultsKeys.key11) else {
+                let message = "Access Denied. Invalid Api key"
+                alerteMessage(message: message)
+                return
+            }
+            viewController.passapikey = defaults.string(forKey: defaultsKeys.key11)!
             viewController.isPlayer = true
             if let navigator = navigationController {
                 navigator.pushViewController(viewController, animated: true)
@@ -196,6 +217,11 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
+        guard var apikey = defaults.string(forKey: defaultsKeys.key11) else {
+            let message = "Access Denied. Invalid Api key"
+            alerteMessage(message: message)
+            return
+        }
         request.addValue(defaults.string(forKey: defaultsKeys.key11)!, forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
@@ -278,6 +304,13 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
             newMessage = "Impossible de se connecter au serveur."
             
             let alert = UIAlertController(title: "Erreur", message: newMessage, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if (message == "Access Denied. Invalid Api key" ) {
+            newMessage = "Pour pouvoir jouer à ce jeu, veuillez vous authentifier avec Facebook."
+            
+            let alert = UIAlertController(title: "Informations", message: newMessage, preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }

@@ -165,7 +165,9 @@ extension ScoreController: UITableViewDataSource {
                         
                         if let scores = json["0"] as? [[String: Any]] {
                             for scorejson in scores {
-                                if let name = scorejson["name"], let email = scorejson["email"], let score = scorejson["score"], let picture = scorejson["picture"]{
+                                if let name = scorejson["name"], let email = scorejson["email"], let score = scorejson["score"], var picture = scorejson["picture"] {
+        
+                         
                                     self.scoresStruct.append(scorestruct.init(name: name as! String, email: email as! String, score: score as! Int, picture: picture as! String))
                                 }
                                 

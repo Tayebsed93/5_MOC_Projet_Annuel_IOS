@@ -12,7 +12,7 @@ import FacebookLogin
 import FBSDKCoreKit
 
 protocol ChildNameDelegate {
-    func dataChanged(name: String, password: String)
+    func dataChanged(email: String, password: String, apikey: String)
 }
 
 
@@ -34,8 +34,8 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
     
     var delegate: ChildNameDelegate?
     
-    func whereTheChangesAreMade(name: String, password: String ) {
-        delegate?.dataChanged(name: name, password: password)
+    func whereTheChangesAreMade(email: String, password: String, apikey: String ) {
+        delegate?.dataChanged(email: email, password: password, apikey: apikey)
     }
     
     
@@ -86,6 +86,9 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         
         //self.dismiss(animated: false, completion: nil)
         //self.dismiss(animated: true, completion: nil)
+
+        //self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+        tabVc.view.removeFromSuperview()
         self.dismiss(animated: true, completion: nil)
         
         
@@ -122,6 +125,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
                     if let data = picture!["data"] as? [String: Any] {
                         self.facebookName.text = name as! String
                         self.imageFacebook.loadImageUsingUrlString(urlString: data["url"] as! String)
+                        
                         self.callAPIRegister(name: name as! String, email: email as! String, picture: data["url"] as! String)
                     }
                     
@@ -147,6 +151,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         return body
     }
     
+    /*
     func callAPIRegister(name: String, email: String, picture: String) {
         
         let urlToRequest = addressUrlStringProd+registerUrlString
@@ -155,10 +160,8 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         let request = NSMutableURLRequest(url: url4)
         request.httpMethod = "POST"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        //let paramString = String(format:"name=%@&email=%@&password=%@&role=%@&picture=%@",name,email,MDP_DEFAULT,role_supporter,picture)
-        //request.httpBody = paramString.data(using: String.Encoding.utf8)
         
-        whereTheChangesAreMade(name: name, password: MDP_DEFAULT)
+        
         let param = [
             "name"  : name,
             "email"    : email,
@@ -173,6 +176,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
 
         
         let task = session4.dataTask(with: request as URLRequest)
+            
         { (data, response, error) in
             guard let _: Data = data, let _: URLResponse = response, error == nil else
             {
@@ -192,28 +196,135 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
                 DispatchQueue.main.async()
                     {
                         print(json)
-                        if let apiKey = json["apiKey"]
+                        
+                        print("Tayeb")
+                        if let message = json["message"]
                         {
-                            
-                            //self.passData(apiKey: apiKey as! String)
+                            if message as! String == "You are successfully registered" {
+                                self.alerteMessage(message: message as! String)
+                            }
+                        }
+                        
+                        self.callAPILogin(email: email)
+                        
+                }
+                
+                
+            } catch let error as NSError {
+                print("Failed to load: \(error.localizedDescription)")
+            }
+            
+        }
+        ;task.resume()
+    }
+ */
+    
+    
+    func callAPIRegister(name: String, email: String, picture: String)
+    {
+        let urlToRequest = addressUrlStringProd+registerUrlString
+        let url4 = URL(string: urlToRequest)!
+        let session4 = URLSession.shared
+        let request = NSMutableURLRequest(url: url4)
+        request.httpMethod = "POST"
+        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+        
+        
+        let param = [
+            "name"  : name,
+            "email"    : email,
+            "password"    : MDP_DEFAULT,
+            "role"    : role_supporter,
+            "picture"      : picture
+        ]
+        
+        let boundary = generateBoundaryString()
+        
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+    
+        
+        request.httpBody = createBodyWithParameters(parameters: param, boundary: boundary) as Data
+        
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest) {
+            data, response, error in
+            
+            if error != nil {
+                print("error=\(error)")
+                return
+            }
+            // You can print out response object
+            print("Response = \(response)")
+            
+            // Print out reponse body
+            if let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) {
+                print("Response data = \(responseString)")
+                
+            }
+            
+            do {
+                self.callAPILogin(email: email)
+            
+            } catch
+            {
+                DispatchQueue.main.async()
+                {
+                        self.alerteMessage(message: ERROR_CONSTANTE as! String)
+                }
+                print(error)
+            }
+        }
+        
+        task.resume()
+    }
+
+    
+    
+    func callAPILogin(email: String) {
+        let urlToRequest = addressUrlStringProd+loginUrlString
+        let url4 = URL(string: urlToRequest)!
+        let session4 = URLSession.shared
+        let request = NSMutableURLRequest(url: url4)
+        request.httpMethod = "POST"
+        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+        let paramString = String(format:"email=%@&password=%@",email,MDP_DEFAULT)
+        request.httpBody = paramString.data(using: String.Encoding.utf8)
+        
+        
+        let task = session4.dataTask(with: request as URLRequest)
+        { (data, response, error) in
+            guard let _: Data = data, let _: URLResponse = response, error == nil else
+            {
+                
+                print("ERROR: \(error?.localizedDescription)")
+                
+                self.alerteMessage(message: (error?.localizedDescription)!)
+                return
+            }
+            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            
+            
+            //JSONSerialization in Object
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
+                DispatchQueue.main.async()
+                    {
+                        if let apiKey = json["apiKey"], let role = json["role"]
+                        {
+                            self.whereTheChangesAreMade(email: email, password: MDP_DEFAULT, apikey: apiKey as! String)
                         }
                         
                         if let messageError = json["message"]
                         {
-                            
-                            
-                            if messageError as! String == "You are successfully registered" {
-                                self.alerteMessage(message: messageError as! String)
-                                //let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                                //let tabVc = storyboard.instantiateViewController(withIdentifier: "LoginController")
-                                //self.present(tabVc, animated: true, completion: nil)
-                                //self.dismiss(animated: true, completion: nil)
-                            }
-                            
-                            
+                            self.alerteMessage(message: messageError as! String)
                         }
                         
                 }
+                /*
+                 DispatchQueue.main.async() {
+                 self.dismiss(animated: true, completion: nil)
+                 }
+                 */
                 
                 
             } catch let error as NSError {
@@ -241,10 +352,9 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-        
-        
-        
+
     }
+    
 
     
     
