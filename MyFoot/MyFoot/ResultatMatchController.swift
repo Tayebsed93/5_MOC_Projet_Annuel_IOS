@@ -290,11 +290,11 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                         if let nb = json?.count {
                             for i in 0..<nb {
                                 if let team_name = json![i]["team_name"], let league_name = json![i]["league_name"], let league_id = json![i]["league_id"] {
-                                    print(team_name)
+                                    
                                     let club = String(describing: team_name)
                                     
                                     if club == self.passnameclub {
-                                        print("OK")
+                                        
                                         trouver = true
                                         let url = self.leagueIdURLToLiveMatch(dateDebut: DATE_DEBUT_SAISON, dateFin: DATE_FIN_SAISON)
                                         self.defaults.set(self.league_id, forKey: defaultsKeys.league_id)
@@ -315,7 +315,7 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                                 self.tableView.backgroundView?.isHidden = false
    
                             }
-                            print("FIN")
+                            
                         }
   
                 }
@@ -330,8 +330,6 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
     
     
     func callAPIResultat(urlResult: String) {
-        
-        print("newcall")
         
         let urlToRequest = urlResult
         let url4 = URL(string: urlToRequest)!
@@ -360,7 +358,9 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                 DispatchQueue.main.async()
                     
                     {
+                        
                         if let nb = json?.count {
+                            self.tableView.backgroundView?.isHidden = true
                             for i in 0..<nb {
                                 if let match_hometeam_name = json![i]["match_hometeam_name"], let match_awayteam_name = json![i]["match_awayteam_name"], let match_hometeam_score = json![i]["match_hometeam_score"], let match_awayteam_score = json![i]["match_awayteam_score"], let match_date = json![i]["match_date"], let match_time = json![i]["match_time"], let league_name = json![i]["league_name"] {
 
@@ -379,7 +379,7 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                                         date_array.append(date_nsdate as! NSDate)
                                         
                        
-                                        
+                                        //self.calendrierStruct = []
                                         self.calendrierStruct.append(calendrier.init(match_hometeam_name: match_hometeam_name, match_awayteam_name: match_awayteam_name, match_hometeam_score: match_hometeam_score, match_awayteam_score: match_awayteam_score, date: date_array, match_time: match_time, league_name: league_name))
                                         
                                         
@@ -394,7 +394,20 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
                                     self.stopAnimating()
                                 }
                             }
+   
+                            
                         }
+                        
+                        else {
+                            //ELSE
+                            self.tableView.reloadData()
+                            self.tableView.backgroundView?.isHidden = false
+    
+                            DispatchQueue.main.async() {
+                                self.stopAnimating()
+                            }
+                        }
+
                         
                        
                         
@@ -468,13 +481,10 @@ public var adressUrlCountryStringExterne = "https://apifootball.com/api/?action=
         
     }
     
-
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
 }
 
@@ -482,6 +492,7 @@ extension ResultatMatchController: PopupDelegate {
     func popupValueSelected(value: String) {
         let url = self.leagueIdURLToLiveMatch(dateDebut: value, dateFin: value)
         print(url)
+        self.calendrierStruct = []
         self.callAPIResultat(urlResult: url)
         print("Selected Date ", value)
     }

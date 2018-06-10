@@ -22,6 +22,10 @@ let MDP_DEFAULT = "azerty"
 //API URL
 public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
 public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
+public var tweetFeedUrl = "https://api.twitter.com/1.1/search/tweets.json?q=PSG&result_type=popular"
+
+//API KEY
+public var twitterKey = "Bearer AAAAAAAAAAAAAAAAAAAAABjczAAAAAAAmpsyum03hAwA3jfPdbcpIrWLwXY%3Dg5wRYqAQUdGvCiPYoWV6vAsJ5ELWctM37PDkaAFXeX1NOFgn8"
 
 //LOGIN ENDPOINT
 public var registerUrlString = "/register"

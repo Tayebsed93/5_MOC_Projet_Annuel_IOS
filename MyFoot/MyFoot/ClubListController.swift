@@ -137,7 +137,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
                 DispatchQueue.main.async()
                     {
-                        print(json)
+
                         if let clubs = json["0"] as? [[String: Any]] {
                             
                             for clubjson in clubs {
@@ -214,7 +214,6 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                     navigator.pushViewController(viewController, animated: true)
                 }
             }
-            
         }
         let action3 = UIAlertAction(title: "Annuler", style: .cancel) { (action) in
         }

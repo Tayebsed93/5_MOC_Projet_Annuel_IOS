@@ -64,7 +64,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         
         //if the user is already logged in
         if let accessToken = AccessToken.current{
-            print("User is logged in with acess token: \(AccessToken.current)")
+            print("User is logged in Facebook")
         }
         else {
             defaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)

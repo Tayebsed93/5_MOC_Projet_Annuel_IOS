@@ -19,22 +19,26 @@ PODS:
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.26.0):
     - FBSDKCoreKit
+  - LBTAComponents (0.1.9)
   - NVActivityIndicatorView (3.7.0):
     - NVActivityIndicatorView/Presenter (= 3.7.0)
   - NVActivityIndicatorView/Presenter (3.7.0)
   - PureLayout (3.0.2)
   - SnapSliderFilters (2.0)
   - SwiftyCam (2.6.0)
+  - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - Alamofire
   - DGElasticPullToRefresh
   - FacebookLogin
   - FBSDKLoginKit
+  - LBTAComponents (~> 0.1.9)
   - NVActivityIndicatorView
   - PureLayout (~> 3.0.1)
   - SnapSliderFilters
   - SwiftyCam
+  - SwiftyJSON
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -45,10 +49,12 @@ SPEC REPOS:
     - FacebookLogin
     - FBSDKCoreKit
     - FBSDKLoginKit
+    - LBTAComponents
     - NVActivityIndicatorView
     - PureLayout
     - SnapSliderFilters
     - SwiftyCam
+    - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
@@ -58,11 +64,13 @@ SPEC CHECKSUMS:
   FacebookLogin: c9d606504735780a9e3002465a615512e0a691a5
   FBSDKCoreKit: c8b8582311ec11b145451d8b9717dc6cc2ae5a76
   FBSDKLoginKit: f3f03b94c21eb834af243c0a881d48641f47ca60
+  LBTAComponents: 9a5d314080d1f80208062ccc81a2d25225c5f572
   NVActivityIndicatorView: d3738df7e2e476aca0ba6bf32a8c9fbcfc33d64b
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   SnapSliderFilters: 7f571683b05cf70b8d398e4a0e45691bd9f03a33
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: ccf54c527fbc6d8e8272e2fddb7fdd045bfe9171
+PODFILE CHECKSUM: ad7c515a503759dfe6cebc083742b6afd6b7b2f0
 
 COCOAPODS: 1.5.0

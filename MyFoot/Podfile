@@ -14,5 +14,7 @@ target 'MyFoot' do
   pod 'PureLayout', '~> 3.0.1'
   pod 'FBSDKLoginKit'
   pod 'FacebookLogin'
+  pod 'LBTAComponents', '~> 0.1.9'
+  pod 'SwiftyJSON'
 
 end
