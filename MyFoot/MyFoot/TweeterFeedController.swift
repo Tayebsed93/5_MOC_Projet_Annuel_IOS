@@ -10,12 +10,14 @@ import Foundation
 import UIKit
 import Alamofire
 import SwiftyJSON
+import ActiveLabel
 
 struct feed {
-    let text : String!
+    var text : String!
     let screen_name : String!
     let name : String!
     let imageProfile: String!
+    let imageDesc: String!
     let created: Date
 }
 
@@ -61,8 +63,7 @@ class TweeterFeedController: UITableViewController {
         let labelName = cell?.viewWithTag(2) as! UILabel
         labelName.text = feedsStruct[indexPath.row].name
         
-        let labelText = cell?.viewWithTag(5) as! UILabel
-        labelText.text = feedsStruct[indexPath.row].text
+        
         
         let labelScreenName = cell?.viewWithTag(6) as! UILabel
 
@@ -73,8 +74,13 @@ class TweeterFeedController: UITableViewController {
                 formatter.timeStyle = .short
             }
             let createdText = formatter.string(from: feedsStruct[indexPath.row].created)
-            labelScreenName.text = "@\(feedsStruct[indexPath.row].screen_name) • \(createdText)"
+            labelScreenName.text = "@" + feedsStruct[indexPath.row].screen_name + " • " + createdText
        
+        
+        
+            let labelText = cell?.viewWithTag(5) as! UILabel
+            labelText.text = feedsStruct[indexPath.row].text
+        
         
         let profileImageURL = cell?.viewWithTag(4) as! UIImageView
                     if let profileImage = feedsStruct[indexPath.row].imageProfile {
@@ -88,20 +94,23 @@ class TweeterFeedController: UITableViewController {
         
         
         var mediaImageURL = cell?.viewWithTag(1) as! UIImageView
-        if let mediaImage = feedsStruct[indexPath.row].imageProfile {
-            mediaImageURL.loadImageUsingUrlString(urlString: mediaImage)
-            mediaImageURL.roundedCorners()
+        
+        if let mediaImage = feedsStruct[indexPath.row].imageDesc {
+            if mediaImage != "vide" {
+                mediaImageURL.isHidden = false
+                mediaImageURL.loadImageUsingUrlString(urlString: mediaImage)
+                mediaImageURL.roundedCorners()
+                
+            }
+            else {
+                mediaImageURL.isHidden = true
+            }
+            
         }
         else {
             mediaImageURL.image = nil
-            mediaImageURL.alpha = 0
-            //defaultTweetImageViewHeightConstraint = 33
-            //defaultTweetImageViewHeightConstraint.constant = 0
-            //layoutIfNeeded()
+            mediaImageURL.isHidden = true
         }
-    
-
- 
         return cell!
     }
 
@@ -110,39 +119,74 @@ class TweeterFeedController: UITableViewController {
     
     public func getTweetsArray(searchPhrase: String, completion: @escaping ((Bool, [String]?, String?)->Void)){
         
-        let urlString = "https://api.twitter.com/1.1/search/tweets.json?q=" + searchPhrase + "&result_type=recent"
+        let urlString = "https://api.twitter.com/1.1/search/tweets.json?q=" + searchPhrase + "&result_type=popular&count=100"
         let url = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         Alamofire.request(url!, headers: ["Authorization":"Bearer AAAAAAAAAAAAAAAAAAAAABjczAAAAAAAmpsyum03hAwA3jfPdbcpIrWLwXY%3Dg5wRYqAQUdGvCiPYoWV6vAsJ5ELWctM37PDkaAFXeX1NOFgn8Y"])
             .responseJSON { (response) in
                 if response.result.isSuccess{
-                    let json = JSON(response.result.value)
-                    
-                    let tweetsArray = json["statuses"].arrayValue
-
-                    var result = [String]()
-
-                    for statuses in tweetsArray{
+                    DispatchQueue.main.async { [unowned self] in
+                        let json = JSON(response.result.value)
+                        //print(json)
                         
-                        let namesArray = statuses["entities"]["user_mentions"].arrayValue
-                        let user = statuses["user"].dictionary
+                        let tweetsArray = json["statuses"].arrayValue
                         
-                        guard let retweeted_status = statuses["retweeted_status"].dictionary else { return }
-                        let created = retweeted_status["created_at"]?.description
-                        let date = self.twitterDateFormatter(dateString: created!)
-                        print(retweeted_status["user"]!["profile_image_url"].description)
-                        
-                        //for name in namesArray{
-                          
-                            self.feedsStruct.append(feed.init(text: retweeted_status["text"]?.description, screen_name: retweeted_status["user"]!["screen_name"].description, name: retweeted_status["user"]!["name"].description, imageProfile: retweeted_status["user"]!["profile_image_url"].description, created: date))
-                        
-                        self.tableView.reloadData()
-                        
+                        var result = [String]()
+                        var image = [String]()
+                        for statuses in tweetsArray{
+                            /*
+                            let namesArray = statuses["entities"]["user_mentions"].arrayValue
+                            let user = statuses["user"].dictionary
                             
-                        //}
+                            guard let retweeted_status = statuses["retweeted_status"].dictionary else { return }
+                            let created = retweeted_status["created_at"]?.description
+                            let date = self.twitterDateFormatter(dateString: created!)
+                            print(retweeted_status["user"]!["profile_image_url"].description)
+                            
+                            //for name in namesArray{
+                            
+                            self.feedsStruct.append(feed.init(text: retweeted_status["text"]?.description, screen_name: retweeted_status["user"]!["screen_name"].description, name: retweeted_status["user"]!["name"].description, imageProfile: retweeted_status["user"]!["profile_image_url"].description, created: date))
+                            
+                            print(self.feedsStruct.count)
+                            self.tableView.reloadData()
+                            
+                            */
+                            //}
+                            
+                            let text = statuses["text"].description
+                            
+                            let screen_name = statuses["user"]["screen_name"].description
+                            let name = statuses["user"]["name"].description
+                            let imageProfile = statuses["user"]["profile_image_url"].description
+                            let created = statuses["created_at"].description
+                            let date = self.twitterDateFormatter(dateString: created)
+                        
+                            let urlsArray = statuses["urls"].description
+                            
+                            var imageDesc: String
+                            
+
+                            if let namesArray = statuses["entities"]["media"].array {
+                                for media in namesArray{
+                                    let imageDesc = media["media_url"].debugDescription
+                                    self.feedsStruct.append(feed.init(text: text, screen_name: screen_name, name: name, imageProfile: imageProfile, imageDesc: imageDesc, created: date))
+                                }
+                            }
+                            else {
+                                self.feedsStruct.append(feed.init(text: text, screen_name: screen_name, name: name, imageProfile: imageProfile, imageDesc: "vide", created: date))
+                            }
+                            
+                            
+                          
+
+                            self.tableView.reloadData()
+                        }
+                        
+                        completion(true, result, nil)
                     }
-                    
-                    completion(true, result, nil)
-                } else{
+                }
+
+                
+                else{
                     completion(false, nil, "error")
                 }
         }
@@ -176,12 +220,18 @@ class TweeterFeedController: UITableViewController {
         
     }
     
+    func alert(_ title: String, message: String) {
+        let vc = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        vc.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        present(vc, animated: true, completion: nil)
+    }
+    
     
 
 // TAB BAR
 func setupNavigationBarItems() {
-    setupLeftNavItem()
-    setupRightNavItems()
+    //setupLeftNavItem()
+    //setupRightNavItems()
     setupRemainingNavItems()
 }
 

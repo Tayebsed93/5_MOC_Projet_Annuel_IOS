@@ -1,4 +1,5 @@
 PODS:
+  - ActiveLabel (0.7.1)
   - Alamofire (4.5.1)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
@@ -29,6 +30,7 @@ PODS:
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
+  - ActiveLabel
   - Alamofire
   - DGElasticPullToRefresh
   - FacebookLogin
@@ -42,6 +44,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - ActiveLabel
     - Alamofire
     - Bolts
     - DGElasticPullToRefresh
@@ -57,6 +60,7 @@ SPEC REPOS:
     - SwiftyJSON
 
 SPEC CHECKSUMS:
+  ActiveLabel: 68625f22775f51c31bb691ca8de20f1e5a3bc825
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DGElasticPullToRefresh: 28f11a6026302a90f8ffebbc6e24748e584dddd3
@@ -71,6 +75,6 @@ SPEC CHECKSUMS:
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: ad7c515a503759dfe6cebc083742b6afd6b7b2f0
+PODFILE CHECKSUM: 8e1a25b72e77e43afea14fc63b45acb88d699b4e
 
 COCOAPODS: 1.5.0

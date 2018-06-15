@@ -201,8 +201,8 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
             let navigation = tabVc.viewControllers?[0] as! UINavigationController
             
             //Convertie la UINavigationController en UIViewController (Home)
-            let resultatController = navigation.topViewController as? ResultatMatchController
-            
+            //let resultatController = navigation.topViewController as? ResultatMatchController
+            let resultatController = navigation.topViewController as? ResultMatch
             resultatController?.passnameclub = name!
             resultatController?.passlogo = logo!
             //Change la page vers Home
