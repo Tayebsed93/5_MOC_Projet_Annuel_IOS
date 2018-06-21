@@ -20,6 +20,7 @@ PODS:
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.26.0):
     - FBSDKCoreKit
+  - FoldingCell (2.1.3)
   - LBTAComponents (0.1.9)
   - NVActivityIndicatorView (3.7.0):
     - NVActivityIndicatorView/Presenter (= 3.7.0)
@@ -35,6 +36,7 @@ DEPENDENCIES:
   - DGElasticPullToRefresh
   - FacebookLogin
   - FBSDKLoginKit
+  - FoldingCell
   - LBTAComponents (~> 0.1.9)
   - NVActivityIndicatorView
   - PureLayout (~> 3.0.1)
@@ -52,6 +54,7 @@ SPEC REPOS:
     - FacebookLogin
     - FBSDKCoreKit
     - FBSDKLoginKit
+    - FoldingCell
     - LBTAComponents
     - NVActivityIndicatorView
     - PureLayout
@@ -68,6 +71,7 @@ SPEC CHECKSUMS:
   FacebookLogin: c9d606504735780a9e3002465a615512e0a691a5
   FBSDKCoreKit: c8b8582311ec11b145451d8b9717dc6cc2ae5a76
   FBSDKLoginKit: f3f03b94c21eb834af243c0a881d48641f47ca60
+  FoldingCell: f3073f8b24cf20866a35198f31e3b67aea64e96e
   LBTAComponents: 9a5d314080d1f80208062ccc81a2d25225c5f572
   NVActivityIndicatorView: d3738df7e2e476aca0ba6bf32a8c9fbcfc33d64b
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
@@ -75,6 +79,6 @@ SPEC CHECKSUMS:
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 8e1a25b72e77e43afea14fc63b45acb88d699b4e
+PODFILE CHECKSUM: 48477c78b236937c0e9dd810042b45d43aaf9296
 
 COCOAPODS: 1.5.0

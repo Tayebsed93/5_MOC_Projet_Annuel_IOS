@@ -26,6 +26,8 @@ class TweeterFeedController: UITableViewController {
     
     var feedsStruct = [feed]()
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -41,6 +43,22 @@ class TweeterFeedController: UITableViewController {
                 }
             }
         }
+        
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = UIRefreshControl()
+            tableView.refreshControl?.addTarget(self, action: #selector(refreshHandler), for: .valueChanged)
+        }
+        
+    }
+    
+    @objc func refreshHandler() {
+        let deadlineTime = DispatchTime.now() + .seconds(1)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: { [weak self] in
+            if #available(iOS 10.0, *) {
+                self?.tableView.refreshControl?.endRefreshing()
+            }
+            self?.tableView.reloadData()
+        })
     }
     
     
@@ -78,7 +96,25 @@ class TweeterFeedController: UITableViewController {
        
         
         
-            let labelText = cell?.viewWithTag(5) as! UILabel
+            let labelText = cell?.viewWithTag(5) as! ActiveLabel
+        labelText.urlMaximumLength = 31
+        
+        
+        labelText.customize { label in
+        
+            labelText.numberOfLines = 0
+            labelText.lineSpacing = 4
+            
+            labelText.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelText.hashtagColor = UIColor(red: 85.0/255, green: 172.0/255, blue: 238.0/255, alpha: 1)
+            labelText.mentionColor = UIColor(red: 238.0/255, green: 85.0/255, blue: 96.0/255, alpha: 1)
+            labelText.URLColor = UIColor(red: 85.0/255, green: 172.0/255, blue: 238.0/255, alpha: 1)
+            labelText.URLSelectedColor = UIColor(red: 25.0/255, green: 118.0/255, blue: 210.0/255, alpha: 1)
+            //labelText.handleMentionTap { self.alert("Mention", message: $0) }
+            //labelText.handleHashtagTap { self.alert("Hashtag", message: $0) }
+            //labelText.handleURLTap { self.alert("URL", message: $0.absoluteString) }
+            labelText.handleURLTap { self.loadUrl($0.absoluteString) }
+        }
             labelText.text = feedsStruct[indexPath.row].text
         
         
@@ -133,24 +169,6 @@ class TweeterFeedController: UITableViewController {
                         var result = [String]()
                         var image = [String]()
                         for statuses in tweetsArray{
-                            /*
-                            let namesArray = statuses["entities"]["user_mentions"].arrayValue
-                            let user = statuses["user"].dictionary
-                            
-                            guard let retweeted_status = statuses["retweeted_status"].dictionary else { return }
-                            let created = retweeted_status["created_at"]?.description
-                            let date = self.twitterDateFormatter(dateString: created!)
-                            print(retweeted_status["user"]!["profile_image_url"].description)
-                            
-                            //for name in namesArray{
-                            
-                            self.feedsStruct.append(feed.init(text: retweeted_status["text"]?.description, screen_name: retweeted_status["user"]!["screen_name"].description, name: retweeted_status["user"]!["name"].description, imageProfile: retweeted_status["user"]!["profile_image_url"].description, created: date))
-                            
-                            print(self.feedsStruct.count)
-                            self.tableView.reloadData()
-                            
-                            */
-                            //}
                             
                             let text = statuses["text"].description
                             
@@ -226,17 +244,26 @@ class TweeterFeedController: UITableViewController {
         present(vc, animated: true, completion: nil)
     }
     
+    func loadUrl(_ url: String) {
+        if let uri = URL(string: url) {
+            UIApplication.shared.open(uri, options: [:])
+        }
+    }
+
+    
     
 
 // TAB BAR
 func setupNavigationBarItems() {
     //setupLeftNavItem()
     //setupRightNavItems()
+    self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
     setupRemainingNavItems()
 }
 
 private func setupRemainingNavItems() {
-    let titleImageView = UIImageView(image: #imageLiteral(resourceName: "title_icon"))
+    //let titleImageView = UIImageView(image: #imageLiteral(resourceName: "title_icon"))
+    let titleImageView = UIImageView(image: #imageLiteral(resourceName: "twitter-logo"))
     titleImageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
     titleImageView.contentMode = .scaleAspectFit
     

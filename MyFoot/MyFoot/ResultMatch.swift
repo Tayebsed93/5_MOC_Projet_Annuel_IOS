@@ -55,11 +55,17 @@ class ResultMatch: UIViewController, UICollectionViewDelegate, UICollectionViewD
         setupEmptyBackgroundView()
         
         callAPI()
+        
+        if #available(iOS 10.0, *) {
+            collectionViewOutlet.refreshControl = UIRefreshControl()
+            collectionViewOutlet.refreshControl?.addTarget(self, action: #selector(refreshHandler), for: .valueChanged)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        self.tabBarController?.tabBar.isHidden = false
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
         
@@ -71,6 +77,15 @@ class ResultMatch: UIViewController, UICollectionViewDelegate, UICollectionViewD
         
     }
     
+    @objc func refreshHandler() {
+        let deadlineTime = DispatchTime.now() + .seconds(1)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: { [weak self] in
+            if #available(iOS 10.0, *) {
+                self?.collectionViewOutlet.refreshControl?.endRefreshing()
+            }
+            self?.collectionViewOutlet.reloadData()
+        })
+    }
     
     // MARK: - Empty Data
     func setupEmptyBackgroundView() {
@@ -165,6 +180,23 @@ class ResultMatch: UIViewController, UICollectionViewDelegate, UICollectionViewD
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        //getting the index path of selected row
+        //let indexPath = collectionViewOutlet.indexPathsForSelectedItems
+        print(indexPath)
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailMatchController") as? DetailMatchController {
+            //viewController.nationality = self.nationality
+ 
+            //viewController.passapikey = defaults.string(forKey: defaultsKeys.key11)!
+            //viewController.isPlayer = true
+            if let navigator = navigationController {
+                navigator.pushViewController(viewController, animated: true)
+            }
+        }
+    }
+ 
+ 
     
     func callAPI() {
         

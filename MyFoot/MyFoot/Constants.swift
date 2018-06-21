@@ -10,6 +10,7 @@ import UIKit
 
 let GREEN_THEME = UIColor.rgb(r: 109, g: 201, b: 149)
 let GREENBlACK_THEME = UIColor.rgb(r: 89, g: 156, b: 120)
+let GREY_THEME = UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0)
 let DRAPEAU_FRANCE_IMG = "France"
 let EMPTY_LOGO_IMG = "empty-logo"
 let LOGO_CONSTANTE = "logo"
@@ -36,6 +37,9 @@ public var clubUrlString = "/club"
 public var playerUrlString = "/player"
 //COMPSITION ENDPOINT
 public var compositionUrlString = "/composition"
+
+//USER ENDPOINT
+public var userUrlString = "/user"
 
 //DATE DEBUT SAISON
 let DATE_DEBUT_SAISON = "2017-08-01"

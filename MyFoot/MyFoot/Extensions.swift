@@ -79,12 +79,14 @@ extension UIImageView {
             }
             DispatchQueue.main.async()
                 {
-                    let imageToCache = UIImage(data: data!)
+                    guard let imageToCache = UIImage(data: data!) else {
+                        return
+                    }
                     if imageUrlString == urlString {
                         self.image = imageToCache
                     }
                     do {
-                        imageCache.setObject(imageToCache!, forKey: urlString as AnyObject)
+                        imageCache.setObject(imageToCache, forKey: urlString as AnyObject)
                     }
                     catch {
                         
@@ -166,6 +168,16 @@ extension String {
         
     }
     
+}
+
+extension UIImageView {
+    
+    func setRounded() {
+        
+        let radius = self.frame.width/2.0
+        self.layer.cornerRadius = radius
+        self.layer.masksToBounds = true
+    }
 }
 
 

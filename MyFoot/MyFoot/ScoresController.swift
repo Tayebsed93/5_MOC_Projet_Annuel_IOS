@@ -1,13 +1,13 @@
 //
-//  ScoreController.swift
+//  ScoresController.swift
 //  MyFoot
 //
-//  Created by Tayeb Sedraia on 04/10/2017.
-//  Copyright © 2017 Tayeb Sedraia. All rights reserved.
+//  Created by Tayeb Sedraia on 20/06/2018.
+//  Copyright © 2018 Tayeb Sedraia. All rights reserved.
 //
 
 import UIKit
-import DGElasticPullToRefresh
+import AVFoundation
 
 struct scorestruct {
     let name : String!
@@ -16,95 +16,103 @@ struct scorestruct {
     let picture : String!
 }
 
-class ScoreController: UIViewController {
+class ScoresController: UITableViewController {
     
-    // MARK: -
-    // MARK: Vars
-    
-    fileprivate var tableView: UITableView!
-    
-    // MARK: -
-    var passapikey = String()
-    public var addressUrlString = "http://localhost:8888/FootAPI/API/v1"
-    public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
-    public var playerUrlString = "/user"
     var scoresStruct = [scorestruct]()
+    var passapikey = String()
+    
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear( animated)
+        super.viewDidLoad()
         
-    }
-    
-    override func loadView() {
-        super.loadView()
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
         
+        self.title = "Scores"
+        self.tableView.separatorStyle = .none
+        //Recuperer Donnée de la BDD
         scoresStruct = []
         callAPIScore()
         
         
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.barTintColor = UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0)
-        
-        tableView = UITableView(frame: view.bounds, style: .plain)
-        tableView.dataSource = self as! UITableViewDataSource
-        tableView.delegate = self as! UITableViewDelegate
-        tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        tableView.separatorColor = UIColor(red: 230/255.0, green: 230/255.0, blue: 231/255.0, alpha: 1.0)
-        tableView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
-        view.addSubview(tableView)
-        
-        let loadingView = DGElasticPullToRefreshLoadingViewCircle()
-        loadingView.tintColor = UIColor(red: 78/255.0, green: 221/255.0, blue: 200/255.0, alpha: 1.0)
-        tableView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
-                self?.scoresStruct = []
-                self?.callAPIScore()
-                
-                self?.tableView.dg_stopLoading()
-                self?.tableView.reloadData()
-                
-            })
-            }, loadingView: loadingView)
-        tableView.dg_setPullToRefreshFillColor(UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0))
-        tableView.dg_setPullToRefreshBackgroundColor(tableView.backgroundColor!)
-    }
-    
-    deinit {
-        //tableView.dg_removePullToRefresh()
-    }
-    
-}
-
-// MARK: -
-// MARK: UITableView Data Source
-
-extension ScoreController: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if scoresStruct.count != nil {
-            return (scoresStruct.count)
-        }
-        else {
-            return 0
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = UIRefreshControl()
+            tableView.refreshControl?.addTarget(self, action: #selector(refreshHandler), for: .valueChanged)
         }
         
+        
+        // Do any additional setup after loading the view, typically from a nib.
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = "cellIdentifier"
-        var cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+    
+    @objc func refreshHandler() {
+        let deadlineTime = DispatchTime.now() + .seconds(1)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: { [weak self] in
+            if #available(iOS 10.0, *) {
+                self?.tableView.refreshControl?.endRefreshing()
+            }
+            self?.scoresStruct = []
+            self?.callAPIScore()
+            self?.tableView.reloadData()
+        })
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (scoresStruct.count)
         
-        if cell == nil {
-            cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
-            cell!.contentView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 0)
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+        
+        /*
+        let labelName = cell?.viewWithTag(2) as! UILabel
+        labelName.text = scoresStruct[indexPath.row].name
+        
+        
+        var paysImage = cell?.viewWithTag(4) as! UIImageView
+        paysImage.image = UIImage(named: DRAPEAU_FRANCE_IMG)
+        
+        //Club logo
+        var clubImage = cell?.viewWithTag(1) as! UIImageView
+        if let clubImageURLString = scoresStruct[indexPath.row].logo {
+            clubImage.loadImageUsingUrlString(urlString: clubImageURLString)
+        } else{
+            clubImage.image = UIImage(named: EMPTY_LOGO_IMG)
         }
+ */
+        
+        /*
+        //Name
+        let labelName = cell?.viewWithTag(2) as! UILabel
+        labelName.text = scoresStruct[indexPath.row].name
+        
+        //Email
+        let labelEmail = cell?.viewWithTag(3) as! UILabel
+        labelEmail.text = scoresStruct[indexPath.row].email
+        
+        //Point
+        let a = Int((scoresStruct[indexPath.row].score)!)
+        let b: String = String(a)
+        let labelPoint = cell?.viewWithTag(4) as! UILabel
+        labelPoint.text = b + " Point"
+        
+        
+        
+        //Picture
+        var clubImage = cell?.viewWithTag(1) as! UIImageView
+        if scoresStruct[indexPath.row].picture != "", let pictureURLString = scoresStruct[indexPath.row].picture {
+            clubImage.loadImageUsingUrlString(urlString: pictureURLString)
+        }
+        else{
+            clubImage.image = UIImage(named: "profile")
+        }
+         return cell!
+ */
         
         if let cell = cell {
             var label = UILabel(frame: CGRect(x: 280.0, y: 14.0, width: 100.0, height: 30.0))
@@ -126,17 +134,18 @@ extension ScoreController: UITableViewDataSource {
             }
             
             
-            return cell
+            
         }
-        
-        return UITableViewCell()
+        return cell!
     }
+        
+    
+    
     
     func callAPIScore() {
         
-        
         let apiKey = passapikey
-        let urlToRequest = addressUrlStringProd+playerUrlString
+        let urlToRequest = addressUrlStringProd+userUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
@@ -166,8 +175,8 @@ extension ScoreController: UITableViewDataSource {
                         if let scores = json["0"] as? [[String: Any]] {
                             for scorejson in scores {
                                 if let name = scorejson["name"], let email = scorejson["email"], let score = scorejson["score"], var picture = scorejson["picture"] {
-        
-                         
+                                    
+                                    
                                     self.scoresStruct.append(scorestruct.init(name: name as! String, email: email as! String, score: score as! Int, picture: picture as! String))
                                 }
                                 
@@ -181,7 +190,7 @@ extension ScoreController: UITableViewDataSource {
                         }
                         
                 }
-
+                
             } catch let error as NSError {
                 print("Failed to load: \(error.localizedDescription)")
             }
@@ -189,6 +198,7 @@ extension ScoreController: UITableViewDataSource {
         }
         ;task.resume()
     }
+    
     
     func alerteMessage(message : String) {
         
@@ -205,16 +215,16 @@ extension ScoreController: UITableViewDataSource {
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-    }
-}
-
-// MARK: -
-// MARK: UITableView Delegate
-
-extension ScoreController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        
+        
     }
     
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
 }
+

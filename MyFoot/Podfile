@@ -17,5 +17,6 @@ target 'MyFoot' do
   pod 'LBTAComponents', '~> 0.1.9'
   pod 'SwiftyJSON'
   pod 'ActiveLabel'
+  pod 'FoldingCell'
 
 end
