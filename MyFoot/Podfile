@@ -18,5 +18,9 @@ target 'MyFoot' do
   pod 'SwiftyJSON'
   pod 'ActiveLabel'
   pod 'FoldingCell'
+  pod 'XLPagerTabStrip', '~> 8.0'
+  pod 'TwitterKit', '~> 3.3'
+  pod 'CollectionKit'
+  
 
 end

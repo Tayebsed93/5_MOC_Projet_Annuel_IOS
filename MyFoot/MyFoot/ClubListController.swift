@@ -16,7 +16,7 @@ struct club {
 
 class ClubListController: UITableViewController, UISearchBarDelegate {
     
-
+    
     var clubsStruct = [club]()
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -91,25 +91,12 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         var clubImage = cell?.viewWithTag(1) as! UIImageView
         if let clubImageURLString = clubsStruct[indexPath.row].logo {
             clubImage.loadImageUsingUrlString(urlString: clubImageURLString)
+            
         } else{
             clubImage.image = UIImage(named: EMPTY_LOGO_IMG)
         }
         return cell!
     }
-    
-
-    /*
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .default, title: "Supprimer") { (action, indexPath) in
-            print("Suprime", indexPath)
-            self.tableView.reloadData()
-            
-        }
-        
-        return [delete]
-    }
- */
-    
     
     
     @IBAction func DeconnexionClick(_ sender: Any) {
@@ -155,8 +142,8 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
                 DispatchQueue.main.async()
                     {
-
-                        if let clubs = json["0"] as? [[String: Any]] {
+                        
+                        if let clubs = json["clubs"] as? [[String: Any]] {
                             
                             for clubjson in clubs {
                                 if let name = clubjson["nom"], let logo = clubjson["logo"]{
@@ -170,8 +157,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                         if let messageError = json["message"]
                         {
                             self.alerteMessage(message: messageError as! String)
-                        }
-                        
+                        }  
                 }
                 
             } catch let error as NSError {
@@ -208,19 +194,23 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
         let name = clubsStruct[(indexPath?.row)!].name
         let logo = clubsStruct[(indexPath?.row)!].logo
-        
+        var role = String()
         let alertController = UIAlertController(title: name, message: "Selectionner votre rôle", preferredStyle: .alert)
         let action1 = UIAlertAction(title: "Supporter", style: .default) { (action) in
             let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
-            
+            role = "Supporter"
             /////////****** 1er controller
             //Convertie la tabViewController en UINavigationController
             let navigation = tabVc.viewControllers?[0] as! UINavigationController
             
             //Convertie la UINavigationController en UIViewController (Home)
             //let resultatController = navigation.topViewController as? ResultatMatchController
-            let resultatController = navigation.topViewController as? ResultMatch
+            let resultatController = navigation.topViewController as? TabBarListeMatch
+            //defaults.set(name, forKey: defaultsssKeys.club)
+            //defaults.set(role, forKey: defaultsssKeys.role)
+            //defaults.synchronize()
+            
             resultatController?.passnameclub = name!
             resultatController?.passlogo = logo!
             //Change la page vers Home

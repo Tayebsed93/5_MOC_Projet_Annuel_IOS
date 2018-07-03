@@ -297,7 +297,6 @@ class LoginController: UIViewController {
             
             //Convertie la UINavigationController en UIViewController (Home)
             let homeController = navigation.topViewController as? HomeController
-            
             //Envoie le nom et le mot de passe à la page statistique
             homeController?.passapikey = apiKey
             

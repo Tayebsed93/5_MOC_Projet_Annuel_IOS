@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import FBSDKCoreKit
+import TwitterKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,9 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+
         // Override point for customization after application launch.
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         UITabBar.appearance().tintColor = GREENBlACK_THEME
+        
+        TWTRTwitter.sharedInstance().start(withConsumerKey:"yQTTgWboLnud9DnzyAzZssJHE", consumerSecret:"PDjmQge7oEMfG9vWxgcm8xHkV6ZQAEl0aLqYXbZnxXBSOzD8RH")
         return true
     }
     

@@ -46,7 +46,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         
     }
     
-    let defaults = UserDefaults.standard
     let transition = CircularTransition()
     
     @IBOutlet weak var anneeText: UITextField!
@@ -57,7 +56,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         super.viewDidLoad()
         facebookButton.layer.cornerRadius = facebookButton.frame.size.width / 2
         facebookButton.backgroundColor = FACEBOOK_COLOR_BLUE
-        
+
         self.isPlayer = true
         callAPIComposition()
         
@@ -75,6 +74,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         self.isPlayer = true
         callAPIComposition()
         self.navigationController?.setNavigationBarHidden(true, animated: animated)

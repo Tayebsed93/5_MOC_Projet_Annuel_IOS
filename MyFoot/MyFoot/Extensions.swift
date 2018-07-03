@@ -61,6 +61,7 @@ extension UIImageView {
     func loadImageUsingUrlString(urlString: String) {
         var imageUrlString: String?
         
+        imageUrlString?.stringByRemovingWhitespaces
         imageUrlString = urlString
         let url = NSURL(string: urlString)
         
@@ -168,6 +169,15 @@ extension String {
         
     }
     
+    func replace(target: String, withString: String) -> String
+    {
+        return self.replacingOccurrences(of: target, with: withString, options: NSString.CompareOptions.literal, range: nil)
+    }
+    
+    var stringByRemovingWhitespaces: String {
+        return components(separatedBy: .whitespaces).joined()
+    }
+    
 }
 
 extension UIImageView {
@@ -179,5 +189,14 @@ extension UIImageView {
         self.layer.masksToBounds = true
     }
 }
+
+extension Date {
+    func asString(style: DateFormatter.Style) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = style
+        return dateFormatter.string(from: self)
+    }
+}
+
 
 
