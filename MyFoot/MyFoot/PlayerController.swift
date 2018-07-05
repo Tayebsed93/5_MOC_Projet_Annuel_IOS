@@ -89,8 +89,7 @@ class PlayerController: UITableViewController, UISearchBarDelegate {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
                 DispatchQueue.main.async()
                     {
-                        print(json)
-                        if let clubs = json["0"] as? [[String: Any]] {
+                        if let clubs = json["players"] as? [[String: Any]] {
                             
                             for playerjson in clubs {
                                 if let name = playerjson["Name"], let age = playerjson["Age"]{

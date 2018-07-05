@@ -26,6 +26,7 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
     
     @IBOutlet weak var tableviewOutlet: UITableView!
     
+    
     let defaults = UserDefaults.standard
     
     var passlogo = String()
@@ -42,21 +43,24 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
+        initTableView()
         
-        tableviewOutlet.dataSource = self
-        tableviewOutlet.delegate = self
+        //tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
         
-        setupEmptyBackgroundView()
+        //tableviewOutlet.dataSource = self
+        //tableviewOutlet.delegate = self
+        
+        //setupEmptyBackgroundView()
         
         //callAPI()
         let url = self.leagueIdURL(league_id: "127")
         self.callAPITeam127(urlTeam: url)
-        
+        /*
         if #available(iOS 10.0, *) {
             tableviewOutlet.refreshControl = UIRefreshControl()
             tableviewOutlet.refreshControl?.addTarget(self, action: #selector(refreshHandler), for: .valueChanged)
         }
+ */
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -75,6 +79,25 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
         defaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
         
     }
+    
+    public func initTableView() {
+        
+        print(tableviewOutlet)
+        tableviewOutlet.dataSource = self
+        tableviewOutlet.delegate = self
+        
+        tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
+        
+        setupEmptyBackgroundView()
+        
+        if #available(iOS 10.0, *) {
+            tableviewOutlet.refreshControl = UIRefreshControl()
+            tableviewOutlet.refreshControl?.addTarget(self, action: #selector(refreshHandler), for: .valueChanged)
+        }
+        
+        
+    }
+
     
     @objc func refreshHandler() {
         let deadlineTime = DispatchTime.now() + .seconds(1)
@@ -325,9 +348,10 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
                                     
                                     if club == self.passnameclub {
                                         trouver = true
-                                        self.defaults.set(league_id, forKey: defaultsssKeys.league_id)
-                                        self.defaults.set(team_name, forKey: defaultsssKeys.team_name)
-                                        self.defaults.synchronize()
+                                        //self.defaults.set(league_id, forKey: defaultsssKeys.league_id)
+                                        //self.defaults.set(team_name, forKey: defaultsssKeys.team_name)
+                                        //self.defaults.synchronize()
+                                        setupDataClub(_name: league_id as! String, _club: team_name as! String)
                                         let url = self.leagueIdURLToLiveMatch(dateDebut: DATE_DEBUT_SAISON, dateFin: DATE_FIN_SAISON)
                     
                                         self.callAPIResultat(urlResult: url)
@@ -395,11 +419,10 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
                                     
                                     if club == self.passnameclub {
                                         trouver = true
-                                        self.defaults.set(league_id, forKey: defaultsssKeys.league_id)
-                                        self.defaults.set(team_name, forKey: defaultsssKeys.team_name)
-                                        defaultsTwitter.set(team_name, forKey: TwitterKeys.team_name)
-                                        self.defaults.synchronize()
-                                        defaultsTwitter.synchronize()
+                                        //self.defaults.set(league_id, forKey: defaultsssKeys.league_id)
+                                        //self.defaults.set(team_name, forKey: defaultsssKeys.team_name)
+                                        //self.defaults.synchronize()
+                                        setupDataClub(_name: league_id as! String, _club: team_name as! String)
                                         let url = self.leagueIdURLToLiveMatch(dateDebut: DATE_DEBUT_SAISON, dateFin: DATE_FIN_SAISON)
                                         //self.defaults.set(self.urlResult, forKey: defaultsssKeys.urlResult)
                                         
@@ -533,8 +556,13 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
         let dateString = dateFormatter.string(from: date)
         
         var url = String()
-        let leagueid = defaults.string(forKey: defaultsssKeys.league_id)!
-        let s = String(describing: leagueid)
+        loadDataClub()
+        
+        // Do any additional setup after loading the view, typically from a nib.
+        let leagueid = playerss![0].name?.description
+
+        //let leagueid = defaults.string(forKey: defaultsssKeys.league_id)!
+        let s = String(describing: leagueid!)
         url = "https://apifootball.com/api/?action=get_events&from="+dateDebut+"&to="+dateFin+"&league_id="+s+"&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
         
         print(url)

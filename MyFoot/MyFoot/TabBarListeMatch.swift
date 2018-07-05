@@ -95,6 +95,7 @@ class TabBarListeMatch: ButtonBarPagerTabStripViewController {
 extension TabBarListeMatch: PopupDelegate {
     func popupValueSelected(value: String) {
         if let DetailMatch = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ResultatMatchController") as? ResultatMatchController {
+            DetailMatch.initTableView()
             let url = DetailMatch.leagueIdURLToLiveMatch(dateDebut: value, dateFin: value)
             DetailMatch.calendrierStruct = []
             DetailMatch.callAPIResultat(urlResult: url)
@@ -105,6 +106,7 @@ extension TabBarListeMatch: PopupDelegate {
         
     }
 }
+
 
 
 

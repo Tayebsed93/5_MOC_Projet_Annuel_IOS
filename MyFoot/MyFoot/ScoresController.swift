@@ -172,7 +172,7 @@ class ScoresController: UITableViewController {
                 DispatchQueue.main.async()
                     {
                         
-                        if let scores = json["0"] as? [[String: Any]] {
+                        if let scores = json["scores"] as? [[String: Any]] {
                             for scorejson in scores {
                                 if let name = scorejson["name"], let email = scorejson["email"], let score = scorejson["score"], var picture = scorejson["picture"] {
                                     

@@ -19,8 +19,8 @@ target 'MyFoot' do
   pod 'ActiveLabel'
   pod 'FoldingCell'
   pod 'XLPagerTabStrip', '~> 8.0'
-  pod 'TwitterKit', '~> 3.3'
   pod 'CollectionKit'
+  pod 'TwitterKit'
   
 
 end

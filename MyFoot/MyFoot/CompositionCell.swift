@@ -11,6 +11,7 @@ import UIKit
 
 class CompositionCell: UITableViewCell {
     
+    @IBOutlet weak var numberMaillot: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -186,8 +186,9 @@ class ClassementController: UITableViewController {
     
     func callAPIClassement() {
         
+        loadDataClub()
         //CLASSEMENT ENDPOINT
-        guard let leagueid = defaults.string(forKey: defaultsssKeys.league_id) else {
+        guard let leagueid = playerss![0].name?.description else {
             DispatchQueue.main.async() {
                 self.spinner.stopAnimating()
                 self.tableView.reloadData()
@@ -195,7 +196,7 @@ class ClassementController: UITableViewController {
             }
             return
         }
-
+        
         var adressUrlClassementStringExterne = "https://apifootball.com/api/?action=get_standings&league_id="+leagueid+"&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
         
         let urlResult = adressUrlClassementStringExterne

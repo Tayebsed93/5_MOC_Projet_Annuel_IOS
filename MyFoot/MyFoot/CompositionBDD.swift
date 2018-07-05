@@ -40,7 +40,7 @@ extension CompositionController {
         }
     }
     
-    func setupData(_name: [String], _age: [Double]) {
+    func setupData(_name: [String], _club: [String]) {
         
         clearData()
         //if self.names.count != 0 {
@@ -52,7 +52,7 @@ extension CompositionController {
                     
                     
                     player.name = _name[i]
-                    player.age = _age[i]
+                    player.club = _club[i]
                     
                     
                     

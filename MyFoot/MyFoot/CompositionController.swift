@@ -401,13 +401,11 @@ class CompositionController: UIViewController, UITextFieldDelegate {
             print(nationality)
             if (((sender as AnyObject).tag == 0))
             {
-                print("Select goal")
                 self.curentTag = 0
                 viewController.curentTag = self.curentTag
                 viewController.nationality = self.nationality
                 viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
                 if let navigator = navigationController {
-                    print("push")
                     navigator.pushViewController(viewController, animated: true)
                 }
             }

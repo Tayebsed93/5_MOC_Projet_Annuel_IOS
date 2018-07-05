@@ -15,19 +15,20 @@ class TwitterSearchTimelineController: TWTRTimelineViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBarItems()
+        loadDataClub()
+        
         // Do any additional setup after loading the view, typically from a nib.
-        guard let team_name = defaultsTwitter.string(forKey: TwitterKeys.team_name) else {
+        guard let team_name = playerss![0].club?.description else {
+            self.dataSource = TWTRUserTimelineDataSource(screenName: "", apiClient: TWTRAPIClient())
+            return
+        }
+    
+        guard let screen_name = dictionnaryTwitter[team_name] else {
+            self.dataSource = TWTRUserTimelineDataSource(screenName: "", apiClient: TWTRAPIClient())
             return
         }
         
-        
-        //let ok = TWTRSearchTimelineDataSource(searchQuery: "OM", apiClient: TWTRAPIClient())
-        
-        let screen_name = dictionnaryTwitter[team_name]
-        print(screen_name)
-        let ok = TWTRUserTimelineDataSource(screenName: screen_name!, apiClient: TWTRAPIClient())
-        //TWTRSearchTimelineDataSource(searchQuery: "puppies filter:media", apiClient: TWTRAPIClient())
-        //ok.resultType = "popular"
+        let ok = TWTRUserTimelineDataSource(screenName: screen_name, apiClient: TWTRAPIClient())
         
         self.dataSource = ok
         
