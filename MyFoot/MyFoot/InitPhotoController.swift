@@ -19,7 +19,7 @@ class InitPhotoController: UIViewController {
         
         
         
-        pscope.addPermission(CameraPermission(), message: "\r相机是通往AR世界的钥匙")
+        pscope.addPermission(CameraPermission(), message: "\rAccès à la caméra")
         
         let manager = RescouceManager.share
         /*

@@ -49,6 +49,8 @@ public var clubUrlString = "/club"
 public var playerUrlString = "/player"
 //COMPSITION ENDPOINT
 public var compositionUrlString = "/composition"
+//COMPETITION ENDPOINT
+public var competitionUrlString = "/competition"
 
 //USER ENDPOINT
 public var userUrlString = "/user"

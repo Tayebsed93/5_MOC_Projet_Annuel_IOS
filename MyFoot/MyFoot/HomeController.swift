@@ -12,9 +12,51 @@ import UIKit
 import Alamofire
 import FacebookCore
 import FBSDKCoreKit
+import NVActivityIndicatorView
+import SwiftyJSON
 
 
-class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTransitioningDelegate, ChildNameDelegate {
+struct competitions {
+    let composition_name : String!
+    let groupe : String!
+    let match_away : String!
+    let match_home : String!
+    let time_start : Date!
+}
+
+class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTransitioningDelegate, ChildNameDelegate, UITableViewDataSource, UITableViewDelegate, NVActivityIndicatorViewable {
+    
+    
+    @IBOutlet weak var tableviewOutlet: UITableView!
+    
+    var competitionsStruct = [competitions]()
+    
+    public func initTableView() {
+        
+        tableviewOutlet.dataSource = self
+        tableviewOutlet.delegate = self
+        
+        tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
+        
+        
+        if #available(iOS 10.0, *) {
+            tableviewOutlet.refreshControl = UIRefreshControl()
+            tableviewOutlet.refreshControl?.addTarget(self, action: #selector(refreshHandler), for: .valueChanged)
+        }
+   
+    }
+    
+    
+    @objc func refreshHandler() {
+        let deadlineTime = DispatchTime.now() + .seconds(1)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: { [weak self] in
+            if #available(iOS 10.0, *) {
+                self?.tableviewOutlet.refreshControl?.endRefreshing()
+            }
+            self?.tableviewOutlet.reloadData()
+        })
+    }
+    
     func dataChanged(email: String, password: String, apikey: String) {
         defaults.set(apikey, forKey: defaultsKeys.key11)
         defaults.synchronize()
@@ -58,7 +100,8 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         facebookButton.backgroundColor = FACEBOOK_COLOR_BLUE
 
         self.isPlayer = true
-        callAPIComposition()
+        callAPI()
+        //callAPIComposition()
         
         
         //if the user is already logged in
@@ -76,6 +119,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         super.viewWillAppear(animated)
 
         self.isPlayer = true
+        tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
         callAPIComposition()
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         
@@ -321,6 +365,156 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         }
         
         
+    }
+
+    
+    func callAPI() {
+        
+        self.competitionsStruct = []
+        /*
+         loadDataClub()
+         //CLASSEMENT ENDPOINT
+         guard let leagueid = playerss![0].name?.description else {
+         DispatchQueue.main.async() {
+         //self.spinner.stopAnimating()
+         self.tableView.reloadData()
+         self.tableView.backgroundView?.isHidden = false
+         }
+         return
+         }
+         */
+        
+        //Loading
+        DispatchQueue.main.async() {
+            let size = CGSize(width: 30, height: 30)
+            self.startAnimating(size, message: "", type: NVActivityIndicatorType(rawValue: 5))
+            
+        }
+        
+        let urlToRequest = addressUrlStringProd+competitionUrlString
+        print(urlToRequest)
+        Alamofire.request(urlToRequest, method: .get).responseJSON { (responseData) -> Void in
+            if((responseData.result.value) != nil) {
+                let swiftyJsonVar = JSON(responseData.result.value!)
+                print("newsArray")
+                if let newsArray = swiftyJsonVar["competitions"].arrayObject {
+                    print(newsArray)
+                    self.tableviewOutlet.backgroundView?.isHidden = true
+                    
+                    for i in 0..<newsArray.count {
+                        let composition_name = swiftyJsonVar["competitions"][i]["composition_name"].string
+                        let groupe = swiftyJsonVar["competitions"][i]["groupe"].string
+                        let match_away = swiftyJsonVar["competitions"][i]["match_away"].string
+                        let match_home = swiftyJsonVar["competitions"][i]["match_home"].string
+                        let time_start = swiftyJsonVar["competitions"][i]["time_start"].string
+                        //newsStruct.append(news.init(title: title, content: content, photo: photo, created_at: created_at))
+                        let format = "yyyy-MM-dd HH:mm:ss"
+                        let date_nsdate = time_start?.toDate(format: format)
+                        
+                        self.competitionsStruct.append(competitions.init(composition_name: composition_name, groupe: groupe, match_away: match_away, match_home: match_home, time_start: date_nsdate))
+                    }
+                    
+                }
+                if self.competitionsStruct.count > 0 {
+                    DispatchQueue.main.async() {
+                        self.stopAnimating()
+                        self.tableviewOutlet.reloadData()
+                        self.tableviewOutlet.backgroundView?.isHidden = true
+                    }
+                }
+                else {
+                    DispatchQueue.main.async() {
+                        self.stopAnimating()
+                        self.tableviewOutlet.reloadData()
+                        self.tableviewOutlet.backgroundView?.isHidden = false
+                    }
+                }
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.competitionsStruct.count
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HomeController", for: indexPath)
+        cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        /*
+        //Club logo Domicile
+        var clubImageDomicile = cell.viewWithTag(10) as! UIImageView
+        
+        if (calendrierStruct[indexPath.row].match_hometeam_name == self.passnameclub && passlogo != nil) {
+            clubImageDomicile.loadImageUsingUrlString(urlString: self.passlogo)
+        } else if let clublogo = UIImage(named: (calendrierStruct[indexPath.row].match_hometeam_name)!) {
+            clubImageDomicile.image = clublogo
+        }
+        else {
+            clubImageDomicile.image = UIImage(named: EMPTY_LOGO_IMG)
+        }
+        
+        //Club logo Exterieur
+        var clubImageExterieur = cell.viewWithTag(4) as! UIImageView
+        
+        if (calendrierStruct[indexPath.row].match_awayteam_name == self.passnameclub && passlogo != nil) {
+            clubImageExterieur.loadImageUsingUrlString(urlString: self.passlogo)
+        }  else if let clublogo = UIImage(named: (calendrierStruct[indexPath.row].match_awayteam_name)!) {
+            clubImageExterieur.image = clublogo
+        }
+        else {
+            clubImageExterieur.image = UIImage(named: EMPTY_LOGO_IMG)
+        }
+        */
+        //Nom pays domicile
+        let match_hometeam_name = cell.viewWithTag(4) as! UILabel
+        match_hometeam_name.text = competitionsStruct[indexPath.row].match_home
+        match_hometeam_name.textColor = FACEBOOK_COLOR_BLUE
+        
+        
+        //Nom pays exterieur
+        let match_awayteam_name = cell.viewWithTag(8) as! UILabel
+        match_awayteam_name.text = competitionsStruct[indexPath.row].match_away
+        match_awayteam_name.textColor = FACEBOOK_COLOR_BLUE
+        
+        
+        
+        //Groupe name
+        let groupe = cell.viewWithTag(6) as! UILabel
+        groupe.text = competitionsStruct[indexPath.row].groupe
+        groupe.textColor = FACEBOOK_COLOR_BLUE
+        
+        //Competition name
+        let composition_name = cell.viewWithTag(2) as! UILabel
+        composition_name.text = competitionsStruct[indexPath.row].composition_name
+        composition_name.textColor = FACEBOOK_COLOR_BLUE
+        
+        //Club logo Exterieur
+        var paysImageExterieur = cell.viewWithTag(3) as! UIButton
+        paysImageExterieur.layer.cornerRadius = paysImageExterieur.frame.size.width / 2
+        if let payslogo = UIImage(named: (competitionsStruct[indexPath.row].match_home)!) {
+            paysImageExterieur.setImage(payslogo, for: UIControlState.normal)
+        }
+        
+        //Club logo Domicile
+        var paysImageDomicile = cell.viewWithTag(7) as! UIButton
+        paysImageDomicile.layer.cornerRadius = paysImageDomicile.frame.size.width / 2
+        if let payslogo = UIImage(named: (competitionsStruct[indexPath.row].match_away)!) {
+            paysImageDomicile.setImage(payslogo, for: UIControlState.normal)
+        }
+        
+        //Ligue name
+        let date_name = cell.viewWithTag(1) as! UILabel
+        var date = NSDate()
+        date = competitionsStruct[indexPath.row].time_start as NSDate
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "fr")
+        dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
+        let dateString = dateFormatter.string(from:date as Date)
+        date_name.text = dateString
+        date_name.textColor = FACEBOOK_COLOR_BLUE
+
+        return cell
     }
     
     

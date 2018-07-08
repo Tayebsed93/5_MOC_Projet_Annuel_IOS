@@ -243,15 +243,15 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
     }
     func previewController(_ previewController: RPPreviewViewController, didFinishWithActivityTypes activityTypes: Set<String>) {
         print(activityTypes)
-        //取消
+
         if activityTypes.count == 0 {
             previewController.dismiss(animated: true, completion: nil)
         }
-        //保存
+    
         if activityTypes.contains("com.apple.UIKit.activity.SaveToCameraRoll") {
-            //ITTPromptView .showMessage("视频已保存在相册", andFrameY: 0)
+   
             previewController.dismiss(animated: true, completion: nil)
-            //检测到您刚刚保存了视频 是否想要分享
+            
             let delay = DispatchTime.now() + .seconds(2)
             DispatchQueue.main.asyncAfter(deadline: delay) {
                 self.outputVideo()
