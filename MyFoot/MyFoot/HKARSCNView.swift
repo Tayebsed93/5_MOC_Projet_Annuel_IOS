@@ -28,6 +28,7 @@ class HKARSCNView: ARSCNView {
         musicPlayer.pause()
         NotificationCenter.default.removeObserver(self)
     }
+    /*
     func addPhotoRing_V(vector3: SCNVector3, left: CGFloat, L: Int) {
         let photoRingNode = SCNNode()
         photoRingNode.position = SCNVector3Zero
@@ -52,6 +53,7 @@ class HKARSCNView: ARSCNView {
         let ringAction = SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: left, z: 0, duration: 10))
         photoRingNode.runAction(ringAction)
     }
+ */
     func addPhotoRing_H(vector3: SCNVector3, left: CGFloat, L: Int) {
         let photoRingNode = SCNNode()
         photoRingNode.position = SCNVector3Zero

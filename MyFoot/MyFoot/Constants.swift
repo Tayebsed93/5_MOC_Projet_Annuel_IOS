@@ -52,6 +52,8 @@ public var compositionUrlString = "/composition"
 
 //USER ENDPOINT
 public var userUrlString = "/user"
+//NEWS ENDPOINT
+public var newsUrlString = "/actuality/"
 
 //DATE DEBUT SAISON
 let DATE_DEBUT_SAISON = "2017-08-01"

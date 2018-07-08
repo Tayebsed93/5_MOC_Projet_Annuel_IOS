@@ -33,10 +33,10 @@ class InitPhotoController: UIViewController {
  */
         if manager.boxImages.count == 0 {
             manager.addBoxImage(image: UIImage(named: "B_Image_PSG")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_OL")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_OGC")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_TFC")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_Bordeau")!)
+            manager.addBoxImage(image: UIImage(named: "B_Image_PSG")!)
+            manager.addBoxImage(image: UIImage(named: "B_Image_PSG")!)
+            manager.addBoxImage(image: UIImage(named: "B_Image_PSG")!)
+            manager.addBoxImage(image: UIImage(named: "B_Image_PSG")!)
         }
         /*
         if manager.verticalImages.count == 0 {
@@ -48,6 +48,7 @@ class InitPhotoController: UIViewController {
             manager.addVerticalImage(image: UIImage(named: "V_Image_5")!)
         }
          */
+        /*
         if manager.verticalImages.count == 0 {
             manager.addVerticalImage(image: UIImage(named: "V_Neymar")!)
             manager.addVerticalImage(image: UIImage(named: "V_Gustavo")!)
@@ -56,6 +57,7 @@ class InitPhotoController: UIViewController {
             manager.addVerticalImage(image: UIImage(named: "V_Falcao")!)
             manager.addVerticalImage(image: UIImage(named: "V_Khazri")!)
         }
+ */
         /*
         if manager.horizontalImages.count == 0 {
             manager.addHorizontalImage(image: UIImage(named: "H_Image_0")!)
@@ -70,12 +72,12 @@ class InitPhotoController: UIViewController {
         
         if manager.horizontalImages.count == 0 {
             manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_OM")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_OL2")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_Nice")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_Losc")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_Nante")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_Renne")!)
+            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
+            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
+            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
+            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
+            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
+            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
         }
         if manager.text == nil {
             if  manager.text?.count == 0 {

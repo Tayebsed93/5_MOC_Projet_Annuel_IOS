@@ -82,7 +82,6 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
     
     public func initTableView() {
         
-        print(tableviewOutlet)
         tableviewOutlet.dataSource = self
         tableviewOutlet.delegate = self
         
