@@ -36,7 +36,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         tableviewOutlet.dataSource = self
         tableviewOutlet.delegate = self
         
-        tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
+        //tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
         
         
         if #available(iOS 10.0, *) {
@@ -440,71 +440,35 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeController", for: indexPath)
-        cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
-        /*
-        //Club logo Domicile
-        var clubImageDomicile = cell.viewWithTag(10) as! UIImageView
         
-        if (calendrierStruct[indexPath.row].match_hometeam_name == self.passnameclub && passlogo != nil) {
-            clubImageDomicile.loadImageUsingUrlString(urlString: self.passlogo)
-        } else if let clublogo = UIImage(named: (calendrierStruct[indexPath.row].match_hometeam_name)!) {
-            clubImageDomicile.image = clublogo
-        }
-        else {
-            clubImageDomicile.image = UIImage(named: EMPTY_LOGO_IMG)
-        }
+        //Status
+        let status_match = cell.viewWithTag(12) as! UIButton
+        status_match.isEnabled = false
         
-        //Club logo Exterieur
-        var clubImageExterieur = cell.viewWithTag(4) as! UIImageView
+        //Bouton pour jouer
         
-        if (calendrierStruct[indexPath.row].match_awayteam_name == self.passnameclub && passlogo != nil) {
-            clubImageExterieur.loadImageUsingUrlString(urlString: self.passlogo)
-        }  else if let clublogo = UIImage(named: (calendrierStruct[indexPath.row].match_awayteam_name)!) {
-            clubImageExterieur.image = clublogo
-        }
-        else {
-            clubImageExterieur.image = UIImage(named: EMPTY_LOGO_IMG)
-        }
-        */
+        let start_game = cell.viewWithTag(13) as! UIButton
+        start_game.backgroundColor = FACEBOOK_COLOR_BLUE
+ 
+        //start_game.addTarget(self, action: "Print", for: UIControlEvents.touchUpInside)
+ 
         //Nom pays domicile
-        let match_hometeam_name = cell.viewWithTag(4) as! UILabel
+        let match_hometeam_name = cell.viewWithTag(1) as! UILabel
         match_hometeam_name.text = competitionsStruct[indexPath.row].match_home
-        match_hometeam_name.textColor = FACEBOOK_COLOR_BLUE
-        
-        
-        //Nom pays exterieur
-        let match_awayteam_name = cell.viewWithTag(8) as! UILabel
-        match_awayteam_name.text = competitionsStruct[indexPath.row].match_away
-        match_awayteam_name.textColor = FACEBOOK_COLOR_BLUE
-        
-        
-        
-        //Groupe name
-        let groupe = cell.viewWithTag(6) as! UILabel
-        groupe.text = competitionsStruct[indexPath.row].groupe
-        groupe.textColor = FACEBOOK_COLOR_BLUE
         
         //Competition name
         let composition_name = cell.viewWithTag(2) as! UILabel
         composition_name.text = competitionsStruct[indexPath.row].composition_name
-        composition_name.textColor = FACEBOOK_COLOR_BLUE
         
-        //Club logo Exterieur
-        var paysImageExterieur = cell.viewWithTag(3) as! UIButton
-        paysImageExterieur.layer.cornerRadius = paysImageExterieur.frame.size.width / 2
-        if let payslogo = UIImage(named: (competitionsStruct[indexPath.row].match_home)!) {
-            paysImageExterieur.setImage(payslogo, for: UIControlState.normal)
-        }
         
         //Club logo Domicile
-        var paysImageDomicile = cell.viewWithTag(7) as! UIButton
-        paysImageDomicile.layer.cornerRadius = paysImageDomicile.frame.size.width / 2
-        if let payslogo = UIImage(named: (competitionsStruct[indexPath.row].match_away)!) {
-            paysImageDomicile.setImage(payslogo, for: UIControlState.normal)
+        var paysImageDomicile = cell.viewWithTag(3) as! UIImageView
+        if let payslogo = UIImage(named: (competitionsStruct[indexPath.row].match_home)!) {
+            paysImageDomicile.image = payslogo
         }
         
-        //Ligue name
-        let date_name = cell.viewWithTag(1) as! UILabel
+        //Date
+        let date_name = cell.viewWithTag(5) as! UILabel
         var date = NSDate()
         date = competitionsStruct[indexPath.row].time_start as NSDate
         let dateFormatter = DateFormatter()
@@ -512,9 +476,25 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
         let dateString = dateFormatter.string(from:date as Date)
         date_name.text = dateString
-        date_name.textColor = FACEBOOK_COLOR_BLUE
 
         return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
+            viewController.nationality = competitionsStruct[indexPath.row].match_home
+            guard var apikey = defaults.string(forKey: defaultsKeys.key11) else {
+                let message = "Access Denied. Invalid Api key"
+                alerteMessage(message: message)
+                return
+            }
+            viewController.passapikey = defaults.string(forKey: defaultsKeys.key11)!
+            viewController.isPlayer = true
+            if let navigator = navigationController {
+                navigator.pushViewController(viewController, animated: true)
+            }
+        }
     }
     
     
