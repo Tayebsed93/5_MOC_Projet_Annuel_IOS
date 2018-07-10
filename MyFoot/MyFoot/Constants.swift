@@ -62,6 +62,12 @@ let DATE_DEBUT_SAISON = "2017-08-01"
 let DATE_FIN_SAISON = "2018-07-01"
 
 //ROLE
+let PAYSBAS = "Pays-Bas"
+let ALLEMAGNE = "Allemagne"
+let PAYSBASAPI = "Netherlands"
+let ALLEMAGNEAPI = "Germany"
+
+//Pays
 let role_president = "president"
 let role_joueur = "joueur"
 let role_coach = "coach"

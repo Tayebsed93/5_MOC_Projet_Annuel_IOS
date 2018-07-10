@@ -392,11 +392,9 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         }
         
         let urlToRequest = addressUrlStringProd+competitionUrlString
-        print(urlToRequest)
         Alamofire.request(urlToRequest, method: .get).responseJSON { (responseData) -> Void in
             if((responseData.result.value) != nil) {
                 let swiftyJsonVar = JSON(responseData.result.value!)
-                print("newsArray")
                 if let newsArray = swiftyJsonVar["competitions"].arrayObject {
                     print(newsArray)
                     self.tableviewOutlet.backgroundView?.isHidden = true
@@ -449,7 +447,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         
         let start_game = cell.viewWithTag(13) as! UIButton
         start_game.backgroundColor = FACEBOOK_COLOR_BLUE
- 
+        start_game.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
         //start_game.addTarget(self, action: "Print", for: UIControlEvents.touchUpInside)
  
         //Nom pays domicile
@@ -484,6 +482,31 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
             viewController.nationality = competitionsStruct[indexPath.row].match_home
+            guard var apikey = defaults.string(forKey: defaultsKeys.key11) else {
+                let message = "Access Denied. Invalid Api key"
+                alerteMessage(message: message)
+                return
+            }
+            viewController.passapikey = defaults.string(forKey: defaultsKeys.key11)!
+            viewController.isPlayer = true
+            if let navigator = navigationController {
+                navigator.pushViewController(viewController, animated: true)
+            }
+        }
+    }
+    
+    @objc func btnAction(_ sender: UIButton) {
+        
+        let point = sender.convert(CGPoint.zero, to: tableviewOutlet as UIView)
+        let indexPath: IndexPath! = tableviewOutlet.indexPathForRow(at: point)
+        
+        print("row is = \(indexPath.row) && section is = \(indexPath.section)")
+        print(competitionsStruct[indexPath.row].match_home)
+        
+        self.nationality = competitionsStruct[indexPath.row].match_home
+        
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
+            viewController.nationality = self.nationality
             guard var apikey = defaults.string(forKey: defaultsKeys.key11) else {
                 let message = "Access Denied. Invalid Api key"
                 alerteMessage(message: message)

@@ -29,8 +29,10 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
         self.title = "Liste des clubs"
         self.tableView.separatorStyle = .none
+        
         //Recuperer Donnée de la BDD
         clubsStruct = []
+        self.tableView.reloadData()
         callAPIClub()
 
         

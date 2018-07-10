@@ -341,15 +341,19 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
                     {
                         if let nb = json?.count {
                             for i in 0..<nb {
-                                if let team_name = json![i]["team_name"], let league_name = json![i]["league_name"], let league_id = json![i]["league_id"] {
+                                if let team_name = json![i]["team_name"], let league_name = json![i]["league_name"], var league_id = json![i]["league_id"] {
                                     
                                     let club = String(describing: team_name)
+                                    
+                                    print(league_id)
                                     
                                     if club == self.passnameclub {
                                         trouver = true
                                         //self.defaults.set(league_id, forKey: defaultsssKeys.league_id)
                                         //self.defaults.set(team_name, forKey: defaultsssKeys.team_name)
                                         //self.defaults.synchronize()
+                                        
+                                        
                                         setupDataClub(_name: league_id as! String, _club: team_name as! String)
                                         let url = self.leagueIdURLToLiveMatch(dateDebut: DATE_DEBUT_SAISON, dateFin: DATE_FIN_SAISON)
                     
@@ -438,6 +442,7 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
                         if trouver == false {
                             DispatchQueue.main.async()
                                 {
+                                    setupDataClub(_name: "300", _club: "")
                                     self.stopAnimating()
                                     self.tableviewOutlet.backgroundView?.isHidden = false
                                     
