@@ -43,6 +43,8 @@ public var twitterKey = "Bearer AAAAAAAAAAAAAAAAAAAAABjczAAAAAAAmpsyum03hAwA3jfP
 //LOGIN ENDPOINT
 public var registerUrlString = "/register"
 public var loginUrlString = "/login"
+public var loginFbUrlString = "/loginfb"
+
 //CLUB ENDPOINT
 public var clubUrlString = "/club"
 //PLAYER ENDPOINT
@@ -113,7 +115,28 @@ var dictionnaryTwitter: [String:String] = [
     "Lille" : "losclive",
     "Toulouse" : "ToulouseFC",
     "Troyes" : "estac_officiel",
-    "Metz" : "FCMetz"
+    "Metz" : "FCMetz",
+    
+    "Reims" : "StadeDeReims",
+    "Nimes" : "nimesolympique",
+    "AC Ajaccio" : "ACAjaccio",
+    "Le Havre" : "HAC_Foot",
+    "Brest" : "SB29",
+    "Clermont Foot" : "ClermontFoot",
+    "Lorient" : "FCLorient",
+    "Paris FC" : "ParisFC",
+    "Chateauroux" : "LaBerrichonne",
+    "Sochaux" : "FCSM_officiel",
+    "Auxerre" : "AJA",
+    "Orleans" : "US_Orleans",
+    "Valenciennes" : "VAFC",
+    "Lens" : "RCLens",
+    "Niort" : "ChamoisNiortais",
+    "GFC Ajaccio" : "gfc_ajaccio",
+    "Nancy" : "asnlofficiel",
+    "Bourg en Bresse Peronnas" : "FBBP01",
+    "Quevilly" : "QRM",
+    "Tours" : "ToursFC",
 ]
 
 

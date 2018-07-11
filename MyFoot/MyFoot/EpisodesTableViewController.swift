@@ -154,7 +154,18 @@ class EpisodesTableViewController: UITableViewController, NVActivityIndicatorVie
             
         }
         
-        let user_id = "42"
+        loadDataUser()
+        guard let user_id = score![0].name?.description else {
+            DispatchQueue.main.async() {
+                self.stopAnimating()
+                self.tableView.reloadData()
+                self.tableView.backgroundView?.isHidden = false
+            }
+            return
+        }
+        
+        print(user_id)
+    
         let urlToRequest = addressUrlStringProd+newsUrlString+user_id
         
         Alamofire.request(urlToRequest, method: .get).responseJSON { (responseData) -> Void in
@@ -162,7 +173,6 @@ class EpisodesTableViewController: UITableViewController, NVActivityIndicatorVie
                 let swiftyJsonVar = JSON(responseData.result.value!)
                 
                 if let newsArray = swiftyJsonVar["news"].arrayObject {
-                    print(newsArray)
                         self.tableView.backgroundView?.isHidden = true
                         
                         for i in 0..<newsArray.count {
@@ -194,97 +204,6 @@ class EpisodesTableViewController: UITableViewController, NVActivityIndicatorVie
             }
         }
     }
-    
-    func callAPIClassement() {
-
-        
-        var adressUrlClassementStringExterne = "https://apifootball.com/api/?action=get_standings&league_id=127&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
-        
-        let user_id = "42"
-        let urlToRequest = addressUrlStringProd+newsUrlString+user_id
-        print(urlToRequest)
-        let url4 = URL(string: urlToRequest)!
-        let session4 = URLSession.shared
-        let request = NSMutableURLRequest(url: url4)
-        request.httpMethod = "GET"
-        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        
-        let task = session4.dataTask(with: request as URLRequest)
-        { (data, response, error) in
-            guard let _: Data = data, let _: URLResponse = response, error == nil else
-            {
-                
-                print("ERROR: \(error?.localizedDescription)")
-                DispatchQueue.main.async() {
-     
-                    self.tableView.reloadData()
-                    self.tableView.backgroundView?.isHidden = false
-                }
-                
-                return
-            }
-            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            
-            
-            //JSONSerialization in Object
-            do {
-                
-                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as? [[String:Any]]
-                DispatchQueue.main.async()
-                    
-                    {
-                        if let nb = json?.count {
-                            print(json)
-                            self.tableView.backgroundView?.isHidden = true
-                            
-                            for i in 0..<nb {
-                                if let team_name = json![i]["team_name"], let position_overall_league_position = json![i]["overall_league_position"], let points_overall_league_PTS = json![i]["overall_league_PTS"], let journee_overall_league_payed = json![i]["overall_league_payed"], let overall_league_V = json![i]["overall_league_W"], let overall_league_N = json![i]["overall_league_D"], let overall_league_D = json![i]["overall_league_L"], let overall_league_BM = json![i]["overall_league_GF"], let overall_league_BE = json![i]["overall_league_GA"]{
-                                    
-                                    let team_name = String(describing: team_name)
-                                    let position_overall_league_position = String(describing: position_overall_league_position)
-                                    let points_overall_league_PTS = String(describing: points_overall_league_PTS)
-                                    let journee_overall_league_payed = String(describing: journee_overall_league_payed)
-                                    let overall_league_V = String(describing: overall_league_V)
-                                    let overall_league_N = String(describing: overall_league_N)
-                                    let overall_league_D = String(describing: overall_league_D)
-                                    let overall_league_BM = String(describing: overall_league_BM)
-                                    let overall_league_BE = String(describing: overall_league_BE)
-                                    
-                                    
-                                
-                                    
-                                    self.tableView.reloadData()
-                                    
-                                    
-                                }
-                                
-                         
-                            }
-                        }
-                        else {
-                            //ELSE
-                            DispatchQueue.main.async() {
-                                
-                                self.tableView.reloadData()
-                                self.tableView.backgroundView?.isHidden = false
-                            }
-                            
-                            
-                            
-                        }
-                }
-                
-            } catch let error as NSError {
-                print("Failed to load: \(error.localizedDescription)")
-                
-                self.tableView.reloadData()
-                self.tableView.backgroundView?.isHidden = false
-                
-            }
-        }
-        ;task.resume()
-    }
-    
 }
 
 

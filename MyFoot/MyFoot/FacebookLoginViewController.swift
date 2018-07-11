@@ -17,12 +17,12 @@ protocol ChildNameDelegate {
 
 
 class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
-
+    
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var imageFacebook: UIImageView!
     @IBOutlet weak var facebookName: UILabel!
     
-
+    
     
     var dict : [String : AnyObject]!
     
@@ -44,7 +44,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         dismissButton.layer.cornerRadius = dismissButton.frame.size.width / 2
         dismissButton.backgroundColor = .white
         dismissButton.setTitleColor(FACEBOOK_COLOR_BLUE, for: .normal)
-
+        
         //creating button
         let loginButton = LoginButton(readPermissions: [.publicProfile,.email])
         loginButton.center = view.center
@@ -69,12 +69,12 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         }
         
         
-
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-
-
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -86,7 +86,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         
         //self.dismiss(animated: false, completion: nil)
         //self.dismiss(animated: true, completion: nil)
-
+        
         //self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
         tabVc.view.removeFromSuperview()
         self.dismiss(animated: true, completion: nil)
@@ -118,7 +118,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
             FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                 if (error == nil){
                     self.dict = result as! [String : AnyObject]
-
+                    
                     let picture = self.dict["picture"]
                     let email = self.dict["email"]
                     let name = self.dict["name"]
@@ -133,7 +133,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
                 }
             })
         }
-
+        
     }
     
     func createBodyWithParameters(parameters: [String: String]?, boundary: String) -> NSData {
@@ -147,81 +147,82 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
                 body.appendString(string: "\(value)\r\n")
             }
         }
-
+        
         return body
     }
     
     /*
-    func callAPIRegister(name: String, email: String, picture: String) {
-        
-        let urlToRequest = addressUrlStringProd+registerUrlString
-        let url4 = URL(string: urlToRequest)!
-        let session4 = URLSession.shared
-        let request = NSMutableURLRequest(url: url4)
-        request.httpMethod = "POST"
-        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        
-        
-        let param = [
-            "name"  : name,
-            "email"    : email,
-            "password"    : MDP_DEFAULT,
-            "role"    : role_supporter,
-            "picture"      : picture
-        ]
-        
-        let boundary = generateBoundaryString()
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.httpBody = createBodyWithParameters(parameters: param, boundary: boundary) as Data
-
-        
-        let task = session4.dataTask(with: request as URLRequest)
-            
-        { (data, response, error) in
-            guard let _: Data = data, let _: URLResponse = response, error == nil else
-            {
-                
-                print("ERROR: \(error?.localizedDescription)")
-                
-                self.alerteMessage(message: (error?.localizedDescription)!)
-                return
-            }
-            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            //print("Response : \n \(dataString)") //JSONSerialization in String
-            
-            
-            //JSONSerialization in Object
-            do {
-                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
-                DispatchQueue.main.async()
-                    {
-                        print(json)
-                        
-                        print("Tayeb")
-                        if let message = json["message"]
-                        {
-                            if message as! String == "You are successfully registered" {
-                                self.alerteMessage(message: message as! String)
-                            }
-                        }
-                        
-                        self.callAPILogin(email: email)
-                        
-                }
-                
-                
-            } catch let error as NSError {
-                print("Failed to load: \(error.localizedDescription)")
-            }
-            
-        }
-        ;task.resume()
-    }
- */
+     func callAPIRegister(name: String, email: String, picture: String) {
+     
+     let urlToRequest = addressUrlStringProd+registerUrlString
+     let url4 = URL(string: urlToRequest)!
+     let session4 = URLSession.shared
+     let request = NSMutableURLRequest(url: url4)
+     request.httpMethod = "POST"
+     request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+     
+     
+     let param = [
+     "name"  : name,
+     "email"    : email,
+     "password"    : MDP_DEFAULT,
+     "role"    : role_supporter,
+     "picture"      : picture
+     ]
+     
+     let boundary = generateBoundaryString()
+     request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+     request.httpBody = createBodyWithParameters(parameters: param, boundary: boundary) as Data
+     
+     
+     let task = session4.dataTask(with: request as URLRequest)
+     
+     { (data, response, error) in
+     guard let _: Data = data, let _: URLResponse = response, error == nil else
+     {
+     
+     print("ERROR: \(error?.localizedDescription)")
+     
+     self.alerteMessage(message: (error?.localizedDescription)!)
+     return
+     }
+     let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+     //print("Response : \n \(dataString)") //JSONSerialization in String
+     
+     
+     //JSONSerialization in Object
+     do {
+     let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
+     DispatchQueue.main.async()
+     {
+     print(json)
+     
+     print("Tayeb")
+     if let message = json["message"]
+     {
+     if message as! String == "You are successfully registered" {
+     self.alerteMessage(message: message as! String)
+     }
+     }
+     
+     self.callAPILogin(email: email)
+     
+     }
+     
+     
+     } catch let error as NSError {
+     print("Failed to load: \(error.localizedDescription)")
+     }
+     
+     }
+     ;task.resume()
+     }
+     */
     
     
     func callAPIRegister(name: String, email: String, picture: String)
     {
+        
         let urlToRequest = addressUrlStringProd+registerUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
@@ -241,7 +242,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         let boundary = generateBoundaryString()
         
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-    
+        
         
         request.httpBody = createBodyWithParameters(parameters: param, boundary: boundary) as Data
         
@@ -264,11 +265,11 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
             
             do {
                 self.callAPILogin(email: email)
-            
+                
             } catch
             {
                 DispatchQueue.main.async()
-                {
+                    {
                         self.alerteMessage(message: ERROR_CONSTANTE as! String)
                 }
                 print(error)
@@ -277,11 +278,11 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         
         task.resume()
     }
-
+    
     
     
     func callAPILogin(email: String) {
-        let urlToRequest = addressUrlStringProd+loginUrlString
+        let urlToRequest = addressUrlStringProd+loginFbUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
@@ -289,7 +290,6 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
         let paramString = String(format:"email=%@&password=%@",email,MDP_DEFAULT)
         request.httpBody = paramString.data(using: String.Encoding.utf8)
-        
         
         let task = session4.dataTask(with: request as URLRequest)
         { (data, response, error) in
@@ -309,7 +309,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
                 DispatchQueue.main.async()
                     {
-                        if let apiKey = json["apiKey"], let role = json["role"]
+                        if let apiKey = json["apiKey"]
                         {
                             self.whereTheChangesAreMade(email: email, password: MDP_DEFAULT, apikey: apiKey as! String)
                         }
@@ -352,26 +352,26 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-
+        
     }
     
-
+    
     
     
     // MARK: - Navigation
-/*
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        print("PREPARE")
-        if segue.identifier == "HomeController" {
-            if let destinationVC = segue.destination as? HomeController {
-                destinationVC.loginFB = "LOL"
-                destinationVC.passwordFB = "LOL"
-            }
-        }
-    }
- */
-
+    /*
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     print("PREPARE")
+     if segue.identifier == "HomeController" {
+     if let destinationVC = segue.destination as? HomeController {
+     destinationVC.loginFB = "LOL"
+     destinationVC.passwordFB = "LOL"
+     }
+     }
+     }
+     */
+    
 }

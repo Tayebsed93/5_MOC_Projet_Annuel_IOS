@@ -58,6 +58,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     }
     
     func dataChanged(email: String, password: String, apikey: String) {
+        print("Tayeb", apikey)
         defaults.set(apikey, forKey: defaultsKeys.key11)
         defaults.synchronize()
         
@@ -75,6 +76,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
 
     
     var nationality = String()
+    var match_date = String()
     
     var passapikey = String()
 
@@ -288,7 +290,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
                 DispatchQueue.main.async()
                     {
-                        //print(json)
+   
                         if let compositions = json["composition"] as? [[String: Any]] {
                             
                             for composition in compositions {
@@ -396,7 +398,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
             if((responseData.result.value) != nil) {
                 let swiftyJsonVar = JSON(responseData.result.value!)
                 if let newsArray = swiftyJsonVar["competitions"].arrayObject {
-                    print(newsArray)
                     self.tableviewOutlet.backgroundView?.isHidden = true
                     
                     for i in 0..<newsArray.count {
@@ -482,6 +483,13 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
             viewController.nationality = competitionsStruct[indexPath.row].match_home
+            var date = NSDate()
+            date = competitionsStruct[indexPath.row].time_start as NSDate
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "fr")
+            dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
+            let dateString = dateFormatter.string(from:date as Date)
+            viewController.match_date = dateString
             guard var apikey = defaults.string(forKey: defaultsKeys.key11) else {
                 let message = "Access Denied. Invalid Api key"
                 alerteMessage(message: message)
@@ -507,12 +515,24 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
             viewController.nationality = self.nationality
+            var date = NSDate()
+            date = competitionsStruct[indexPath.row].time_start as NSDate
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "fr")
+            dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
+            let dateString = dateFormatter.string(from:date as Date)
+            viewController.match_date = dateString
+            
             guard var apikey = defaults.string(forKey: defaultsKeys.key11) else {
                 let message = "Access Denied. Invalid Api key"
                 alerteMessage(message: message)
                 return
             }
+ 
             viewController.passapikey = defaults.string(forKey: defaultsKeys.key11)!
+
+            //viewController.passapikey = "9962f17f02c37e0d40758e48b07eb7bb"
+ 
             viewController.isPlayer = true
             if let navigator = navigationController {
                 navigator.pushViewController(viewController, animated: true)

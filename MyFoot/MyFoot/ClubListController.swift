@@ -12,6 +12,7 @@ import AVFoundation
 struct club {
     let logo : String!
     let name : String!
+    let user_id : String!
 }
 
 class ClubListController: UITableViewController, UISearchBarDelegate {
@@ -148,8 +149,9 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
                         if let clubs = json["clubs"] as? [[String: Any]] {
                             
                             for clubjson in clubs {
-                                if let name = clubjson["nom"], let logo = clubjson["logo"]{
-                                    self.clubsStruct.append(club.init(logo: logo as! String, name: name as! String))
+                                if let name = clubjson["nom"], let logo = clubjson["logo"], let user_id = clubjson["user_id"]{
+    
+                                    self.clubsStruct.append(club.init(logo: logo as! String, name: name as! String, user_id: (user_id as AnyObject).description))
                                 }
 
                                 self.tableView.reloadData()
@@ -196,6 +198,8 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
         let name = clubsStruct[(indexPath?.row)!].name
         let logo = clubsStruct[(indexPath?.row)!].logo
+        let user_id = clubsStruct[(indexPath?.row)!].user_id
+        setupDataUser(_name: user_id!)
         var role = String()
         let alertController = UIAlertController(title: name, message: "Selectionner votre rôle", preferredStyle: .alert)
         let action1 = UIAlertAction(title: "Supporter", style: .default) { (action) in

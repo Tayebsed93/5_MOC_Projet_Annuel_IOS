@@ -32,6 +32,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     
     
     var nationality = String()
+    var match_date = String()
     var stringComposition = String()
     
     var passapikey = String()
