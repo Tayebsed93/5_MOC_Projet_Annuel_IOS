@@ -72,7 +72,7 @@ class HKMemoirsViewController: UIViewController, ARSCNViewDelegate {
             //self.replayButton.alpha = self.replayButton.alpha < 0.5 ? 1 : 0
             //self.mainButton.alpha =   self.replayButton.alpha < 0.5 ? 0.1 : 1
             
-            self.mainButton.alpha = 0.2
+            //self.mainButton.alpha = 0.2
             //for button in self.smailButtons {
             //    button.alpha =  self.replayButton.alpha
             //}
@@ -205,7 +205,7 @@ extension HKMemoirsViewController {
 @available(iOS 11.0, *)
 extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewControllerDelegate {
     func startRecoder() {
-        self.mainButton.isSelected = false
+        //self.mainButton.isSelected = false
         RPScreenRecorder.shared().startRecording(handler: nil)
         RPScreenRecorder.shared().delegate = self
         //self.replayButtonRight.constant = (kScreenWidth - stopReplayButton.bounds.size.width ) * 0.5
@@ -213,7 +213,7 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
             for button in self.smailButtons {
                 button.alpha = 0
             }
-            self.mainButton.alpha = 0
+            //self.mainButton.alpha = 0
             //self.stopReplayButton.alpha = 1
             self.view.layoutIfNeeded()
 
@@ -234,7 +234,7 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
                 for button in self.smailButtons {
                     button.alpha = 1
                 }
-                self.mainButton.alpha = 1
+                //self.mainButton.alpha = 1
                 //self.stopReplayButton.alpha = 0
                 self.view.layoutIfNeeded()
 
@@ -282,7 +282,7 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
         for button in self.smailButtons {
             button.alpha = 1
         }
-        self.mainButton.alpha = 1
+        //self.mainButton.alpha = 1
         UIView.animate(withDuration: 2.5) {
             //self.stopReplayButton.alpha = 0
             self.view.layoutIfNeeded()

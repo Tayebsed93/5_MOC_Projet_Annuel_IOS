@@ -124,7 +124,7 @@ class EpisodesTableViewController: UITableViewController, NVActivityIndicatorVie
         
         //Name  + heure
         let name_date = cell.viewWithTag(4) as! UILabel
-        name_date.text = "Administrateur | March 28, 2016"
+        name_date.text = "Administrateur | Avril 28, 2018"
         
         
         return cell
@@ -134,18 +134,6 @@ class EpisodesTableViewController: UITableViewController, NVActivityIndicatorVie
         
         newsStruct = []
         
-        /*
-         loadDataClub()
-         //CLASSEMENT ENDPOINT
-         guard let leagueid = playerss![0].name?.description else {
-         DispatchQueue.main.async() {
-         //self.spinner.stopAnimating()
-         self.tableView.reloadData()
-         self.tableView.backgroundView?.isHidden = false
-         }
-         return
-         }
-         */
         
         //Loading
         DispatchQueue.main.async() {
@@ -164,7 +152,6 @@ class EpisodesTableViewController: UITableViewController, NVActivityIndicatorVie
             return
         }
         
-        print(user_id)
     
         let urlToRequest = addressUrlStringProd+newsUrlString+user_id
         

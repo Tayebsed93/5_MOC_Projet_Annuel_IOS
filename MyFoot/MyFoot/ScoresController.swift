@@ -21,6 +21,9 @@ class ScoresController: UITableViewController {
     var scoresStruct = [scorestruct]()
     var passapikey = String()
     
+    private let image = UIImage(named: "cancel")!.withRenderingMode(.alwaysTemplate)
+    private let topMessage = "Score"
+    private let bottomMessage = "L'affichage des scores n'est pas disponible."
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
@@ -42,6 +45,20 @@ class ScoresController: UITableViewController {
         
         
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        self.setupEmptyBackgroundView()
+    }
+    
+    // MARK: - Empty Data
+    func setupEmptyBackgroundView() {
+        let emptyBackgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
+        self.tableView.backgroundView = emptyBackgroundView
+        self.tableView.backgroundView?.isHidden = true
+        
     }
     
     
@@ -68,74 +85,28 @@ class ScoresController: UITableViewController {
         
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+        cell?.selectionStyle = .none
         
-        /*
-        let labelName = cell?.viewWithTag(2) as! UILabel
-        labelName.text = scoresStruct[indexPath.row].name
-        
-        
-        var paysImage = cell?.viewWithTag(4) as! UIImageView
-        paysImage.image = UIImage(named: DRAPEAU_FRANCE_IMG)
-        
-        //Club logo
-        var clubImage = cell?.viewWithTag(1) as! UIImageView
-        if let clubImageURLString = scoresStruct[indexPath.row].logo {
-            clubImage.loadImageUsingUrlString(urlString: clubImageURLString)
-        } else{
-            clubImage.image = UIImage(named: EMPTY_LOGO_IMG)
-        }
- */
-        
-        /*
-        //Name
-        let labelName = cell?.viewWithTag(2) as! UILabel
-        labelName.text = scoresStruct[indexPath.row].name
-        
-        //Email
-        let labelEmail = cell?.viewWithTag(3) as! UILabel
-        labelEmail.text = scoresStruct[indexPath.row].email
-        
-        //Point
-        let a = Int((scoresStruct[indexPath.row].score)!)
-        let b: String = String(a)
-        let labelPoint = cell?.viewWithTag(4) as! UILabel
-        labelPoint.text = b + " Point"
-        
-        
-        
-        //Picture
-        var clubImage = cell?.viewWithTag(1) as! UIImageView
+        //Logo
+        var logo = cell?.viewWithTag(1) as! UIImageView
         if scoresStruct[indexPath.row].picture != "", let pictureURLString = scoresStruct[indexPath.row].picture {
-            clubImage.loadImageUsingUrlString(urlString: pictureURLString)
+            cell?.imageView?.loadImageUsingUrlString(urlString: pictureURLString)
         }
         else{
-            clubImage.image = UIImage(named: "profile")
+            cell?.imageView?.image = UIImage(named: "profile")
         }
-         return cell!
- */
         
-        if let cell = cell {
-            var label = UILabel(frame: CGRect(x: 280.0, y: 14.0, width: 100.0, height: 30.0))
+        //Name User
+        let name = cell?.viewWithTag(2) as! UILabel
+        name.text = scoresStruct[indexPath.row].name
+        
+        //Score User
+        let score = cell?.viewWithTag(3) as! UILabel
+        let a = Int((scoresStruct[indexPath.row].score)!)
+        let b: String = String(a)
+        score.text = b + " Point"
             
-            let a = Int((scoresStruct[indexPath.row].score)!)
-            let b: String = String(a)
-            label.text = b + " Point"
-            label.tag = indexPath.row
-            cell.contentView.addSubview(label)
-            
-            cell.textLabel?.text = scoresStruct[indexPath.row].name
-            
-            //Picture
-            if scoresStruct[indexPath.row].picture != "", let pictureURLString = scoresStruct[indexPath.row].picture {
-                cell.imageView?.loadImageUsingUrlString(urlString: pictureURLString)
-            }
-            else{
-                cell.imageView?.image = UIImage(named: "profile")
-            }
-            
-            
-            
-        }
+        
         return cell!
     }
         
@@ -173,6 +144,7 @@ class ScoresController: UITableViewController {
                     {
                         
                         if let scores = json["scores"] as? [[String: Any]] {
+                            self.tableView.backgroundView?.isHidden = true
                             for scorejson in scores {
                                 if let name = scorejson["name"], let email = scorejson["email"], let score = scorejson["score"], var picture = scorejson["picture"] {
                                     
@@ -182,6 +154,11 @@ class ScoresController: UITableViewController {
                                 
                                 self.tableView.reloadData()
                             }
+                        }
+                        
+                        print(self.scoresStruct.count)
+                        if self.scoresStruct.count == 0 {
+                            self.tableView.backgroundView?.isHidden = false
                         }
                         
                         if let messageError = json["message"]

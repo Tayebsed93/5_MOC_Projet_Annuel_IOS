@@ -15,14 +15,13 @@ struct club {
     let user_id : String!
 }
 
-class ClubListController: UITableViewController, UISearchBarDelegate {
+class ClubListController: UITableViewController {
 
 
     
     @IBOutlet weak var addButton: UIBarButtonItem!
     
     var clubsStruct = [club]()
-    @IBOutlet weak var searchBar: UISearchBar!
     var filteredArray = [String]()
     
     
@@ -31,7 +30,6 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         
 
         addButton.isEnabled = false
-        searchBar.isHidden = true
         addButton.tintColor = UIColor.clear
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
@@ -44,8 +42,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         self.tableView.reloadData()
         callAPIClub()
 
-        
-        searchBar.text = ""
+    
         
         if #available(iOS 10.0, *) {
             tableView.refreshControl = UIRefreshControl()
@@ -70,15 +67,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
             self?.tableView.reloadData()
         })
     }
-    
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let keywords = searchBar.text
-        
-        
-        self.view.endEditing(true)
-        self.tableView.reloadData()
-    }
+
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (clubsStruct.count)

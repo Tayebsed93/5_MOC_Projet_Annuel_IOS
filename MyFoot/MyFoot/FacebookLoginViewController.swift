@@ -179,7 +179,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         request.httpMethod = "POST"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
         
-        
+        print(email)
         let param = [
             "name"  : name,
             "email"    : email,
@@ -232,6 +232,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
     
     func callAPILogin(email: String) {
         let urlToRequest = addressUrlStringProd+loginFbUrlString
+        print(urlToRequest)
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
         let request = NSMutableURLRequest(url: url4)
@@ -252,7 +253,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
             }
             let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             
-            
+            print("Appellle")
             //JSONSerialization in Object
             do {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
@@ -260,6 +261,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
                     {
                         if let apiKey = json["apiKey"]
                         {
+                            print(apiKey)
                             self.whereTheChangesAreMade(email: email, password: MDP_DEFAULT, apikey: apiKey as! String)
                         }
                         

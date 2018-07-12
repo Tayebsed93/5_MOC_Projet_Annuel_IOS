@@ -59,11 +59,10 @@ class ClassementController: UITableViewController {
     }
     
     func showActivityIndicatory() {
-        //self.spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        spinner.center = view.center
+        self.spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        //spinner.center = view.center
         spinner.hidesWhenStopped = true
         spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-        spinner.color = GREEN_THEME
         view.addSubview(spinner)
         spinner.startAnimating()
         
@@ -159,8 +158,10 @@ class ClassementController: UITableViewController {
         let diff = bm! - be!
         difference.text = String(diff)
 
+        
         if (classementsStruct[indexPath.row].team_name == self.passnameclub) {
             cell.backgroundColor = GREEN_THEME
+            /*
             position.textColor = .white
             position.font = UIFont.boldSystemFont(ofSize: 16.0)
             team_name.textColor = .white
@@ -177,7 +178,9 @@ class ClassementController: UITableViewController {
             overall_league_D.font = UIFont.boldSystemFont(ofSize: 16.0)
             difference.textColor = .white
             difference.font = UIFont.boldSystemFont(ofSize: 16.0)
+ */
         }
+ 
         
         return cell
     }
