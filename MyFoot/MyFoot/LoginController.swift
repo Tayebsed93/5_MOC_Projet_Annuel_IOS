@@ -21,7 +21,6 @@ class LoginController: UIViewController {
         let attributedPlaceholder = NSAttributedString(string: "email", attributes:
             [NSAttributedStringKey.foregroundColor : UIColor.white])
         e.textColor = .white
-        e.text = "psg@gmail.com"
         e.attributedPlaceholder = attributedPlaceholder
         e.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
         return e
@@ -32,7 +31,6 @@ class LoginController: UIViewController {
         let attributedPlaceholder = NSAttributedString(string: "mot de passe", attributes:
             [NSAttributedStringKey.foregroundColor : UIColor.white])
         p.textColor = .white
-        p.text = "a"
         p.isSecureTextEntry = true
         p.attributedPlaceholder = attributedPlaceholder
         p.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
