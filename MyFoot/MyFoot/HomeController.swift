@@ -58,7 +58,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     }
     
     func dataChanged(email: String, password: String, apikey: String) {
-        print("Tayeb", apikey)
         defaults.set(apikey, forKey: defaultsKeys.key11)
         defaults.synchronize()
         
@@ -102,7 +101,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         facebookButton.backgroundColor = FACEBOOK_COLOR_BLUE
 
         self.isPlayer = true
-        callAPI()
+        //callAPI()
         //callAPIComposition()
         
         
@@ -122,7 +121,8 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
 
         self.isPlayer = true
         tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
-        callAPIComposition()
+        //callAPIComposition()
+        callAPI()
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         
     
@@ -439,7 +439,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeController", for: indexPath)
-        
+        cell.selectionStyle = .none
         //Status
         let status_match = cell.viewWithTag(12) as! UIButton
         status_match.isEnabled = false
@@ -480,28 +480,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     }
     
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
-            viewController.nationality = competitionsStruct[indexPath.row].match_home
-            var date = NSDate()
-            date = competitionsStruct[indexPath.row].time_start as NSDate
-            let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier: "fr")
-            dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
-            let dateString = dateFormatter.string(from:date as Date)
-            viewController.match_date = dateString
-            guard var apikey = defaults.string(forKey: defaultsKeys.key11) else {
-                let message = "Access Denied. Invalid Api key"
-                alerteMessage(message: message)
-                return
-            }
-            viewController.passapikey = defaults.string(forKey: defaultsKeys.key11)!
-            viewController.isPlayer = true
-            if let navigator = navigationController {
-                navigator.pushViewController(viewController, animated: true)
-            }
-        }
-    }
+
     
     @objc func btnAction(_ sender: UIButton) {
         

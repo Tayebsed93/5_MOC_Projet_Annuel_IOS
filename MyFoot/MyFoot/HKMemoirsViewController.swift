@@ -31,9 +31,7 @@ class HKMemoirsViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var stopReplayButton: UIButton!
     var selectNode: SCNNode?
     
-    @IBOutlet weak var timeView: UIView!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var redView: UIView!
+
     var documentController: UIDocumentInteractionController?
     let replayVideoFileName: String = "REPLAY_WEARE.MP4"
     
@@ -42,41 +40,42 @@ class HKMemoirsViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("OKK")
+  
         let configuration = ARWorldTrackingConfiguration()
         sceneView.session.run(configuration)
-        showPhotos()
+        //showPhotos()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("OKK")
+   
         sceneView.session.pause()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("OKK")
+
         sceneView.delegate = self
         //抗锯齿
         sceneView.antialiasingMode = .multisampling4X
         print("OKK")
-        showPhotos()
+        //showPhotos()
         perform(#selector(hidenPreview), with: nil, afterDelay: 3)
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandle(gesture:)))
         sceneView.addGestureRecognizer(tap)
-        redView.layer.cornerRadius = 5
-        redView.layer.masksToBounds = true
+
+
     }
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         UIView.animate(withDuration: 2.0) {
-            self.replayButton.alpha = self.replayButton.alpha < 0.5 ? 1 : 0
-            self.mainButton.alpha =   self.replayButton.alpha < 0.5 ? 0.1 : 1
+            //self.replayButton.alpha = self.replayButton.alpha < 0.5 ? 1 : 0
+            //self.mainButton.alpha =   self.replayButton.alpha < 0.5 ? 0.1 : 1
             
-            for button in self.smailButtons {
-                button.alpha =  self.replayButton.alpha
-            }
+            self.mainButton.alpha = 0.2
+            //for button in self.smailButtons {
+            //    button.alpha =  self.replayButton.alpha
+            //}
         }
     }
 }
@@ -186,14 +185,15 @@ extension HKMemoirsViewController {
     @IBAction func onlyPanoramaButtonDidClick(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
+            showPhotos()
+            
+        } else {
             sceneView.removeAllNodes()
             if rescoucceConfiguration.panorama_isShow {
                 if let panoramaImage = rescouceManager.panoramaImage {
                     sceneView.addPanoramaImage(image: panoramaImage)
                 }
             }
-        } else {
-            showPhotos()
         }
     }
     @IBAction func resetButtonDidClick(_ sender: UIButton) {
@@ -208,15 +208,15 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
         self.mainButton.isSelected = false
         RPScreenRecorder.shared().startRecording(handler: nil)
         RPScreenRecorder.shared().delegate = self
-        self.replayButtonRight.constant = (kScreenWidth - stopReplayButton.bounds.size.width ) * 0.5
+        //self.replayButtonRight.constant = (kScreenWidth - stopReplayButton.bounds.size.width ) * 0.5
         UIView.animate(withDuration: 2.5, animations: {
             for button in self.smailButtons {
                 button.alpha = 0
             }
             self.mainButton.alpha = 0
-            self.stopReplayButton.alpha = 1
+            //self.stopReplayButton.alpha = 1
             self.view.layoutIfNeeded()
-            self.timeView.alpha = 1
+
         })
     }
     func stopRecoder() {
@@ -235,9 +235,9 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
                     button.alpha = 1
                 }
                 self.mainButton.alpha = 1
-                self.stopReplayButton.alpha = 0
+                //self.stopReplayButton.alpha = 0
                 self.view.layoutIfNeeded()
-                self.timeView.alpha = 0
+
             })
         }
     }
@@ -262,6 +262,7 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
         print(previewController)
     }
     func screenRecorder(_ screenRecorder: RPScreenRecorder, didStopRecordingWith previewViewController: RPPreviewViewController?, error: Error?) {
+        /*
         if error != nil {
             DispatchQueue.main.async {
                 let string = error?.localizedDescription
@@ -270,6 +271,7 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
                 self.showFailReplay()
             }
         }
+ */
     }
     //录制失败
     func showFailReplay() {
@@ -282,7 +284,7 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
         }
         self.mainButton.alpha = 1
         UIView.animate(withDuration: 2.5) {
-            self.stopReplayButton.alpha = 0
+            //self.stopReplayButton.alpha = 0
             self.view.layoutIfNeeded()
         }
     }
@@ -291,6 +293,7 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
     }
     // MARK: 提取视频
     func outputVideo() {
+        /*
         let smartAlbums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .albumRegular, options: nil)
         for i in 0..<smartAlbums.count {
             let assetCollection = smartAlbums[i]
@@ -319,22 +322,16 @@ extension HKMemoirsViewController: RPScreenRecorderDelegate, RPPreviewViewContro
                 }
             }
         }
+ */
     }
+ 
 }
 
 // MARK: Share
 @available(iOS 11.0, *)
 extension HKMemoirsViewController {
     func showShareAlert() {
-        let alertVc = UIAlertController.init(title: "", message: "分享视频", preferredStyle: .alert)
-        let alertAction0 = UIAlertAction.init(title: "分享", style: .default) { (_) in
-            self.share()
-        }
-        let alertAction1 = UIAlertAction.init(title: "取消", style: .cancel) { (_) in
-        }
-        alertVc.addAction(alertAction0)
-        alertVc.addAction(alertAction1)
-        self.present(alertVc, animated: true, completion: nil)
+
     }
     func share() {
         let PATH_MOVIE_FILE = NSTemporaryDirectory().appending("REPLAY_WEARE.MP4")

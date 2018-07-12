@@ -13,12 +13,15 @@ import Alamofire
 
 class LoginController: UIViewController {
     
+    var passnameclub = String()
+    
     let emailTextField: UITextField = {
         let e = UITextField()
         
         let attributedPlaceholder = NSAttributedString(string: "email", attributes:
             [NSAttributedStringKey.foregroundColor : UIColor.white])
         e.textColor = .white
+        e.text = "psg@gmail.com"
         e.attributedPlaceholder = attributedPlaceholder
         e.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
         return e
@@ -26,9 +29,10 @@ class LoginController: UIViewController {
     
     let passwordTextField: UITextField = {
         let p = UITextField()
-        let attributedPlaceholder = NSAttributedString(string: "password", attributes:
+        let attributedPlaceholder = NSAttributedString(string: "mot de passe", attributes:
             [NSAttributedStringKey.foregroundColor : UIColor.white])
         p.textColor = .white
+        p.text = "a"
         p.isSecureTextEntry = true
         p.attributedPlaceholder = attributedPlaceholder
         p.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
@@ -73,7 +77,7 @@ class LoginController: UIViewController {
             "Pas encore de compte? ", attributes: [NSAttributedStringKey.foregroundColor:
                 color, NSAttributedStringKey.font : font ])
         
-        attributedTitle.append(NSAttributedString(string: "S'inscrire", attributes:
+        attributedTitle.append(NSAttributedString(string: "Crée ton club", attributes:
             [NSAttributedStringKey.foregroundColor: UIColor.white,
              NSAttributedStringKey.font: font]))
         
@@ -114,7 +118,7 @@ class LoginController: UIViewController {
     
     
     @objc func signupAction() {
-        //let signupcontroller = SignupController()
+        //let signupcontroller = CreateClubController()
         //navigationController?.pushViewController(signupcontroller, animated: true)
     }
     
@@ -240,9 +244,16 @@ class LoginController: UIViewController {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
                 DispatchQueue.main.async()
                     {
-                        if let apiKey = json["apiKey"], let role = json["role"]
+                        print(json)
+                        if let apiKey = json["apiKey"], let role = json["role"], let name_club = json["name_club"]
                         {
-                            self.passData(role: role as! String, apiKey: apiKey as! String)
+                            if name_club as! String == self.passnameclub {
+                                self.passData(role: role as! String, apiKey: apiKey as! String)
+                            }
+                            else {
+                                self.alerteMessage(message: "Vous n'êtes pas enregistré en tant que membre de ce club : " + self.passnameclub )
+                            }
+                            
                         }
                         
                         if let messageError = json["message"]
@@ -269,44 +280,17 @@ class LoginController: UIViewController {
     func passData(role:String, apiKey : String) {
         
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        print("Tayeb " ,role)
         
-        switch role {
-        case "president"  : break
-            /*
-            let tabVc = storyboard.instantiateViewController(withIdentifier: "tbControllerAdministrateur") as! UITabBarController
-            
-            ///////// 1er controller
-            //Convertie la tabViewController en UINavigationController
-            let navigation = tabVc.viewControllers?[0] as! UINavigationController
-            
-            //Convertie la UINavigationController en UIViewController (Home)
-            //let homeController = navigation.topViewController as? HomeController
-            
-            //Envoie le nom et le mot de passe à la page statistique
-            //homeController?.passapikey = apiKey
-            
-            //Change la page vers Home
-            self.present(tabVc, animated: true, completion: nil)
- */
-        case "coach"  :
-            let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
-            
-            /////////****** 1er controller
-            //Convertie la tabViewController en UINavigationController
-            let navigation = tabVc.viewControllers?[0] as! UINavigationController
-            
-            //Convertie la UINavigationController en UIViewController (Home)
-            let homeController = navigation.topViewController as? HomeController
-            //Envoie le nom et le mot de passe à la page statistique
-            homeController?.passapikey = apiKey
-            
-            //Change la page vers Home
-            self.present(tabVc, animated: true, completion: nil)
-        case "supp"  :
-            print( "Value of index is 5")
-        default :
-            print( "default case")
+        if role == "president" {
+            print("Passe")
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ActualityTableViewController") as? ActualityTableViewController {
+                if let navigator = self.navigationController {
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
         }
+
 
     }
     

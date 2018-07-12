@@ -60,8 +60,6 @@ extension UIImageView {
     
     func loadImageUsingUrlString(urlString: String) {
         var imageUrlString: String?
-        
-        imageUrlString?.stringByRemovingWhitespaces
         imageUrlString = urlString
         let url = NSURL(string: urlString)
         

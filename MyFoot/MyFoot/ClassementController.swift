@@ -102,7 +102,7 @@ class ClassementController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        
+        cell.selectionStyle = .none
         if (indexPath.item % 2 == 0) {
             cell.backgroundColor = .white
   

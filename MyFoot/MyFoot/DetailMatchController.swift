@@ -160,6 +160,9 @@ class DetailMatchController: UIViewController, UITableViewDataSource, UITableVie
         let CustomCellRight = tableView.dequeueReusableCell(withIdentifier: "CustomCellRight", for: indexPath) as! CustomCellRight
         let CompositionCell = tableView.dequeueReusableCell(withIdentifier: "CompositionCell", for: indexPath) as! CompositionCell
         
+        CustomCellLeft.selectionStyle = .none
+        CustomCellRight.selectionStyle = .none
+        CompositionCell.selectionStyle = .none
         if selected_segmented == 0 {
             if (detailGoalStruct[indexPath.row].home_scorer == "") {
                 

@@ -26,7 +26,6 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
     
     @IBOutlet weak var tableviewOutlet: UITableView!
     
-    
     let defaults = UserDefaults.standard
     
     var passlogo = String()

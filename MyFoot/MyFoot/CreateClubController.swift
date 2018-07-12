@@ -186,7 +186,7 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
             {
                 DispatchQueue.main.async()
                 {
-                    self.alerteMessage(message: ERROR_CONSTANTE as! String)
+                    //self.alerteMessage(message: ERROR_CONSTANTE as! String)
                     self.spinner.stopAnimating()
                 }
                 print(error)

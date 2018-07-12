@@ -38,7 +38,7 @@ class PlayerController: UITableViewController, UISearchBarDelegate {
         //players?.count
         searchBar.text = ""
 
-        
+        searchBar.isHidden = true
         self.title = nationality
         self.tableView.delegate = self
         self.tableView.dataSource = self

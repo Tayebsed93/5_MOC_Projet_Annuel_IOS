@@ -16,15 +16,23 @@ struct club {
 }
 
 class ClubListController: UITableViewController, UISearchBarDelegate {
+
+
     
+    @IBOutlet weak var addButton: UIBarButtonItem!
     
     var clubsStruct = [club]()
     @IBOutlet weak var searchBar: UISearchBar!
+    var filteredArray = [String]()
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
         
+
+        addButton.isEnabled = false
+        searchBar.isHidden = true
+        addButton.tintColor = UIColor.clear
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
         
@@ -45,6 +53,8 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         }
         
         
+        
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -60,7 +70,6 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
             self?.tableView.reloadData()
         })
     }
-    
     
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -224,6 +233,7 @@ class ClubListController: UITableViewController, UISearchBarDelegate {
         }
         let action2 = UIAlertAction(title: "Membre", style: .default) { (action) in
             if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as? LoginController {
+                viewController.passnameclub = name!
                 if let navigator = self.navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }

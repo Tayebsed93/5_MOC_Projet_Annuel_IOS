@@ -68,6 +68,21 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
             print("User is logged in with acess token: \(AccessToken.current)")
         }
         
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+            case 1136:
+                facebookName.isHidden = true
+            case 1334:
+                facebookName.isHidden = false
+            case 1920, 2208:
+                facebookName.isHidden = false
+            case 2436:
+                facebookName.isHidden = false
+            default:
+                print("Default")
+            }
+        }
+        
         
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -151,73 +166,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         return body
     }
     
-    /*
-     func callAPIRegister(name: String, email: String, picture: String) {
-     
-     let urlToRequest = addressUrlStringProd+registerUrlString
-     let url4 = URL(string: urlToRequest)!
-     let session4 = URLSession.shared
-     let request = NSMutableURLRequest(url: url4)
-     request.httpMethod = "POST"
-     request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-     
-     
-     let param = [
-     "name"  : name,
-     "email"    : email,
-     "password"    : MDP_DEFAULT,
-     "role"    : role_supporter,
-     "picture"      : picture
-     ]
-     
-     let boundary = generateBoundaryString()
-     request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-     request.httpBody = createBodyWithParameters(parameters: param, boundary: boundary) as Data
-     
-     
-     let task = session4.dataTask(with: request as URLRequest)
-     
-     { (data, response, error) in
-     guard let _: Data = data, let _: URLResponse = response, error == nil else
-     {
-     
-     print("ERROR: \(error?.localizedDescription)")
-     
-     self.alerteMessage(message: (error?.localizedDescription)!)
-     return
-     }
-     let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-     //print("Response : \n \(dataString)") //JSONSerialization in String
-     
-     
-     //JSONSerialization in Object
-     do {
-     let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
-     DispatchQueue.main.async()
-     {
-     print(json)
-     
-     print("Tayeb")
-     if let message = json["message"]
-     {
-     if message as! String == "You are successfully registered" {
-     self.alerteMessage(message: message as! String)
-     }
-     }
-     
-     self.callAPILogin(email: email)
-     
-     }
-     
-     
-     } catch let error as NSError {
-     print("Failed to load: \(error.localizedDescription)")
-     }
-     
-     }
-     ;task.resume()
-     }
-     */
+
     
     
     func callAPIRegister(name: String, email: String, picture: String)
