@@ -59,11 +59,14 @@ class ClassementController: UITableViewController {
     }
     
     func showActivityIndicatory() {
-        self.spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        //spinner.center = view.center
+        //self.spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        /*
+        spinner.center = self.tableView.center;
         spinner.hidesWhenStopped = true
         spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-        view.addSubview(spinner)
+        //view.addSubview(spinner)
+        tableView.addSubview(spinner)
+        */
         spinner.startAnimating()
         
     }

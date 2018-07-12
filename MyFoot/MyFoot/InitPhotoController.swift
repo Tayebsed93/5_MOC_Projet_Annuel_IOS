@@ -24,54 +24,21 @@ class InitPhotoController: UIViewController {
         
         pscope.addPermission(CameraPermission(), message: "\rAccès à la caméra")
         
+        guard let team_name = playerss![0].club?.description else {
+            return
+        }
+    
+        print(team_name)
         let manager = RescouceManager.share
-        /*
+
         if manager.boxImages.count == 0 {
-            manager.addBoxImage(image: UIImage(named: "B_Image_0")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_1")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_2")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_3")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_4")!)
+            manager.addBoxImage(image: UIImage(named: team_name)!)
+            manager.addBoxImage(image: UIImage(named: team_name)!)
+            manager.addBoxImage(image: UIImage(named: team_name)!)
+            manager.addBoxImage(image: UIImage(named: team_name)!)
+            manager.addBoxImage(image: UIImage(named: team_name)!)
         }
- */
-        if manager.boxImages.count == 0 {
-            manager.addBoxImage(image: UIImage(named: "B_Image_PSG")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_PSG")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_PSG")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_PSG")!)
-            manager.addBoxImage(image: UIImage(named: "B_Image_PSG")!)
-        }
-        /*
-        if manager.verticalImages.count == 0 {
-            manager.addVerticalImage(image: UIImage(named: "V_Image_0")!)
-            manager.addVerticalImage(image: UIImage(named: "V_Image_1")!)
-            manager.addVerticalImage(image: UIImage(named: "V_Image_2")!)
-            manager.addVerticalImage(image: UIImage(named: "V_Image_3")!)
-            manager.addVerticalImage(image: UIImage(named: "V_Image_4")!)
-            manager.addVerticalImage(image: UIImage(named: "V_Image_5")!)
-        }
-         */
-        /*
-        if manager.verticalImages.count == 0 {
-            manager.addVerticalImage(image: UIImage(named: "V_Neymar")!)
-            manager.addVerticalImage(image: UIImage(named: "V_Gustavo")!)
-            manager.addVerticalImage(image: UIImage(named: "V_Ballotelli")!)
-            manager.addVerticalImage(image: UIImage(named: "V_Fekir")!)
-            manager.addVerticalImage(image: UIImage(named: "V_Falcao")!)
-            manager.addVerticalImage(image: UIImage(named: "V_Khazri")!)
-        }
- */
-        /*
-        if manager.horizontalImages.count == 0 {
-            manager.addHorizontalImage(image: UIImage(named: "H_Image_0")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_Image_1")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_Image_2")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_Image_3")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_Image_4")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_Image_5")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_Image_6")!)
-        }
-         */
+
         
         if manager.horizontalImages.count == 0 {
             manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
@@ -84,7 +51,7 @@ class InitPhotoController: UIViewController {
         }
         if manager.text == nil {
             if  manager.text?.count == 0 {
-                manager.text = "嗨,你好呀!"
+                manager.text = "Football"
                 manager.textColor = "textColor_0"
             }
         }
