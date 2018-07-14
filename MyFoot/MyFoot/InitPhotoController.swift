@@ -18,19 +18,21 @@ class InitPhotoController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
-        //visiterButton.backgroundColor = FACEBOOK_COLOR_BLUE
-        
         pscope.addPermission(CameraPermission(), message: "\rAccès à la caméra")
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidLoad()
         
         guard let team_name = playerss![0].club?.description else {
             return
         }
-    
+        
         print(team_name)
         let manager = RescouceManager.share
-
+        
+        manager.boxImages = []
         if manager.boxImages.count == 0 {
             manager.addBoxImage(image: UIImage(named: team_name)!)
             manager.addBoxImage(image: UIImage(named: team_name)!)
@@ -38,16 +40,17 @@ class InitPhotoController: UIViewController {
             manager.addBoxImage(image: UIImage(named: team_name)!)
             manager.addBoxImage(image: UIImage(named: team_name)!)
         }
-
         
+        manager.horizontalImages = []
+        let stade = team_name + "_stade"
         if manager.horizontalImages.count == 0 {
-            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
-            manager.addHorizontalImage(image: UIImage(named: "H_PSG")!)
+            manager.addHorizontalImage(image: UIImage(named: stade)!)
+            manager.addHorizontalImage(image: UIImage(named: stade)!)
+            manager.addHorizontalImage(image: UIImage(named: stade)!)
+            manager.addHorizontalImage(image: UIImage(named: stade)!)
+            manager.addHorizontalImage(image: UIImage(named: stade)!)
+            manager.addHorizontalImage(image: UIImage(named: stade)!)
+            manager.addHorizontalImage(image: UIImage(named: stade)!)
         }
         if manager.text == nil {
             if  manager.text?.count == 0 {
@@ -58,6 +61,8 @@ class InitPhotoController: UIViewController {
         
         
         
+        
+        // Do any additional setup after loading the view, typically from a nib.
     }
     
     
@@ -68,6 +73,9 @@ class InitPhotoController: UIViewController {
     
     
     @IBAction func visiterButtonClick(_ sender: Any) {
+        self.permissions()
+        
+        /*
         if UIDevice().userInterfaceIdiom == .phone {
             switch UIScreen.main.nativeBounds.height {
             case 1136:
@@ -86,6 +94,7 @@ class InitPhotoController: UIViewController {
                 alerteMessage(message: "Cette fonctionnalité n'est pour le moment pas disponible sur cet appareil")
             }
         }
+ */
         
     }
     

@@ -52,6 +52,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>MyFoot souhaite accèder à votre caméra</string>
+	<key>NSMotionUsageDescription</key>
+	<string>MyFoot souhaite accèder aux movements de votre téléphone</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>MyFoot souhaite accèder à votre micro</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -65,6 +67,7 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+		<string>arkit</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
