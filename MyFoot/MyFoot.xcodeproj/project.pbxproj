@@ -34,18 +34,6 @@
 		6DA5054520F129EA003C83E7 /* EpisodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA5054420F129EA003C83E7 /* EpisodeTableViewCell.swift */; };
 		6DA5054720F12A03003C83E7 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA5054620F12A03003C83E7 /* Episode.swift */; };
 		6DA5054920F3905D003C83E7 /* YTRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA5054820F3905D003C83E7 /* YTRoundedButton.swift */; };
-		6DB7147F20ECF3AB003DE744 /* InitPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7147E20ECF3AB003DE744 /* InitPhotoController.swift */; };
-		6DB7148220ECF3EB003DE744 /* HKTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7148120ECF3EB003DE744 /* HKTools.swift */; };
-		6DB7148520ECF50D003DE744 /* RescouceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7148420ECF50D003DE744 /* RescouceManager.swift */; };
-		6DB7148720ECF520003DE744 /* HKMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7148620ECF520003DE744 /* HKMacro.swift */; };
-		6DB7148920ECF539003DE744 /* RescouceConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7148820ECF539003DE744 /* RescouceConfiguration.swift */; };
-		6DB7148C20ECF5C1003DE744 /* ConstantsPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7148B20ECF5C1003DE744 /* ConstantsPhoto.swift */; };
-		6DB7148E20ECF5FB003DE744 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7148D20ECF5FB003DE744 /* Permissions.swift */; };
-		6DB7149120ECF63F003DE744 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7149020ECF63F003DE744 /* Structs.swift */; };
-		6DB7149320ECF658003DE744 /* PermissionScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7149220ECF658003DE744 /* PermissionScope.swift */; };
-		6DB7149520ECF680003DE744 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6DB7149420ECF680003DE744 /* Localizable.strings */; };
-		6DB7149820ECF6A8003DE744 /* HKARSCNView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7149720ECF6A8003DE744 /* HKARSCNView.swift */; };
-		6DB7149B20ED0093003DE744 /* HKMemoirsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7149A20ED0093003DE744 /* HKMemoirsViewController.swift */; };
 		6DBB387E2098ADCD000BAA9A /* DatePopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBB387D2098ADCD000BAA9A /* DatePopUpViewController.swift */; };
 		6DC033261F8A739E0088AB6D /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC033251F8A739E0088AB6D /* RegisterController.swift */; };
 		6DCD83122090C61F00FB4AC3 /* ClubListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DCD83112090C61F00FB4AC3 /* ClubListController.swift */; };
@@ -110,19 +98,6 @@
 		6DA5054420F129EA003C83E7 /* EpisodeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeTableViewCell.swift; sourceTree = "<group>"; };
 		6DA5054620F12A03003C83E7 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		6DA5054820F3905D003C83E7 /* YTRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YTRoundedButton.swift; sourceTree = "<group>"; };
-		6DB7147E20ECF3AB003DE744 /* InitPhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitPhotoController.swift; sourceTree = "<group>"; };
-		6DB7148120ECF3EB003DE744 /* HKTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKTools.swift; sourceTree = "<group>"; };
-		6DB7148420ECF50D003DE744 /* RescouceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescouceManager.swift; sourceTree = "<group>"; };
-		6DB7148620ECF520003DE744 /* HKMacro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKMacro.swift; sourceTree = "<group>"; };
-		6DB7148820ECF539003DE744 /* RescouceConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescouceConfiguration.swift; sourceTree = "<group>"; };
-		6DB7148B20ECF5C1003DE744 /* ConstantsPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsPhoto.swift; sourceTree = "<group>"; };
-		6DB7148D20ECF5FB003DE744 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
-		6DB7148F20ECF623003DE744 /* PermissionScope.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PermissionScope.h; sourceTree = "<group>"; };
-		6DB7149020ECF63F003DE744 /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
-		6DB7149220ECF658003DE744 /* PermissionScope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionScope.swift; sourceTree = "<group>"; };
-		6DB7149420ECF680003DE744 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		6DB7149720ECF6A8003DE744 /* HKARSCNView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKARSCNView.swift; sourceTree = "<group>"; };
-		6DB7149A20ED0093003DE744 /* HKMemoirsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKMemoirsViewController.swift; sourceTree = "<group>"; };
 		6DBB387D2098ADCD000BAA9A /* DatePopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePopUpViewController.swift; sourceTree = "<group>"; };
 		6DC033251F8A739E0088AB6D /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		6DCD83112090C61F00FB4AC3 /* ClubListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubListController.swift; sourceTree = "<group>"; };
@@ -257,18 +232,6 @@
 			name = Composition;
 			sourceTree = "<group>";
 		};
-		6D4F9F5D20A2591A0055A0E6 /* SnapFilter */ = {
-			isa = PBXGroup;
-			children = (
-				6DB7149920ED007C003DE744 /* Controllers */,
-				6DB7149620ECF69A003DE744 /* Views */,
-				6DB7148A20ECF5A5003DE744 /* PermissionScope */,
-				6DB7148320ECF4F4003DE744 /* Model */,
-				6DB7148020ECF3D4003DE744 /* HKTools */,
-			);
-			name = SnapFilter;
-			sourceTree = "<group>";
-		};
 		6D61C6FF1F75C3EF00F17A63 /* Liste Player */ = {
 			isa = PBXGroup;
 			children = (
@@ -309,7 +272,6 @@
 			isa = PBXGroup;
 			children = (
 				6D20FF6220CBF58800EF3323 /* TweeterFeed */,
-				6D4F9F5D20A2591A0055A0E6 /* SnapFilter */,
 				6DBB387A20989818000BAA9A /* ResultatMatch */,
 				6D2E8F901F75ADC0004F5E30 /* Composition */,
 				6D61C6FF1F75C3EF00F17A63 /* Liste Player */,
@@ -317,54 +279,6 @@
 				6D2426441F85694C00157787 /* Score */,
 			);
 			name = Supporter;
-			sourceTree = "<group>";
-		};
-		6DB7148020ECF3D4003DE744 /* HKTools */ = {
-			isa = PBXGroup;
-			children = (
-				6DB7148120ECF3EB003DE744 /* HKTools.swift */,
-			);
-			name = HKTools;
-			sourceTree = "<group>";
-		};
-		6DB7148320ECF4F4003DE744 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				6DB7148420ECF50D003DE744 /* RescouceManager.swift */,
-				6DB7148620ECF520003DE744 /* HKMacro.swift */,
-				6DB7148820ECF539003DE744 /* RescouceConfiguration.swift */,
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
-		6DB7148A20ECF5A5003DE744 /* PermissionScope */ = {
-			isa = PBXGroup;
-			children = (
-				6DB7148B20ECF5C1003DE744 /* ConstantsPhoto.swift */,
-				6DB7148D20ECF5FB003DE744 /* Permissions.swift */,
-				6DB7148F20ECF623003DE744 /* PermissionScope.h */,
-				6DB7149020ECF63F003DE744 /* Structs.swift */,
-				6DB7149220ECF658003DE744 /* PermissionScope.swift */,
-				6DB7149420ECF680003DE744 /* Localizable.strings */,
-			);
-			name = PermissionScope;
-			sourceTree = "<group>";
-		};
-		6DB7149620ECF69A003DE744 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				6DB7149720ECF6A8003DE744 /* HKARSCNView.swift */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
-		6DB7149920ED007C003DE744 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				6DB7147E20ECF3AB003DE744 /* InitPhotoController.swift */,
-				6DB7149A20ED0093003DE744 /* HKMemoirsViewController.swift */,
-			);
-			name = Controllers;
 			sourceTree = "<group>";
 		};
 		6DBB387A20989818000BAA9A /* ResultatMatch */ = {
@@ -542,7 +456,6 @@
 				6DE6274C20DC3DD9000EA345 /* CustomCellLeft.xib in Resources */,
 				6D25705D1F698BC9000AE4C3 /* Assets.xcassets in Resources */,
 				6D2570581F698BC9000AE4C3 /* Main.storyboard in Resources */,
-				6DB7149520ECF680003DE744 /* Localizable.strings in Resources */,
 				6DF103E820EA5F5500F6809D /* CompositionCell.xib in Resources */,
 				6DE6275020DC3F86000EA345 /* CustomCellRight.xib in Resources */,
 			);
@@ -665,8 +578,6 @@
 			files = (
 				6D25705B1F698BC9000AE4C3 /* MyFoot.xcdatamodeld in Sources */,
 				6DCD83172092494300FB4AC3 /* PresidentHomeController.swift in Sources */,
-				6DB7148520ECF50D003DE744 /* RescouceManager.swift in Sources */,
-				6DB7149320ECF658003DE744 /* PermissionScope.swift in Sources */,
 				6DE6274520DBD42A000EA345 /* DesignView.swift in Sources */,
 				6DCD83142090E7A300FB4AC3 /* CreateClubController.swift in Sources */,
 				6D2E8F821F75AB90004F5E30 /* DataManager.swift in Sources */,
@@ -678,12 +589,9 @@
 				6D9B3A7E20F6349B00DE64D1 /* ActualityTableViewController.swift in Sources */,
 				6DE6275220DC408D000EA345 /* CustomCellRight.swift in Sources */,
 				6DA5054520F129EA003C83E7 /* EpisodeTableViewCell.swift in Sources */,
-				6DB7148E20ECF5FB003DE744 /* Permissions.swift in Sources */,
-				6DB7149120ECF63F003DE744 /* Structs.swift in Sources */,
 				6D61C6FE1F75C30500F17A63 /* PlayerController.swift in Sources */,
 				6DFC3E6D20EBC48E00278D0C /* PersistanteData.swift in Sources */,
 				6D5A15F420A53E6A00ABE19F /* FacebookLoginViewController.swift in Sources */,
-				6DB7147F20ECF3AB003DE744 /* InitPhotoController.swift in Sources */,
 				6D9B7EB51F698DB200846BA0 /* LoginController.swift in Sources */,
 				6D94EE4D20DA4BAE00439512 /* ScoresController.swift in Sources */,
 				6DA5054320F12967003C83E7 /* EpisodesTableViewController.swift in Sources */,
@@ -693,18 +601,13 @@
 				6D2570531F698BC9000AE4C3 /* AppDelegate.swift in Sources */,
 				6DA5054720F12A03003C83E7 /* Episode.swift in Sources */,
 				6DE6274720DBD7E9000EA345 /* ResultatMatchController.swift in Sources */,
-				6DB7149B20ED0093003DE744 /* HKMemoirsViewController.swift in Sources */,
 				6DBB387E2098ADCD000BAA9A /* DatePopUpViewController.swift in Sources */,
 				6D2E8F8F1F75AD10004F5E30 /* CompositionBDD.swift in Sources */,
 				6DFC3E7120EBEA8A00278D0C /* TabBarDetailMatch.swift in Sources */,
-				6DB7149820ECF6A8003DE744 /* HKARSCNView.swift in Sources */,
 				6D94EE8920DA8C1F00439512 /* DetailMatchController.swift in Sources */,
 				6DFC3E6F20EBDA1400278D0C /* ExtensionAnchor.swift in Sources */,
-				6DB7148720ECF520003DE744 /* HKMacro.swift in Sources */,
-				6DB7148C20ECF5C1003DE744 /* ConstantsPhoto.swift in Sources */,
 				6D94EE8B20DAA02B00439512 /* ContainerMatch.swift in Sources */,
 				6DD2572720DEA21E00446800 /* ClassementController.swift in Sources */,
-				6DB7148920ECF539003DE744 /* RescouceConfiguration.swift in Sources */,
 				6D9B7EB71F698EC800846BA0 /* HomeController.swift in Sources */,
 				6DA5054920F3905D003C83E7 /* YTRoundedButton.swift in Sources */,
 				6D6DE8871F71C30B000E143C /* CompositionController.swift in Sources */,
@@ -718,7 +621,6 @@
 				6D5A15F620A53F2C00ABE19F /* CircularTransition.swift in Sources */,
 				6DCD83122090C61F00FB4AC3 /* ClubListController.swift in Sources */,
 				6DCD831A20928BBC00FB4AC3 /* Constants.swift in Sources */,
-				6DB7148220ECF3EB003DE744 /* HKTools.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

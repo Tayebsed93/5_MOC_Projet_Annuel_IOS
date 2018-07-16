@@ -1209,70 +1209,6 @@
             </objects>
             <point key="canvasLocation" x="3036" y="2160"/>
         </scene>
-        <!--Filtre-->
-        <scene sceneID="4z7-bX-SAy">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="PbP-sp-uUT" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Filtre" image="tb3" id="fi3-Fz-2PM"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="A0B-cc-WVQ">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="47Q-ro-jmm" kind="relationship" relationship="rootViewController" id="jQE-aE-lwI"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CuJ-ig-o3f" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1641" y="1117"/>
-        </scene>
-        <!--Init Photo Controller-->
-        <scene sceneID="odq-fr-QA4">
-            <objects>
-                <viewController id="47Q-ro-jmm" customClass="InitPhotoController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="AAK-gn-leI"/>
-                        <viewControllerLayoutGuide type="bottom" id="yuQ-y8-PzK"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="QlC-O3-R1v">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ar_stadium1" translatesAutoresizingMaskIntoConstraints="NO" id="3E4-sc-bID">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mtz-Pj-U9L">
-                                <rect key="frame" x="123" y="383" width="129" height="46"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.27408752809999998" green="0.67843137249999996" blue="0.51157061800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                                <state key="normal" title="Visiter">
-                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="visiterButtonClick:" destination="47Q-ro-jmm" eventType="touchUpInside" id="7Kg-wk-hUU"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="3E4-sc-bID" firstAttribute="top" secondItem="QlC-O3-R1v" secondAttribute="top" id="9zC-6t-5AD"/>
-                            <constraint firstItem="3E4-sc-bID" firstAttribute="leading" secondItem="QlC-O3-R1v" secondAttribute="leading" id="DYg-Pw-DIT"/>
-                            <constraint firstAttribute="trailing" secondItem="3E4-sc-bID" secondAttribute="trailing" id="fPe-3g-zCb"/>
-                            <constraint firstAttribute="bottom" secondItem="3E4-sc-bID" secondAttribute="bottom" id="rfd-au-v4l"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="JFS-YQ-H2B"/>
-                    <connections>
-                        <outlet property="visiterButton" destination="Mtz-Pj-U9L" id="cX4-7x-6WG"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Gaj-jy-GtW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2524" y="1119.4581280788177"/>
-        </scene>
         <!--Composition-->
         <scene sceneID="coW-Lv-w2N">
             <objects>
@@ -2377,12 +2313,12 @@
         <!--Memoirs-->
         <scene sceneID="6cK-gO-Wep">
             <objects>
-                <viewController storyboardIdentifier="HKMemoirsViewController" title="Memoirs" id="y9w-Ca-gsJ" customClass="HKMemoirsViewController" customModule="HeavenMemoirs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HKMemoirsViewController" title="Memoirs" id="y9w-Ca-gsJ" customClass="HKMemoirsViewController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YfK-mi-hCx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" autoenablesDefaultLighting="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4cQ-Bc-PMy" customClass="HKARSCNView" customModule="HeavenMemoirs" customModuleProvider="target">
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" autoenablesDefaultLighting="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4cQ-Bc-PMy" customClass="HKARSCNView" customModule="MyFoot" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
                                 <connections>
                                     <outlet property="delegate" destination="y9w-Ca-gsJ" id="OKi-q2-NMg"/>
@@ -2440,7 +2376,6 @@
         <image name="France" width="300" height="200"/>
         <image name="Germany" width="225" height="135"/>
         <image name="Pays-Bas" width="900" height="600"/>
-        <image name="ar_stadium1" width="555" height="777"/>
         <image name="back_wr" width="128" height="128"/>
         <image name="button:JRo-Of-S8n:image" width="250" height="250">
             <mutableData key="keyedArchiveRepresentation">
@@ -9578,7 +9513,6 @@ kFAAAAAAAAAEAQAAAAAAAABWAAAAAAAAAAAAAAAAAAKQUg
         <image name="tb1_selected" width="25" height="25"/>
         <image name="tb2" width="25" height="25"/>
         <image name="tb2_selected" width="25" height="25"/>
-        <image name="tb3" width="30" height="30"/>
         <image name="tb4" width="25" height="25"/>
         <image name="tb4_selected" width="25" height="25"/>
         <image name="tb5" width="25" height="25"/>
