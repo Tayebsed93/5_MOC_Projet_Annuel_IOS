@@ -124,7 +124,17 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
         
         //Name  + heure
         let name_date = cell.viewWithTag(4) as! UILabel
-        name_date.text = "Administrateur | March 28, 2016"
+        
+        let date_string = newsMembreStruct[indexPath.row].created_at
+        let format = "yyyy-MM-dd HH:mm:ss"
+        let date_nsdate = date_string?.toDate(format: format)
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "fr")
+        dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
+        let dateString = dateFormatter.string(from: date_nsdate!)
+        
+        let date = "Administrateur | " + dateString
+        name_date.text = date
         
         
         return cell
