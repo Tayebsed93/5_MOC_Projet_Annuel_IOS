@@ -17,8 +17,6 @@ struct club {
 
 class ClubListController: UITableViewController {
 
-
-    
     @IBOutlet weak var addButton: UIBarButtonItem!
     
     var clubsStruct = [club]()
@@ -27,10 +25,10 @@ class ClubListController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
-        
 
-        addButton.isEnabled = false
-        addButton.tintColor = UIColor.clear
+        clearDataLicense()
+        //addButton.isEnabled = false
+        //addButton.tintColor = UIColor.clear
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
         
@@ -42,8 +40,6 @@ class ClubListController: UITableViewController {
         self.tableView.reloadData()
         callAPIClub()
 
-    
-        
         if #available(iOS 10.0, *) {
             tableView.refreshControl = UIRefreshControl()
             tableView.refreshControl?.addTarget(self, action: #selector(refreshHandler), for: .valueChanged)
@@ -200,35 +196,12 @@ class ClubListController: UITableViewController {
         setupDataUser(_name: user_id!)
         var role = String()
         
-        //Ici
-        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
-        role = "Supporter"
-        /////////****** 1er controller
-        //Convertie la tabViewController en UINavigationController
-        let navigation = tabVc.viewControllers?[0] as! UINavigationController
-        
-        //Convertie la UINavigationController en UIViewController (Home)
-        //let resultatController = navigation.topViewController as? ResultatMatchController
-        let resultatController = navigation.topViewController as? TabBarListeMatch
-        //defaults.set(name, forKey: defaultsssKeys.club)
-        //defaults.set(role, forKey: defaultsssKeys.role)
-        //defaults.synchronize()
-        
-        resultatController?.passnameclub = name!
-        resultatController?.passlogo = logo!
-        //Change la page vers Home
-        self.present(tabVc, animated: true, completion: nil)
-        //Supp
-        
-        
-        /*
         let alertController = UIAlertController(title: name, message: "Selectionner votre rôle", preferredStyle: .alert)
         let action1 = UIAlertAction(title: "Supporter", style: .default) { (action) in
             let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let tabVc = storyboard.instantiateViewController(withIdentifier: "tbController") as! UITabBarController
             role = "Supporter"
-        
+            /////////****** 1er controller
             //Convertie la tabViewController en UINavigationController
             let navigation = tabVc.viewControllers?[0] as! UINavigationController
             
@@ -259,7 +232,6 @@ class ClubListController: UITableViewController {
         alertController.addAction(action2)
         alertController.addAction(action3)
         self.present(alertController, animated: true, completion: nil)
- */
     }
     
     

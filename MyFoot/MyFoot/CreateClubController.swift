@@ -15,12 +15,14 @@ struct userClub {
     let name : String!
 }
 
+
 class CreateClubController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var players: [Player]?
     var imageclick = ""
     var spinner = UIActivityIndicatorView()
     let imagePicker = UIImagePickerController()
+    
     
     
     @IBOutlet weak var nameClub: UITextField!
@@ -35,14 +37,34 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var logoBtn: UIButton!
     @IBOutlet weak var licenseBtn: UIButton!
     
+    @IBOutlet weak var boutonadd: UIButton!
     
     var clubsStruct = [userClub]()
-    @IBOutlet weak var searchBar: UISearchBar!
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
         
+        loadDataLicense()
+        if (license?.count)! > 0 {
+            print(license![0].verifie?.description)
+            if ((license![0].verifie?.description)!) == "true" {
+                boutonadd.isEnabled = true
+                boutonadd.alpha = 1
+            }
+            else {
+                boutonadd.isEnabled = false
+                boutonadd.alpha = 0.5
+            }
+            
+            
+        }
+        else {
+            boutonadd.isEnabled = false
+            boutonadd.alpha = 0.5
+        }
+        
+        //boutonadd.isHidden = true
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         //Boutton cree
         createClubBtn.setTitleColor(.white, for: .normal)
@@ -229,10 +251,31 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         present(imagePicker, animated: true)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let navVC = segue.destination as! UINavigationController
+        let vc = navVC.viewControllers.first as! ReconaissanceController
+        
+        vc.name = nameClub.text!
+    }
+    
     //Clique sur le bouton ajouter logo
     @IBAction func boutonAjoutLicense(_ sender: Any) {
         imageclick = LICENSE_CONSTANTE
-        openPhotoLibrary()
+        //openPhotoLibrary()
+
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ReconaissanceController") as? ReconaissanceController {
+            viewController.name = namePresident.text!
+            viewController.club = nameClub.text!
+            setupDataReconaissance(_name: namePresident.text!, _club: nameClub.text!)
+
+            if let navigator = navigationController {
+                navigator.pushViewController(viewController, animated: true)
+            }
+        }
+ 
+ 
+        
+        
     }
     
     
@@ -248,10 +291,7 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
             if imageclick == LOGO_CONSTANTE {
                 self.imageLogo.image  = image
             }
-            else if imageclick == LICENSE_CONSTANTE {
-                self.imageLicense.image  = image
-            }
-            
+ 
         }
         picker.dismiss(animated: true)
     }
@@ -285,7 +325,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         spinner.center = view.center
         spinner.hidesWhenStopped = true
         spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-        spinner.color = GREEN_THEME
         view.addSubview(spinner)
         spinner.startAnimating()
   

@@ -10,6 +10,7 @@ import Foundation
 
 import UIKit
 import Alamofire
+import SwiftyJSON
 
 
 class CompositionController: UIViewController, UITextFieldDelegate {
@@ -32,7 +33,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     
     
     var nationality = String()
-    var match_date = String()
+    var competition_id = Int()
     var stringComposition = String()
     
     var passapikey = String()
@@ -44,7 +45,8 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     var nation = [String]()
     
     var players: [Player]?
-    var composition = [String]()
+    //var composition = [String]()
+    var composition = [String](repeating: "0", count: 11)
     
     var isPlayer = Bool()
     var isCorrect = false
@@ -61,7 +63,6 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     public var addressUrlStringProd = "http://poubelle-connecte.pe.hu/FootAPI/API/v1"
     public var playerUrlString = "/player"
     public var playerUrlCompo = "/composition"
-    public var playerUrlCompoResult = "/composition/result"
     public var scoreUrl = "/user"
     
     
@@ -70,13 +71,20 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        print(passapikey)
+        
         
         if isPlayer == true {
             //Supprime tout
             defaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
             defaults.set(self.passapikey, forKey: defaultsKeys.key11)
+            
+            //defaults_comp.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+            defaults_comp.set(competition_id, forKey: competitionKeys.competition_id)
+            print("Competition id ",competition_id)
         }
         else {
+            
             
             switch (self.curentTag)
             {
@@ -124,56 +132,90 @@ class CompositionController: UIViewController, UITextFieldDelegate {
 
         if let string0 = defaults.string(forKey: defaultsKeys.key0) {
             BtnGroup[0].setTitle(string0, for: .normal)
-            composition.append(string0)
+            //composition.append(string0)
+            print("click0")
+            //composition.insert(string0, at:0)
+            composition[0] = string0
             
         }
         if let string1 = defaults.string(forKey: defaultsKeys.key1) {
             BtnGroup[1].setTitle(string1, for: .normal)
-            composition.append(string1)
+            //composition.append(string1)
+            //composition.insert(string1, at:1)
+            composition[1] = string1
+            print("click1")
         }
         
         if let string2 = defaults.string(forKey: defaultsKeys.key2) {
             BtnGroup[2].setTitle(string2, for: .normal)
-            composition.append(string2)
+            //composition.append(string2)
+            //composition.insert(string2, at:2)
+            composition[2] = string2
+            print("click2")
         }
         
         if let string3 = defaults.string(forKey: defaultsKeys.key3) {
             BtnGroup[3].setTitle(string3, for: .normal)
-            composition.append(string3)
+            //composition.append(string3)
+            //composition.insert(string3, at:3)
+            composition[4] = string3
+            print("click3")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key4) {
             BtnGroup[4].setTitle(string3, for: .normal)
-            composition.append(string3)
+            //composition.append(string3)
+            //composition.insert(string3, at:4)
+            composition[3] = string3
+            print("click4")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key5) {
             BtnGroup[5].setTitle(string3, for: .normal)
-            composition.append(string3)
+            //composition.append(string3)
+            //composition.insert(string3, at:5)
+            composition[5] = string3
+            print("click5")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key6) {
             BtnGroup[6].setTitle(string3, for: .normal)
-            composition.append(string3)
+            //composition.append(string3)
+            //composition.insert(string3, at:6)
+            composition[6] = string3
+            print("click6")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key7) {
             BtnGroup[8].setTitle(string3, for: .normal)
-            composition.append(string3)
+            //composition.append(string3)
+            //composition.insert(string3, at:8)
+            composition[8] = string3
+            print("click7")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key8) {
 
             BtnGroup[7].setTitle(string3, for: .normal)
-            composition.append(string3)
+            //composition.append(string3)
+            //composition.insert(string3, at:7)
+            composition[7] = string3
+            print("click8")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key9) {
 
             BtnGroup[9].setTitle(string3, for: .normal)
-            composition.append(string3)
+            //composition.append(string3)
+            //composition.insert(string3, at:9)
+            composition[9] = string3
+            print("click9")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key10) {
 
             BtnGroup[10].setTitle(string3, for: .normal)
-            composition.append(string3)
+            //composition.append(string3)
+            //composition.insert(string3, at:10)
+            composition[10] = string3
+            print("click10")
         }
 
-        self.stringComposition = composition.joined(separator: ", ")
+        self.stringComposition = composition.joined(separator: "; ")
+        print(stringComposition)
         
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -184,75 +226,90 @@ class CompositionController: UIViewController, UITextFieldDelegate {
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
             
     }
+
     
-    func callAPICompo() {
-        let defaults = UserDefaults.standard
-        let urlToRequest = addressUrlStringProd+playerUrlCompo
-        let url4 = URL(string: urlToRequest)!
-        let session4 = URLSession.shared
-        let request = NSMutableURLRequest(url: url4)
+    func callAPICompo()
+    {
+        let myUrl = NSURL(string: addressUrlStringProd+playerUrlCompo);
         
+        let request = NSMutableURLRequest(url:myUrl as! URL);
         request.addValue(defaults.string(forKey: defaultsKeys.key11)!, forHTTPHeaderField: "Authorization")
-        request.httpMethod = "POST"
-        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        let paramString = String(format:"nation=%@&player=%@",self.nationality, stringComposition)
-        request.httpBody = paramString.data(using: String.Encoding.utf8)
+        request.httpMethod = "POST";
+        
+        let competition_id = defaults_comp.integer(forKey: competitionKeys.competition_id)
+        print(competition_id)
+        let param = [
+            "nation"  : self.nationality,
+            "player"    : stringComposition,
+            "competition_id"    : competition_id
+            ] as [String : Any]
+        
+        let boundary = generateBoundaryString()
+        
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        request.httpBody = createBodyWithParameters(parameters: param, boundary: boundary) as Data
         
         
-        let task = session4.dataTask(with: request as URLRequest)
-        { (data, response, error) in
-            guard let _: Data = data, let _: URLResponse = response, error == nil else
-            {
-                
-                print("ERROR: \(error?.localizedDescription)")
-                
-                self.alerteMessage(message: (error?.localizedDescription)!)
+        let task = URLSession.shared.dataTask(with: request as URLRequest) {
+            data, response, error in
+            
+            if error != nil {
+                print("error=\(error)")
                 return
             }
-            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            
+            // You can print out response object
+            print("Response = \(response)")
+            
+            // Print out reponse body
+            if let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) {
+                print("Response data = \(responseString)")
+                self.alerteMessage(message: "La composition a été crée avec succès" as! String)
+            }
+            
+            
             
             //JSONSerialization in Object
             do {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
                 DispatchQueue.main.async()
                     {
-                        //print(json)
-                        if let players = json["player"] as? [[String: Any]] {
-                            
-                            for player in players {
-                                if let name = player["Name"]{
-                                    
-                                    self.names.append(name as! String)
-                                    
-                                }
-                                if let age = player["Age"]{
-                                    self.ages.append(age as! Double)
-                                }
-                            }
-                        }
+                        print(json)
                         
-                        if let messageError = json["message"]
+                        if let message = json["message"]
                         {
-                            self.alerteMessage(message: messageError as! String)
-                            self.callAPIResultCompo()
+                            self.alerteMessage(message: message as! String)
                         }
                         
-
+                        
                 }
-                
-                
                 
             } catch let error as NSError {
                 print("Failed to load: \(error.localizedDescription)")
             }
-            
         }
-        ;task.resume()
+        
+        task.resume()
+    }
+    
+    func createBodyWithParameters(parameters: [String: Any]?, boundary: String) -> NSData {
+        let body = NSMutableData();
+        
+        if parameters != nil {
+            for (key, value) in parameters! {
+                
+                body.appendString(string: "--\(boundary)\r\n")
+                body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.appendString(string: "\(value)\r\n")
+            }
+        }
+        return body
     }
     
     
     ///
-    //******* Resultat de la compo
+    // Resultat de la compo
     ////
     func callAPIResultCompo() {
         let defaults = UserDefaults.standard
@@ -306,7 +363,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                         for na in self.nation {
                             if na == self.nationality {
                                 print(na)
-                                self.callAPIScore(newkey: self.newapikey)
+                                //self.callAPIScore(newkey: self.newapikey)
                                 self.isCorrect = true
                                 
                             }
@@ -329,8 +386,9 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     }
     
     
+    /*
     ///
-    //******* Ajout du score
+    /Ajout du score
     ////
     func callAPIScore(newkey:String) {
         print("La nouvelle", newkey)
@@ -375,7 +433,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
         }
         ;task.resume()
     }
-    
+*/
     
     
     @IBAction func BtnvaliderCompo(_ sender: Any) {

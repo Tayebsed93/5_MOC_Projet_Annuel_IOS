@@ -2,6 +2,30 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:MyFoot/License+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MyFoot/License+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MyFoot/Member+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MyFoot/Member+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MyFoot/Reconaissance+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MyFoot/Reconaissance+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MyFoot/FacebookUser+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MyFoot/FacebookUser+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:MyFoot/Score+CoreDataClass.swift">
    </FileRef>
    <FileRef

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>fr_FR</string>
+	<string>en</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -50,6 +50,16 @@
 			<string></string>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>MyFoot souhaite accèder à votre caméra</string>
+	<key>NSMotionUsageDescription</key>
+	<string>MyFoot souhaite accèder aux movements de votre téléphone</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>MyFoot souhaite accèder à votre micro</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>MyFoot souhaite insérer une photo dans votre bibliothèque</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>MyFoot souhaite accéder à votre bibliothèque de photo</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -57,6 +67,7 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+		<string>arkit</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

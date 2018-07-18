@@ -30,6 +30,7 @@ PODS:
   - SnapSliderFilters (2.0)
   - SwiftyCam (2.6.0)
   - SwiftyJSON (3.1.4)
+  - TesseractOCRiOS (4.0.0)
   - TwitterCore (3.1.0)
   - TwitterKit (3.3.0):
     - TwitterCore (>= 3.1.0)
@@ -49,6 +50,7 @@ DEPENDENCIES:
   - SnapSliderFilters
   - SwiftyCam
   - SwiftyJSON
+  - TesseractOCRiOS (= 4.0.0)
   - TwitterKit
   - XLPagerTabStrip (~> 8.0)
 
@@ -70,6 +72,7 @@ SPEC REPOS:
     - SnapSliderFilters
     - SwiftyCam
     - SwiftyJSON
+    - TesseractOCRiOS
     - TwitterCore
     - TwitterKit
     - XLPagerTabStrip
@@ -91,10 +94,11 @@ SPEC CHECKSUMS:
   SnapSliderFilters: 7f571683b05cf70b8d398e4a0e45691bd9f03a33
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  TesseractOCRiOS: 90638afbe43d082433f2e76b384c7901d23956df
   TwitterCore: 644d59e75abccb26cf0a9050d2c4dea0e5412241
   TwitterKit: a2e60ddcedbf54091eac6f27685ca7a87681e1d7
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
 
-PODFILE CHECKSUM: 3ffd2c08fafa8b5103efa4c41890b21685d50f46
+PODFILE CHECKSUM: ddd034dc1c6b27388104b8795b6fdb0962d2b463
 
 COCOAPODS: 1.5.0

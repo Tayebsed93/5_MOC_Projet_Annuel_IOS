@@ -16,6 +16,9 @@ protocol ChildNameDelegate {
 }
 
 
+
+
+
 class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
     
     @IBOutlet weak var dismissButton: UIButton!
@@ -23,6 +26,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
     @IBOutlet weak var facebookName: UILabel!
     
     
+    var instanceOfVCA:HomeController!    // Create an instance of VCA in VCB
     
     var dict : [String : AnyObject]!
     
@@ -39,6 +43,7 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
     }
     
     
+    var nbLogin = Int()
     override func viewDidLoad() {
         super.viewDidLoad()
         dismissButton.layer.cornerRadius = dismissButton.frame.size.width / 2
@@ -97,16 +102,17 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
     
     @IBAction func dimissAction(_ sender: UIButton) {
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let tabVc = storyboard.instantiateViewController(withIdentifier: "HomeController")
-        
-        //self.dismiss(animated: false, completion: nil)
-        //self.dismiss(animated: true, completion: nil)
+        let tabVc = storyboard.instantiateViewController(withIdentifier: "HomeController") as! HomeController
         
         //self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
-        tabVc.view.removeFromSuperview()
+        DispatchQueue.main.async() {
+            //tabVc.callAPI()
+            self.instanceOfVCA.viewWillAppear(true)
+            //self.instanceOfVCA.tableviewOutlet.reloadData()
+            tabVc.view.removeFromSuperview()
+        }
+        
         self.dismiss(animated: true, completion: nil)
-        
-        
     }
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
@@ -166,12 +172,11 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
         return body
     }
     
-
-    
     
     func callAPIRegister(name: String, email: String, picture: String)
     {
-        
+        nbLogin = nbLogin+1
+        print(nbLogin)
         let urlToRequest = addressUrlStringProd+registerUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
@@ -253,7 +258,6 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
             }
             let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             
-            print("Appellle")
             //JSONSerialization in Object
             do {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]

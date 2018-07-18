@@ -213,6 +213,9 @@ class LoginController: UIViewController {
     
     
     func callAPILogin() {
+        
+        clearDataMember()
+        
         let urlToRequest = addressUrlStringProd+loginUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
@@ -283,6 +286,9 @@ class LoginController: UIViewController {
         if role == "president" {
             print("Passe")
             if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ActualityTableViewController") as? ActualityTableViewController {
+                
+                setupDataMember(_apikey: apiKey)
+
                 if let navigator = self.navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }

@@ -27,7 +27,7 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
     private let topMessage = "News"
     private let bottomMessage = "Aucune news n'est pas disponible pour le moment."
     
-    
+    var passeapikey = String()
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -134,19 +134,6 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
         
         newsMembreStruct = []
         
-        /*
-         loadDataClub()
-         //CLASSEMENT ENDPOINT
-         guard let leagueid = playerss![0].name?.description else {
-         DispatchQueue.main.async() {
-         //self.spinner.stopAnimating()
-         self.tableView.reloadData()
-         self.tableView.backgroundView?.isHidden = false
-         }
-         return
-         }
-         */
-        
         //Loading
         DispatchQueue.main.async() {
             let size = CGSize(width: 30, height: 30)
@@ -164,7 +151,6 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
             return
         }
         
-        print(user_id)
         
         let urlToRequest = addressUrlStringProd+newsUrlString+user_id
         
@@ -204,6 +190,19 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
             }
         }
     }
+    
+    @IBAction func AddActuality(_ sender: Any) {
+        
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddActualityController") as? AddActualityController {
+            //viewController.name = namePresident.text!
+            viewController.passeapikey = passeapikey
+            if let navigator = navigationController {
+                navigator.pushViewController(viewController, animated: true)
+            }
+        }
+    }
+    
+    
 }
 
 

@@ -20,6 +20,7 @@ let EMPTY_LOGO_IMG = "empty-logo"
 let LOGO_BALL = "football_icon"
 let LOGO_CONSTANTE = "logo"
 let LICENSE_CONSTANTE = "license"
+let ACTUALITY_CONSTANTE = "photo"
 let ERROR_CONSTANTE = "Une erreur technique est survenue. Veuillez-nous excuser pour la gêne occasionnée"
 let FACEBOOK_COLOR_BLUE = UIColor.rgb(r: 59, g: 89, b: 153)
 let MDP_DEFAULT = "azerty"
@@ -53,11 +54,16 @@ public var playerUrlString = "/player"
 public var compositionUrlString = "/composition"
 //COMPETITION ENDPOINT
 public var competitionUrlString = "/competition"
+//CHECK COMPETITION ENDPOINT
+public var checkcompetitionUrlString = "/checkcompetition"
 
 //USER ENDPOINT
 public var userUrlString = "/user"
 //NEWS ENDPOINT
 public var newsUrlString = "/actuality/"
+public var newsMembreUrlString = "/actuality"
+//Comparaison ENDPOINT
+public var playerUrlCompoResult = "/composition/result"
 
 //DATE DEBUT SAISON
 let DATE_DEBUT_SAISON = "2017-08-01"
@@ -76,6 +82,7 @@ let role_coach = "coach"
 let role_supporter = "supporter"
 
 //Persistante
+let defaults_comp = UserDefaults.standard
 let defaults = UserDefaults.standard
 let defaultsTwitter = UserDefaults.standard
 struct defaultsssKeys {
@@ -84,6 +91,10 @@ struct defaultsssKeys {
     static let club = "club"
     static let role = "role"
     static let team_name = "team_name"
+}
+
+struct competitionKeys {
+    static let competition_id = "competition_id"
 }
 
 struct TwitterKeys {
