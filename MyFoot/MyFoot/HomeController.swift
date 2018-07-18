@@ -206,7 +206,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         
         
         loadDataFacebookUser()
-        print(fbuser?.count)
         if (fbuser?.count)! > 0 {
             apikey = (fbuser![0].apikey?.description)!
         }
@@ -214,7 +213,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
            apikey = "0"
         }
 
-        print(apikey)
         
         let urlToRequest = addressUrlStringProd+competitionUrlString
         let url4 = URL(string: urlToRequest)!
@@ -266,8 +264,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
                                     self.change.append(false)
                                 }
                                 
-                                
-                                print("reload")
                                 self.tableviewOutlet.reloadData()
                             }
                         }
@@ -311,8 +307,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         if apikey != fbuser![0].apikey?.description {
             apikey = "0"
         }
-        
-        print(apikey)
         
         let urlToRequest = addressUrlStringProd+checkcompetitionUrlString
         let url4 = URL(string: urlToRequest)!
@@ -518,7 +512,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
                 return
             }
             
-            print(apikey)
  
             viewController.passapikey = apikey
 

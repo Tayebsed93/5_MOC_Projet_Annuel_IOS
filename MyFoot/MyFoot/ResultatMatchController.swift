@@ -43,23 +43,12 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
         super.viewDidLoad()
 
         initTableView()
+        self.tableviewOutlet.separatorStyle = .none
         
-        //tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
+        tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
         
-        //tableviewOutlet.dataSource = self
-        //tableviewOutlet.delegate = self
-        
-        //setupEmptyBackgroundView()
-        
-        //callAPI()
         let url = self.leagueIdURL(league_id: "127")
         self.callAPITeam127(urlTeam: url)
-        /*
-        if #available(iOS 10.0, *) {
-            tableviewOutlet.refreshControl = UIRefreshControl()
-            tableviewOutlet.refreshControl?.addTarget(self, action: #selector(refreshHandler), for: .valueChanged)
-        }
- */
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -344,15 +333,10 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
                                     
                                     let club = String(describing: team_name)
                                     
-                                    print(league_id)
                                     
                                     if club == self.passnameclub {
                                         trouver = true
-                                        //self.defaults.set(league_id, forKey: defaultsssKeys.league_id)
-                                        //self.defaults.set(team_name, forKey: defaultsssKeys.team_name)
-                                        //self.defaults.synchronize()
-                                        
-                                        
+    
                                         setupDataClub(_name: league_id as! String, _club: team_name as! String)
                                         let url = self.leagueIdURLToLiveMatch(dateDebut: DATE_DEBUT_SAISON, dateFin: DATE_FIN_SAISON)
                     
@@ -461,7 +445,6 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func callAPIResultat(urlResult: String) {
-        print(urlResult)
         let urlToRequest = urlResult
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared
@@ -567,8 +550,7 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
         //let leagueid = defaults.string(forKey: defaultsssKeys.league_id)!
         let s = String(describing: leagueid!)
         url = "https://apifootball.com/api/?action=get_events&from="+dateDebut+"&to="+dateFin+"&league_id="+s+"&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
-        
-        print(url)
+    
         return url
     }
  

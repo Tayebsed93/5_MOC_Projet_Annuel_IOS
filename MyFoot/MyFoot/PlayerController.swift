@@ -14,7 +14,7 @@ struct players {
     let age : Int
 }
 
-class PlayerController: UITableViewController, UISearchBarDelegate {
+class PlayerController: UITableViewController {
     
 
     var playerStruct = [players]()
@@ -24,8 +24,7 @@ class PlayerController: UITableViewController, UISearchBarDelegate {
     var apikey = String()
     var curentName = String()
     var curentTag = Int()
-    
-    @IBOutlet weak var searchBar: UISearchBar!
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
@@ -35,26 +34,13 @@ class PlayerController: UITableViewController, UISearchBarDelegate {
         callAPIPlayer()
         
         
-        //players?.count
-        searchBar.text = ""
 
-        searchBar.isHidden = true
         self.title = nationality
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.reloadData()
         
         // Do any additional setup after loading the view, typically from a nib.
-    }
-
-
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let keywords = searchBar.text
-        
-        
-
-        self.view.endEditing(true)
-        self.tableView.reloadData()
     }
     
     
@@ -172,19 +158,7 @@ class PlayerController: UITableViewController, UISearchBarDelegate {
         
     }
     
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .default, title: "Supprimer") { (action, indexPath) in
-            print("Suprime", indexPath)
-            self.tableView.reloadData()
-            
-        }
-        
-        //self.tableView.reloadData()
-        return [delete]
-    }
-    
-    
-    
+
     @IBAction func DeconnexionClick(_ sender: Any) {
         
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {

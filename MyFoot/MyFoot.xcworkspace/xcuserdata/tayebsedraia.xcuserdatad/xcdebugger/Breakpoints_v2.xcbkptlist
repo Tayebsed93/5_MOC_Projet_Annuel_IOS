@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyFoot/PersistanteData.swift"
-            timestampString = "553575642.474666"
+            timestampString = "553585289.13747"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "158"
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyFoot/CreateClubController.swift"
-            timestampString = "553575642.474725"
+            timestampString = "553585289.137532"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "273"
-            endingLineNumber = "273"
+            startingLineNumber = "270"
+            endingLineNumber = "270"
             landmarkName = "boutonAjoutLicense(_:)"
             landmarkType = "7">
          </BreakpointContent>

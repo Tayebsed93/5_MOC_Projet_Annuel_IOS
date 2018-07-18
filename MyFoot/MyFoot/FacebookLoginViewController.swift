@@ -175,8 +175,6 @@ class FacebookLoginViewController: UIViewController, LoginButtonDelegate {
     
     func callAPIRegister(name: String, email: String, picture: String)
     {
-        nbLogin = nbLogin+1
-        print(nbLogin)
         let urlToRequest = addressUrlStringProd+registerUrlString
         let url4 = URL(string: urlToRequest)!
         let session4 = URLSession.shared

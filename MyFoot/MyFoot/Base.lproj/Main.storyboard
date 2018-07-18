@@ -31,7 +31,6 @@
                     <connections>
                         <segue destination="dGf-eX-yGM" kind="relationship" relationship="viewControllers" id="pXh-vV-VVp"/>
                         <segue destination="gJb-k8-tRc" kind="relationship" relationship="viewControllers" id="jth-Q6-U16"/>
-                        <segue destination="PbP-sp-uUT" kind="relationship" relationship="viewControllers" id="nKO-JW-cQg"/>
                         <segue destination="arY-dy-XXp" kind="relationship" relationship="viewControllers" id="8yX-a0-lAc"/>
                         <segue destination="zuZ-v8-95H" kind="relationship" relationship="viewControllers" id="s1s-Wo-bRo"/>
                     </connections>
@@ -288,17 +287,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="M9d-4a-U2e">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="jpm-JN-lMQ" id="4r9-Nf-NwW"/>
-                            </connections>
-                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="90" id="Sbb-9y-gpo">
-                                <rect key="frame" x="0.0" y="72" width="375" height="90"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sbb-9y-gpo" id="TDJ-B4-sMc">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="89.666666666666671"/>
@@ -362,9 +353,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="searchBar" destination="M9d-4a-U2e" id="n8C-SS-BQF"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGQ-ea-hNO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1233,6 +1221,7 @@
         <!--Init Photo Controller-->
         <scene sceneID="odq-fr-QA4">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gaj-jy-GtW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="47Q-ro-jmm" customClass="InitPhotoController" customModule="MyFoot" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="AAK-gn-leI"/>
@@ -1271,7 +1260,6 @@
                         <outlet property="visiterButton" destination="Mtz-Pj-U9L" id="cX4-7x-6WG"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Gaj-jy-GtW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2524" y="1119.4581280788177"/>
         </scene>

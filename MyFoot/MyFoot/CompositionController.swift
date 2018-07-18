@@ -71,9 +71,6 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print(passapikey)
-        
-        
         if isPlayer == true {
             //Supprime tout
             defaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
@@ -81,7 +78,6 @@ class CompositionController: UIViewController, UITextFieldDelegate {
             
             //defaults_comp.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
             defaults_comp.set(competition_id, forKey: competitionKeys.competition_id)
-            print("Competition id ",competition_id)
         }
         else {
             
@@ -132,62 +128,40 @@ class CompositionController: UIViewController, UITextFieldDelegate {
 
         if let string0 = defaults.string(forKey: defaultsKeys.key0) {
             BtnGroup[0].setTitle(string0, for: .normal)
-            //composition.append(string0)
-            print("click0")
-            //composition.insert(string0, at:0)
             composition[0] = string0
             
         }
         if let string1 = defaults.string(forKey: defaultsKeys.key1) {
             BtnGroup[1].setTitle(string1, for: .normal)
-            //composition.append(string1)
-            //composition.insert(string1, at:1)
             composition[1] = string1
-            print("click1")
         }
         
         if let string2 = defaults.string(forKey: defaultsKeys.key2) {
             BtnGroup[2].setTitle(string2, for: .normal)
-            //composition.append(string2)
-            //composition.insert(string2, at:2)
             composition[2] = string2
-            print("click2")
         }
         
         if let string3 = defaults.string(forKey: defaultsKeys.key3) {
             BtnGroup[3].setTitle(string3, for: .normal)
-            //composition.append(string3)
-            //composition.insert(string3, at:3)
             composition[4] = string3
-            print("click3")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key4) {
             BtnGroup[4].setTitle(string3, for: .normal)
-            //composition.append(string3)
-            //composition.insert(string3, at:4)
             composition[3] = string3
-            print("click4")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key5) {
             BtnGroup[5].setTitle(string3, for: .normal)
-            //composition.append(string3)
-            //composition.insert(string3, at:5)
             composition[5] = string3
-            print("click5")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key6) {
             BtnGroup[6].setTitle(string3, for: .normal)
-            //composition.append(string3)
-            //composition.insert(string3, at:6)
             composition[6] = string3
-            print("click6")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key7) {
             BtnGroup[8].setTitle(string3, for: .normal)
             //composition.append(string3)
             //composition.insert(string3, at:8)
             composition[8] = string3
-            print("click7")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key8) {
 
@@ -195,7 +169,6 @@ class CompositionController: UIViewController, UITextFieldDelegate {
             //composition.append(string3)
             //composition.insert(string3, at:7)
             composition[7] = string3
-            print("click8")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key9) {
 
@@ -203,19 +176,14 @@ class CompositionController: UIViewController, UITextFieldDelegate {
             //composition.append(string3)
             //composition.insert(string3, at:9)
             composition[9] = string3
-            print("click9")
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key10) {
 
             BtnGroup[10].setTitle(string3, for: .normal)
-            //composition.append(string3)
-            //composition.insert(string3, at:10)
             composition[10] = string3
-            print("click10")
         }
 
         self.stringComposition = composition.joined(separator: "; ")
-        print(stringComposition)
         
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -237,7 +205,6 @@ class CompositionController: UIViewController, UITextFieldDelegate {
         request.httpMethod = "POST";
         
         let competition_id = defaults_comp.integer(forKey: competitionKeys.competition_id)
-        print(competition_id)
         let param = [
             "nation"  : self.nationality,
             "player"    : stringComposition,
@@ -275,8 +242,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
                 DispatchQueue.main.async()
                     {
-                        print(json)
-                        
+    
                         if let message = json["message"]
                         {
                             self.alerteMessage(message: message as! String)
@@ -362,7 +328,6 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                         
                         for na in self.nation {
                             if na == self.nationality {
-                                print(na)
                                 //self.callAPIScore(newkey: self.newapikey)
                                 self.isCorrect = true
                                 
@@ -372,7 +337,6 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                             }
                         }
                         
-                        print(self.isCorrect)
                         if self.isCorrect == true {
                             //self.callAPIScore(newkey: self.newapikey)
                         }
@@ -384,56 +348,6 @@ class CompositionController: UIViewController, UITextFieldDelegate {
         }
         ;task.resume()
     }
-    
-    
-    /*
-    ///
-    /Ajout du score
-    ////
-    func callAPIScore(newkey:String) {
-        print("La nouvelle", newkey)
-        let defaults = UserDefaults.standard
-        let urlToRequest = addressUrlStringProd+scoreUrl
-        let url4 = URL(string: urlToRequest)!
-        let session4 = URLSession.shared
-        let request = NSMutableURLRequest(url: url4)
-        
-        request.addValue(newkey, forHTTPHeaderField: "Authorization")
-        request.httpMethod = "PUT"
-        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        
-        
-        let task = session4.dataTask(with: request as URLRequest)
-        { (data, response, error) in
-            guard let _: Data = data, let _: URLResponse = response, error == nil else
-            {
-                
-                print("ERROR: \(error?.localizedDescription)")
-                
-                self.alerteMessage(message: (error?.localizedDescription)!)
-                return
-            }
-            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            
-            //JSONSerialization in Object
-            do {
-                let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as! [String : AnyObject]
-                DispatchQueue.main.async()
-                    {
-                        if let messageError = json["message"]
-                        {
-                            
-                        }
-                }
-                
-            } catch let error as NSError {
-                print("Failed to load: \(error.localizedDescription)")
-            }
-            
-        }
-        ;task.resume()
-    }
-*/
     
     
     @IBAction func BtnvaliderCompo(_ sender: Any) {
@@ -457,7 +371,6 @@ class CompositionController: UIViewController, UITextFieldDelegate {
         
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PlayerController") as? PlayerController {
             viewController.nationality = self.nationality
-            print(nationality)
             if (((sender as AnyObject).tag == 0))
             {
                 self.curentTag = 0

@@ -228,7 +228,6 @@ class DetailMatchController: UIViewController, UITableViewDataSource, UITableVie
     public func getAPi(completion: @escaping ((Bool, [String]?, String?)->Void)){
         
         let urlString = "https://apifootball.com/api/?action=get_events&match_id="+match_id+"&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
-        print(match_id)
         var result = [String]()
         let url = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         Alamofire.request(url!, headers: ["Authorization":"Bearer AAAAAAAAAAAAAAAAAAAAABjczAAAAAAAmpsyum03hAwA3jfPdbcpIrWLwXY%3Dg5wRYqAQUdGvCiPYoWV6vAsJ5ELWctM37PDkaAFXeX1NOFgn8Y"])

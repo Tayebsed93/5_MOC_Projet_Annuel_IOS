@@ -48,6 +48,7 @@ class ReconaissanceController: UIViewController {
         
         let alert = UIAlertController(title: "Information", message: "Votre license a été validé par nos équipes.", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        
         self.present(alert, animated: true, completion: nil)
     }
     private func configureCamera() {
@@ -229,11 +230,13 @@ extension ReconaissanceController: AVCaptureVideoDataOutputSampleBufferDelegate 
             
             
             if !text.isEmpty {
-                print(text)
+                //print(text)
                  if (text.contains(find: name.uppercased()) || text.contains(find: club.uppercased())) {
                  
-                    alerteMessage()
+                    
                     setupDataLicense(_trouver: "true")
+                    alerteMessage()
+                    
                     break
                  
                  }

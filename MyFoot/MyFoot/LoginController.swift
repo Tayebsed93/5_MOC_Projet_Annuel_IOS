@@ -105,8 +105,8 @@ class LoginController: UIViewController {
         setupAddLogo()
         setupTextFieldComponents()
         setupLoginButton()
-        setupForgotPsswdButton()
-        setupHaveAccountButton()
+        //setupForgotPsswdButton()
+        //setupHaveAccountButton()
     
     }
     

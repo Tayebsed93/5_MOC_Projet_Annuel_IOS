@@ -124,7 +124,17 @@ class EpisodesTableViewController: UITableViewController, NVActivityIndicatorVie
         
         //Name  + heure
         let name_date = cell.viewWithTag(4) as! UILabel
-        name_date.text = "Administrateur | Avril 28, 2018"
+        
+        let date_string = newsStruct[indexPath.row].created_at
+        let format = "yyyy-MM-dd HH:mm:ss"
+        let date_nsdate = date_string?.toDate(format: format)
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "fr")
+        dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
+        let dateString = dateFormatter.string(from: date_nsdate!)
+        
+        let date = "Administrateur | " + dateString
+        name_date.text = date
         
         
         return cell
@@ -173,7 +183,7 @@ class EpisodesTableViewController: UITableViewController, NVActivityIndicatorVie
                         }
                     
                 }
-                print(newsStruct.count)
+
                 if newsStruct.count > 0 {
                     DispatchQueue.main.async() {
                         self.stopAnimating()

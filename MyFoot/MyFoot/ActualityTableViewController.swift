@@ -172,7 +172,6 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
                     }
                     
                 }
-                print(newsMembreStruct.count)
                 if newsMembreStruct.count > 0 {
                     DispatchQueue.main.async() {
                         self.stopAnimating()

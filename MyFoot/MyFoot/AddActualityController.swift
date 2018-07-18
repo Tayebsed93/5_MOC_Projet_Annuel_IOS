@@ -36,7 +36,6 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(passeapikey)
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
@@ -170,7 +169,6 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
     //Fonction qui récupère l'image
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let imageRecu = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            print(imageRecu)
             image.setImage(imageRecu, for: UIControlState.normal)
             
         }
@@ -276,7 +274,6 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
         }
         
         let request = NSMutableURLRequest(url:myUrl as! URL);
-        print(passeapikey)
         request.addValue(passeapikey, forHTTPHeaderField: "Authorization")
         request.httpMethod = "POST";
         

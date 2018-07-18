@@ -47,7 +47,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         
         loadDataLicense()
         if (license?.count)! > 0 {
-            print(license![0].verifie?.description)
             if ((license![0].verifie?.description)!) == "true" {
                 boutonadd.isEnabled = true
                 boutonadd.alpha = 1
@@ -162,8 +161,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
             LICENSE_CONSTANTE    : imageLicenseData
         ]
         
-        print("Taille ", imageData.length)
-        print("Taille ", imageLicenseData.length)
         
         request.httpBody = createBodyWithParameters(nameClub: nameClub.text, parameters: param, parametersFile: paramFile, boundary: boundary) as Data
         
