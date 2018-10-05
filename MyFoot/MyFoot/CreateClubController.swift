@@ -37,6 +37,8 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var logoBtn: UIButton!
     @IBOutlet weak var licenseBtn: UIButton!
     
+    @IBOutlet weak var twittername: UITextField!
+    
     @IBOutlet weak var boutonadd: UIButton!
     
     var clubsStruct = [userClub]()
@@ -45,6 +47,9 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
         
+
+        self.view.backgroundColor = GREEN_THEME
+    initDesign()
         loadDataLicense()
         if (license?.count)! > 0 {
             if ((license![0].verifie?.description)!) == "true" {
@@ -73,13 +78,13 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         
         //Boutton logo
         logoBtn.setTitleColor(.white, for: .normal)
-        logoBtn.setTitle("Photo", for: .normal)
+        logoBtn.setTitle("Logo", for: .normal)
         logoBtn.layer.cornerRadius = 10
         logoBtn.backgroundColor = GREENBlACK_THEME
         
         //Boutton license
         licenseBtn.setTitleColor(.white, for: .normal)
-        licenseBtn.setTitle("Photo", for: .normal)
+        licenseBtn.setTitle("License (Scan)", for: .normal)
         licenseBtn.layer.cornerRadius = 10
         licenseBtn.backgroundColor = GREENBlACK_THEME
     
@@ -89,6 +94,56 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     
+    @objc func textFieldDidChange(textField: UITextField) {
+        
+        if (nameClub.text?.isEmpty)! || (namePresident.text?.isEmpty)!  {
+            boutonadd.isEnabled = false
+            boutonadd.alpha = 0.5
+        }
+        
+    }
+    
+    
+    func initDesign(){
+
+        namePresident.addTarget(self, action: #selector(self.textFieldDidChange), for: .editingChanged)
+        nameClub.addTarget(self, action: #selector(self.textFieldDidChange), for: .editingChanged)
+        let attributedPlaceholderTwitter = NSAttributedString(string: "Twitter", attributes:
+            [NSAttributedStringKey.foregroundColor : UIColor.white])
+        twittername.textColor = .white
+        twittername.attributedPlaceholder = attributedPlaceholderTwitter
+        twittername.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
+        
+        
+        //Nom du club
+        let attributedPlaceholderClub = NSAttributedString(string: "Nom du club", attributes:
+            [NSAttributedStringKey.foregroundColor : UIColor.white])
+        nameClub.textColor = .white
+        nameClub.attributedPlaceholder = attributedPlaceholderClub
+        nameClub.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
+        
+        
+        //Nom du president
+        let attributedPlaceholderPresident = NSAttributedString(string: "Président du club", attributes:
+            [NSAttributedStringKey.foregroundColor : UIColor.white])
+        namePresident.textColor = .white
+        namePresident.attributedPlaceholder = attributedPlaceholderPresident
+        namePresident.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
+        
+        //Email
+        let attributedPlaceholderEmail = NSAttributedString(string: "E-mail", attributes:
+            [NSAttributedStringKey.foregroundColor : UIColor.white])
+        email.textColor = .white
+        email.attributedPlaceholder = attributedPlaceholderEmail
+        email.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
+        
+        //Mot de passe
+        let attributedPlaceholderPassword = NSAttributedString(string: "Mot de passe", attributes:
+            [NSAttributedStringKey.foregroundColor : UIColor.white])
+        motdepasse.textColor = .white
+        motdepasse.attributedPlaceholder = attributedPlaceholderPassword
+        motdepasse.setBottomBorder(backGroundColor: GREEN_THEME, borderColor: .white)
+    }
     func createBodyWithParameters(nameClub: String?, parameters: [String: String]?, parametersFile: [String: NSData]?, boundary: String) -> NSData {
         let body = NSMutableData();
         
@@ -136,6 +191,7 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
             "name"    : namePresident.text!,
             "password"    : motdepasse.text!,
             "email"    : email.text!,
+            "screen_name": twittername.text!,
             "role"      : role_president
         ]
         
@@ -144,21 +200,14 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         var imageData = NSData()
-        var imageLicenseData = NSData()
         if imageLogo.image != nil
         {
             imageData = UIImagePNGRepresentation(imageLogo.image!)! as NSData
         }
-        
-        if imageLicense.image != nil
-        {
-            imageLicenseData = UIImagePNGRepresentation(imageLicense.image!)! as NSData
-        }
     
         
         let paramFile = [
-            LOGO_CONSTANTE  : imageData,
-            LICENSE_CONSTANTE    : imageLicenseData
+            LOGO_CONSTANTE  : imageData
         ]
         
         
@@ -221,15 +270,11 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         
     }
     
-    
-    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
         
     }
 
-    
-    
     //Enleve le clavier
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         //passworkTxt.resignFirstResponder()
@@ -258,7 +303,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
     //Clique sur le bouton ajouter logo
     @IBAction func boutonAjoutLicense(_ sender: Any) {
         imageclick = LICENSE_CONSTANTE
-        //openPhotoLibrary()
 
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ReconaissanceController") as? ReconaissanceController {
             viewController.name = namePresident.text!
@@ -269,9 +313,6 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
                 navigator.pushViewController(viewController, animated: true)
             }
         }
- 
- 
-        
         
     }
     
@@ -316,18 +357,15 @@ class CreateClubController: UIViewController, UIImagePickerControllerDelegate, U
         // Dispose of any resources that can be recreated.
     }
     
-    
     func showActivityIndicatory() {
         self.spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         spinner.center = view.center
         spinner.hidesWhenStopped = true
-        spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
         view.addSubview(spinner)
         spinner.startAnimating()
   
     }
-    
-    
 }
 
 

@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:MyFoot/SocialT+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MyFoot/SocialT+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:MyFoot/License+CoreDataClass.swift">
    </FileRef>
    <FileRef

@@ -31,7 +31,7 @@ struct checkcompetitions {
     let match_away : String!
     let match_home : String!
     let competitions_id : Int!
-
+    
 }
 
 
@@ -68,7 +68,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
             tableviewOutlet.refreshControl = UIRefreshControl()
             tableviewOutlet.refreshControl?.addTarget(self, action: #selector(refreshHandler), for: .valueChanged)
         }
-   
+        
     }
     
     
@@ -85,9 +85,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     
     func dataChanged(email: String, password: String, apikey: String) {
         setupDataFacebookUser(_apikey: apikey)
-        //defaults.set(apikey, forKey: defaultsKeys.key11)
-        //defaults.synchronize()
-        
     }
     
     @IBOutlet weak var France: UIImageView!
@@ -99,13 +96,13 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     @IBOutlet weak var btnItaly: UIButton!
     @IBOutlet weak var facebookButton: UIButton!
     
-
+    
     
     var nationality = String()
     var match_date = String()
     
     var passapikey = String()
-
+    
     var isPlayer = Bool()
     
     var nation = [String]()
@@ -126,7 +123,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         
         tableviewOutlet.separatorColor = UIColor(white: 0.95, alpha: 1)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -135,6 +132,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         facebookButton.backgroundColor = FACEBOOK_COLOR_BLUE
         
         self.isPlayer = true
+        self.useridStruct = []
         initTableView()
         callAPI()
         
@@ -210,9 +208,9 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
             apikey = (fbuser![0].apikey?.description)!
         }
         else {
-           apikey = "0"
+            apikey = "0"
         }
-
+        
         
         let urlToRequest = addressUrlStringProd+competitionUrlString
         let url4 = URL(string: urlToRequest)!
@@ -256,7 +254,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
                                 
                                 if user_id > 0 {
                                     self.useridStruct.append(userid.init(user_id: user_id, competitions_id: competition_id as! Int))
-                                    
                                 }
                                 else {
                                     self.competitionsStruct.append(competitions.init(composition_name: composition_name as! String, groupe: groupe as! String, match_away: match_away as! String, match_home: match_home as! String, time_start: time_start as! String, competitions_id: competition_id as! Int, user_id: user_id as! Int))
@@ -292,7 +289,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
                     self.tableviewOutlet.backgroundView?.isHidden = false
                 }
             }
-            
         }
         ;task.resume()
     }
@@ -315,7 +311,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         request.addValue(apikey, forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-
+        
         
         let task = session4.dataTask(with: request as URLRequest)
         { (data, response, error) in
@@ -364,7 +360,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         }
         ;task.resume()
     }
-
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.competitionsStruct.count
@@ -373,9 +369,10 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeController", for: indexPath)
         cell.selectionStyle = .none
+        print("NBB ", useridStruct.count)
         if useridStruct.count > 0 {
             for ok in useridStruct {
                 
@@ -416,52 +413,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
                 
                 //Date
                 let date_name = cell.viewWithTag(5) as! UILabel
-                /*
-                 var date = NSDate()
-                 date = competitionsStruct[indexPath.row].time_start as NSDate
-                 let dateFormatter = DateFormatter()
-                 dateFormatter.locale = Locale(identifier: "fr")
-                 dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
-                 let dateString = dateFormatter.string(from:date as Date)
-                 
-                 let format = "yyyy-MM-dd HH:mm:ss"
-                 let date_nsdate = time_start?.toDate(format: format)
-                 let date_nsdate = competitionsStruct[indexPath.row].time_start.toDate(format: format)
-                 
-                 date_name.text = dateString
-                 */
-                date_name.text = competitionsStruct[indexPath.row].time_start
-            }
-        }
-        else {
                 
-                //Status
-                let status_match = cell.viewWithTag(12) as! UIButton
-                status_match.isEnabled = false
-
-                //Bouton pour jouer
-                let start_game = cell.viewWithTag(13) as! UIButton
-                start_game.backgroundColor = FACEBOOK_COLOR_BLUE
-                start_game.isEnabled = true
-                start_game.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
-                
-                //Nom pays domicile
-                let match_hometeam_name = cell.viewWithTag(1) as! UILabel
-                match_hometeam_name.text = competitionsStruct[indexPath.row].match_home
-                
-                //Competition name
-                let composition_name = cell.viewWithTag(2) as! UILabel
-                composition_name.text = competitionsStruct[indexPath.row].composition_name
-                
-                //Club logo Domicile
-                var paysImageDomicile = cell.viewWithTag(3) as! UIImageView
-                if let payslogo = UIImage(named: (competitionsStruct[indexPath.row].match_home)!) {
-                    paysImageDomicile.image = payslogo
-                }
-                
-                //Date
-                let date_name = cell.viewWithTag(5) as! UILabel
-            
                 let date_string = competitionsStruct[indexPath.row].time_start
                 let format = "yyyy-MM-dd HH:mm:ss"
                 let date_nsdate = date_string?.toDate(format: format)
@@ -469,16 +421,56 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
                 dateFormatter.locale = Locale(identifier: "fr")
                 dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
                 let dateString = dateFormatter.string(from: date_nsdate!)
-
+                
                 date_name.text = dateString
+            }
+        }
+        else {
+            
+            //Status
+            let status_match = cell.viewWithTag(12) as! UIButton
+            status_match.isEnabled = false
+            
+            //Bouton pour jouer
+            let start_game = cell.viewWithTag(13) as! UIButton
+            start_game.backgroundColor = FACEBOOK_COLOR_BLUE
+            start_game.isEnabled = true
+            start_game.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
+            
+            //Nom pays domicile
+            let match_hometeam_name = cell.viewWithTag(1) as! UILabel
+            match_hometeam_name.text = competitionsStruct[indexPath.row].match_home
+            
+            //Competition name
+            let composition_name = cell.viewWithTag(2) as! UILabel
+            composition_name.text = competitionsStruct[indexPath.row].composition_name
+            
+            //Club logo Domicile
+            var paysImageDomicile = cell.viewWithTag(3) as! UIImageView
+            if let payslogo = UIImage(named: (competitionsStruct[indexPath.row].match_home)!) {
+                paysImageDomicile.image = payslogo
+            }
+            
+            //Date
+            let date_name = cell.viewWithTag(5) as! UILabel
+            
+            let date_string = competitionsStruct[indexPath.row].time_start
+            let format = "yyyy-MM-dd HH:mm:ss"
+            let date_nsdate = date_string?.toDate(format: format)
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "fr")
+            dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
+            let dateString = dateFormatter.string(from: date_nsdate!)
+            
+            date_name.text = dateString
         }
         
-
+        
         return cell
     }
     
     
-
+    
     
     @objc func btnAction(_ sender: UIButton) {
         
@@ -487,40 +479,94 @@ class HomeController: UIViewController, UITextFieldDelegate, UIViewControllerTra
         
         self.nationality = competitionsStruct[indexPath.row].match_home
         
-        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
-            viewController.nationality = self.nationality
-            /*
-            var date = NSDate()
-            date = competitionsStruct[indexPath.row].time_start as NSDate
-            let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier: "fr")
-            dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
-            let dateString = dateFormatter.string(from:date as Date)
-            */
-            let competitions_id = competitionsStruct[indexPath.row].competitions_id
-
-            viewController.competition_id = competitions_id!
-            
-            
-            loadDataFacebookUser()
-            if (fbuser?.count)! > 0 {
-                apikey = (fbuser![0].apikey?.description)!
-            }
-            else {
-                let message = "Access Denied. Invalid Api key"
-                alerteMessage(message: message)
-                return
-            }
-            
- 
-            viewController.passapikey = apikey
-
- 
-            viewController.isPlayer = true
-            if let navigator = navigationController {
-                navigator.pushViewController(viewController, animated: true)
-            }
+        loadDataFacebookUser()
+        if (fbuser?.count)! > 0 {
+            self.apikey = (fbuser![0].apikey?.description)!
         }
+        else {
+            let message = "Access Denied. Invalid Api key"
+            self.alerteMessage(message: message)
+            return
+        }
+        
+        // create the alert
+        let alert = UIAlertController(title: "Composition", message: "Choisissez votre dispositif pour ce match", preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: "4-4-2", style: UIAlertActionStyle.default, handler: { action in
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController") as? CompositionController {
+                viewController.nationality = self.nationality
+                /*
+                 var date = NSDate()
+                 date = competitionsStruct[indexPath.row].time_start as NSDate
+                 let dateFormatter = DateFormatter()
+                 dateFormatter.locale = Locale(identifier: "fr")
+                 dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "EEEE-dd-MMM-yyyy", options: 0, locale: dateFormatter.locale)
+                 let dateString = dateFormatter.string(from:date as Date)
+                 */
+                let competitions_id = self.competitionsStruct[indexPath.row].competitions_id
+                
+                viewController.competition_id = competitions_id!
+                
+                
+                loadDataFacebookUser()
+                if (fbuser?.count)! > 0 {
+                    self.apikey = (fbuser![0].apikey?.description)!
+                }
+                else {
+                    let message = "Access Denied. Invalid Api key"
+                    self.alerteMessage(message: message)
+                    return
+                }
+                
+                
+                viewController.passapikey = self.apikey
+                
+                
+                viewController.isPlayer = true
+                if let navigator = self.navigationController {
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
+        }))
+        
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "4-3-3", style: UIAlertActionStyle.default, handler: { action in
+            
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompositionController433") as? CompositionController433 {
+                viewController.nationality = self.nationality
+                let competitions_id = self.competitionsStruct[indexPath.row].competitions_id
+                
+                viewController.competition_id = competitions_id!
+                
+                
+                loadDataFacebookUser()
+                if (fbuser?.count)! > 0 {
+                    self.apikey = (fbuser![0].apikey?.description)!
+                }
+                else {
+                    let message = "Access Denied. Invalid Api key"
+                    self.alerteMessage(message: message)
+                    return
+                }
+                
+                
+                viewController.passapikey = self.apikey
+                
+                
+                viewController.isPlayer = true
+                if let navigator = self.navigationController {
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Annuler", style: .cancel, handler: { (action: UIAlertAction!) in
+        }))
+        
+        
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
+        
     }
     
     

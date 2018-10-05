@@ -12,7 +12,7 @@ import XLPagerTabStrip
 
 struct classement {
     var team_name : String!
-    var position_overall_league_position : String!
+    var position_overall_league_position : Int!
     let points_overall_league_PTS : String!
     let journee_overall_league_payed : String!
     let overall_league_V: String!
@@ -30,6 +30,7 @@ class ClassementController: UITableViewController {
     var classementsStruct = [classement]()
     
     var passlogo = String()
+    var screen_name = String()
     var league_id = String()
     var urlResult = String()
     var passnameclub = String()
@@ -116,7 +117,9 @@ class ClassementController: UITableViewController {
 
         //Position
         let position = cell.viewWithTag(1) as! UILabel
-        position.text = classementsStruct[indexPath.row].position_overall_league_position
+        let pos = String(describing: indexPath.row + 1)
+        position.text = pos
+        //position.text = String(describing:classementsStruct[indexPath.row].position_overall_league_position)
         
         //Logo
         var logo = cell.viewWithTag(2) as! UIImageView
@@ -204,6 +207,7 @@ class ClassementController: UITableViewController {
         }
         
         var adressUrlClassementStringExterne = "https://apifootball.com/api/?action=get_standings&league_id="+leagueid+"&APIkey=1efa2ed903e36f30a5c119f4391b1ca327e8f3405305dab81f21d613fe593144"
+        print(adressUrlClassementStringExterne)
         
         let urlResult = adressUrlClassementStringExterne
         let urlToRequest = urlResult
@@ -236,15 +240,19 @@ class ClassementController: UITableViewController {
                 let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as? [[String:Any]]
                 DispatchQueue.main.async()
                     
+                    
                     {
                         if let nb = json?.count {
                             self.tableView.backgroundView?.isHidden = true
                             
+                            
                             for i in 0..<nb {
+                                
                                 if let team_name = json![i]["team_name"], let position_overall_league_position = json![i]["overall_league_position"], let points_overall_league_PTS = json![i]["overall_league_PTS"], let journee_overall_league_payed = json![i]["overall_league_payed"], let overall_league_V = json![i]["overall_league_W"], let overall_league_N = json![i]["overall_league_D"], let overall_league_D = json![i]["overall_league_L"], let overall_league_BM = json![i]["overall_league_GF"], let overall_league_BE = json![i]["overall_league_GA"]{
                                     
                                     let team_name = String(describing: team_name)
-                                    let position_overall_league_position = String(describing: position_overall_league_position)
+                                    let pos = String(describing: position_overall_league_position)
+                                    let position_overall_league_position = Int(pos)
                                     let points_overall_league_PTS = String(describing: points_overall_league_PTS)
                                     let journee_overall_league_payed = String(describing: journee_overall_league_payed)
                                     let overall_league_V = String(describing: overall_league_V)
@@ -255,6 +263,9 @@ class ClassementController: UITableViewController {
                                     
                                     
                                     self.classementsStruct.append(classement.init(team_name: team_name,position_overall_league_position: position_overall_league_position, points_overall_league_PTS: points_overall_league_PTS, journee_overall_league_payed: journee_overall_league_payed, overall_league_V: overall_league_V, overall_league_N: overall_league_N, overall_league_D: overall_league_D, overall_league_BM: overall_league_BM, overall_league_BE: overall_league_BE))
+                                    
+                                    self.classementsStruct = self.classementsStruct.sorted(by: { $0.position_overall_league_position < $1.position_overall_league_position })
+                                    
                                     
                                     self.tableView.reloadData()
                                     

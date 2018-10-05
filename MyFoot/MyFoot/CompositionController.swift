@@ -13,7 +13,7 @@ import Alamofire
 import SwiftyJSON
 
 
-class CompositionController: UIViewController, UITextFieldDelegate {
+class CompositionController: UIViewController, UITextFieldDelegate,UINavigationControllerDelegate {
     
     struct defaultsKeys {
         static let key0 = "0"
@@ -53,6 +53,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     
     var curentName = String()
     var curentTag = Int()
+    var dispositif = String()
     
     let defaults = UserDefaults.standard
     
@@ -71,6 +72,8 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.title = "Composition (4-4-2)"
+        
         if isPlayer == true {
             //Supprime tout
             defaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
@@ -173,14 +176,12 @@ class CompositionController: UIViewController, UITextFieldDelegate {
         if let string3 = defaults.string(forKey: defaultsKeys.key9) {
 
             BtnGroup[9].setTitle(string3, for: .normal)
-            //composition.append(string3)
-            //composition.insert(string3, at:9)
-            composition[9] = string3
+            composition[10] = string3
         }
         if let string3 = defaults.string(forKey: defaultsKeys.key10) {
 
             BtnGroup[10].setTitle(string3, for: .normal)
-            composition[10] = string3
+            composition[9] = string3
         }
 
         self.stringComposition = composition.joined(separator: "; ")
@@ -191,7 +192,8 @@ class CompositionController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear( animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
             
     }
 
@@ -207,10 +209,12 @@ class CompositionController: UIViewController, UITextFieldDelegate {
         let competition_id = defaults_comp.integer(forKey: competitionKeys.competition_id)
         let param = [
             "nation"  : self.nationality,
-            "player"    : stringComposition,
+            "player"    : qqd + stringComposition,
+            "dispositif"    : self.dispositif,
             "competition_id"    : competition_id
             ] as [String : Any]
         
+        print(qqd + stringComposition)
         let boundary = generateBoundaryString()
         
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -246,6 +250,7 @@ class CompositionController: UIViewController, UITextFieldDelegate {
                         if let message = json["message"]
                         {
                             self.alerteMessage(message: message as! String)
+                            _ = self.navigationController?.popToRootViewController(animated: true)
                         }
                         
                         
@@ -349,162 +354,108 @@ class CompositionController: UIViewController, UITextFieldDelegate {
         ;task.resume()
     }
     
+    @IBAction func BtnActionGroup(_ sender: UIButton) {
+
+            if (((sender as AnyObject).tag == 0))
+            {
+                selectedButton(curentTag: 0, nationality: self.nationality, curentPost: GOAL, dispositif: qqd)
+            }
+            else if (((sender as AnyObject).tag == 1))
+            {
+                selectedButton(curentTag: 1, nationality: self.nationality, curentPost: DEFENSSEUR, dispositif: qqd)
+            }
+            else if (((sender as AnyObject).tag == 2))
+            {
+                selectedButton(curentTag: 2, nationality: self.nationality, curentPost: DEFENSSEUR, dispositif: qqd)
+            }
+            else if (((sender as AnyObject).tag == 3))
+            {
+                selectedButton(curentTag: 3, nationality: self.nationality, curentPost: DEFENSSEUR, dispositif: qqd)
+                
+            }
+            else if (((sender as AnyObject).tag == 4))
+            {
+                selectedButton(curentTag: 4, nationality: self.nationality, curentPost: DEFENSSEUR, dispositif: qqd)
+                
+            }
+            else if (((sender as AnyObject).tag == 5))
+            {
+                selectedButton(curentTag: 5, nationality: self.nationality, curentPost: MILLIEU, dispositif: qqd)
+            }
+            else if (((sender as AnyObject).tag == 6))
+            {
+                selectedButton(curentTag: 6, nationality: self.nationality, curentPost: MILLIEU, dispositif: qqd)
+            }
+            else if (((sender as AnyObject).tag == 7))
+            {
+                selectedButton(curentTag: 7, nationality: self.nationality, curentPost: MILLIEU, dispositif: qqd)
+            }
+            else if (((sender as AnyObject).tag == 8))
+            {
+                selectedButton(curentTag: 8, nationality: self.nationality, curentPost: MILLIEU, dispositif: qqd)
+                
+            }
+            else if (((sender as AnyObject).tag == 9))
+            {
+                selectedButton(curentTag: 9, nationality: self.nationality, curentPost: ATTAQUANT, dispositif: qqd)
+                
+            }
+            else if (((sender as AnyObject).tag == 10))
+            {
+                selectedButton(curentTag: 10, nationality: self.nationality, curentPost: ATTAQUANT, dispositif: qqd)
+            }
+    }
     
-    @IBAction func BtnvaliderCompo(_ sender: Any) {
+    
+    func selectedButton (curentTag :Int, nationality: String, curentPost: String, dispositif: String) {
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PlayerController") as? PlayerController {
+                viewController.nationality = nationality
+                viewController.curentTag = curentTag
+                viewController.curentPost = curentPost
+                viewController.dispositif = dispositif
+                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
+                if let navigator = navigationController {
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
+    }
+    @IBAction func BackButton(_ sender: UIBarButtonItem) {
+        //self.dismiss(animated: true, completion: nil)
+        _ = navigationController?.popToRootViewController(animated: true)
+    }
+    
+    
+    @IBAction func ValidateCompoButton(_ sender: Any) {
         // create the alert
         let alert = UIAlertController(title: "Confirmation", message: "Voulez-vous valider la composition ?", preferredStyle: UIAlertControllerStyle.alert)
         
-        // add the actions (buttons)
-        alert.addAction(UIAlertAction(title: "Oui", style: UIAlertActionStyle.default, handler: { action in
-            self.callAPICompo()
+        alert.addAction(UIAlertAction(title: "Non", style: UIAlertActionStyle.destructive, handler: { action in
             
         }))
-        alert.addAction(UIAlertAction(title: "Non", style: UIAlertActionStyle.cancel, handler: { action in
-
+        
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "Oui", style: UIAlertActionStyle.default, handler: { action in
+            
+            if self.composition.contains("0") {
+                self.alerteMessage(message: "Veuillez selectionner tous les joueurs pour valider la composition")
+            }
+            else {
+                self.callAPICompo()
+                _ = self.navigationController?.popToRootViewController(animated: true)
+            }
+            
         }))
+        
         
         // show the alert
         self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func BtnActionGroup(_ sender: UIButton) {
-        
-        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PlayerController") as? PlayerController {
-            viewController.nationality = self.nationality
-            if (((sender as AnyObject).tag == 0))
-            {
-                self.curentTag = 0
-                viewController.curentTag = self.curentTag
-                viewController.nationality = self.nationality
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-            }
-            else if (((sender as AnyObject).tag == 1))
-            {
-                self.curentTag = 1
-                viewController.curentTag = self.curentTag
-                viewController.nationality = self.nationality
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-                
-            }
-            else if (((sender as AnyObject).tag == 2))
-            {
-                self.curentTag = 2
-                viewController.curentTag = self.curentTag
-                viewController.nationality = self.nationality
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-                
-            }
-            else if (((sender as AnyObject).tag == 3))
-            {
-                self.curentTag = 3
-                viewController.curentTag = self.curentTag
-                viewController.nationality = self.nationality
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-                
-            }
-            else if (((sender as AnyObject).tag == 4))
-            {
-                self.curentTag = 4
-                viewController.curentTag = self.curentTag
-                viewController.nationality = self.nationality
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-                
-            }
-            else if (((sender as AnyObject).tag == 5))
-            {
-                self.curentTag = 5
-                viewController.curentTag = self.curentTag
-                viewController.nationality = self.nationality
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-                
-            }
-            else if (((sender as AnyObject).tag == 6))
-            {
-                self.curentTag = 6
-                viewController.curentTag = self.curentTag
-                viewController.nationality = self.nationality
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-                
-            }
-            else if (((sender as AnyObject).tag == 7))
-            {
-                self.curentTag = 7
-                viewController.curentTag = self.curentTag
-                viewController.nationality = self.nationality
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-                
-            }
-            else if (((sender as AnyObject).tag == 8))
-            {
-                self.curentTag = 8
-                viewController.curentTag = self.curentTag
-                viewController.nationality = self.nationality
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-                
-            }
-            else if (((sender as AnyObject).tag == 9))
-            {
-                self.curentTag = 9
-                viewController.curentTag = self.curentTag
-                viewController.nationality = self.nationality
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-                
-            }
-            else if (((sender as AnyObject).tag == 10))
-            {
-                self.curentTag = 10
-                viewController.nationality = self.nationality
-                viewController.curentTag = self.curentTag
-                viewController.apikey = defaults.string(forKey: defaultsKeys.key11)!
-                if let navigator = navigationController {
-                    navigator.pushViewController(viewController, animated: true)
-                }
-                
-            }
-        }
-
-    }
-    
-    @IBAction func deconnecteButton(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     func alerteMessage(message : String) {
         

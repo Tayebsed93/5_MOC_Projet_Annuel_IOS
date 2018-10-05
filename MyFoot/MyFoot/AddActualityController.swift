@@ -9,8 +9,10 @@
 import UIKit
 import AVFoundation
 import Alamofire
+import NVActivityIndicatorView
 
-class AddActualityController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddActualityController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NVActivityIndicatorViewable {
+    
     
     @IBOutlet weak var image: UIButton!
     
@@ -28,7 +30,7 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
     let imagePicker = UIImagePickerController()
     var passeapikey = String()
     
-    var instanceOfVCA:ActualityTableViewController!    // Create an instance of VCA in VCB
+    var instanceOfATC = ActualityTableViewController()    // Create an instance of VCA in VCB
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -39,8 +41,6 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
-        
-        
         
         
         DispatchQueue.main.async()
@@ -94,6 +94,7 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
     
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
         if range.length + range.location > descriptionTxt.text.count {
             publish.isEnabled = false
             return false
@@ -137,15 +138,6 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
             charactersLeftLabel.centerYAnchor.constraint(equalTo:
                 accessory.centerYAnchor)
             
-            //charactersLeftLabel.centerXAnchor.constraint(equalTo:
-            //    accessory.centerXAnchor),
-            //charactersLeftLabel.centerYAnchor.constraint(equalTo:
-            //    accessory.centerYAnchor),
-            
-            //sendButton.trailingAnchor.constraint(equalTo:
-            //    accessory.trailingAnchor, constant: -20),
-            //sendButton.centerYAnchor.constraint(equalTo:
-            //    accessory.centerYAnchor)
             ])
     }
     
@@ -211,9 +203,23 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     @IBAction func QuitButton(_ sender: Any) {
-        
+        /*
         DispatchQueue.main.async() {
             //self.instanceOfVCA.viewDidLoad()
+        }
+        
+        self.dismiss(animated: true, completion: nil)
+        */
+        
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let tabVc = storyboard.instantiateViewController(withIdentifier: "ActualityTableViewController") as! ActualityTableViewController
+        
+        //self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+        DispatchQueue.main.async() {
+            //tabVc.callAPI()
+            self.instanceOfATC.refreshHandler()
+            //self.instanceOfVCA.tableviewOutlet.reloadData()
+            tabVc.view.removeFromSuperview()
         }
         
         self.dismiss(animated: true, completion: nil)
@@ -293,7 +299,6 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
             
         }
         
-        
         let paramFile = [
             ACTUALITY_CONSTANTE  : imageData,
         ]
@@ -325,27 +330,44 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
             do {
                 
                 let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary
+                
                 if let message = json!["message"]
                 {
                     DispatchQueue.main.async()
                     {
-                        
                             self.alerteMessage(message: message as! String)
                     }
                 }
                 
                 DispatchQueue.main.async()
                     {
-                        self.spinner.stopAnimating()
-                }
+                        //self.spinner.stopAnimating()
+                        self.stopAnimating()
+                    }
                 
                 
             }catch
             {
                 DispatchQueue.main.async()
                     {
-                        //self.alerteMessage(message: ERROR_CONSTANTE as! String)
-                        self.spinner.stopAnimating()
+                        
+                        //self.spinner.stopAnimating()
+                        self.stopAnimating()
+                        //self.dismiss(animated: true, completion: nil)
+                        
+                        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                        let tabVc = storyboard.instantiateViewController(withIdentifier: "ActualityTableViewController") as! ActualityTableViewController
+                        
+                        //self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+                        DispatchQueue.main.async() {
+                            //tabVc.callAPI()
+                            self.instanceOfATC.refreshHandler()
+                            //self.instanceOfVCA.tableviewOutlet.reloadData()
+                            tabVc.view.removeFromSuperview()
+                        }
+                        
+                        self.dismiss(animated: true, completion: nil)
+                        
                 }
                 print(error)
             }
@@ -357,12 +379,20 @@ class AddActualityController: UIViewController, UIImagePickerControllerDelegate,
 
     
     func showActivityIndicatory() {
+        /*
         self.spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         spinner.center = view.center
         spinner.hidesWhenStopped = true
         spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(spinner)
         spinner.startAnimating()
+        */
+        //Loading
+        DispatchQueue.main.async() {
+            let size = CGSize(width: 30, height: 30)
+            self.startAnimating(size, message: "", type: NVActivityIndicatorType(rawValue: 5))
+            
+        }
         
     }
         
@@ -410,6 +440,8 @@ extension AddActualityController: UITextViewDelegate
             self.descriptionTxt.textColor = UIColor.lightGray
         }
     }
+ 
+ 
 }
 
 

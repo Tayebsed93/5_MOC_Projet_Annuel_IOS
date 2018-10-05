@@ -66,8 +66,14 @@ public var newsMembreUrlString = "/actuality"
 public var playerUrlCompoResult = "/composition/result"
 
 //DATE DEBUT SAISON
-let DATE_DEBUT_SAISON = "2017-08-01"
-let DATE_FIN_SAISON = "2018-07-01"
+let DATE_DEBUT_SAISON = "2018-08-01"
+let DATE_FIN_SAISON = "2018-12-31"
+
+//POSTE
+let ATTAQUANT = "AT"
+let MILLIEU = "MIL"
+let DEFENSSEUR = "DEF"
+let GOAL = "GK"
 
 //ROLE
 let PAYSBAS = "Pays-Bas"
@@ -80,6 +86,10 @@ let role_president = "president"
 let role_joueur = "joueur"
 let role_coach = "coach"
 let role_supporter = "supporter"
+
+//Dispositif
+let qtt = "4-3-3"
+let qqd = "4-4-2"
 
 //Persistante
 let defaults_comp = UserDefaults.standard

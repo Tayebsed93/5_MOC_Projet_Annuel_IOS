@@ -29,6 +29,7 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
     let defaults = UserDefaults.standard
     
     var passlogo = String()
+    var screen_name = String()
     var league_id = String()
     var urlResult = String()
     var passnameclub = String()
@@ -55,7 +56,8 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
+        clearDataSocial()
+        setupDataSocial(_screen_name: screen_name)
         self.tabBarController?.tabBar.isHidden = false
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.barTintColor = GREENBlACK_THEME
@@ -275,6 +277,7 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
                             for i in 0..<nb {
                                 if let league_id = json![i]["league_id"], let league_name = json![i]["league_name"] {
                                     let url = self.leagueIdURL(league_id: league_id)
+                                    
                                     //self.callAPITeam(urlTeam: url)
                                     
                                 }
@@ -498,7 +501,7 @@ class ResultatMatchController: UIViewController, UITableViewDataSource, UITableV
                                         
                                         
                                     }
-                                    
+
                                     self.tableviewOutlet.reloadData()
                                     
                                     
@@ -574,6 +577,7 @@ extension ResultatMatchController: PopupDelegate {
         let url = self.leagueIdURLToLiveMatch(dateDebut: value, dateFin: value)
         self.calendrierStruct = []
         self.callAPIResultat(urlResult: url)
+        
     }
 }
 

@@ -288,8 +288,9 @@ class LoginController: UIViewController {
             if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ActualityTableViewController") as? ActualityTableViewController {
                 
                 setupDataMember(_apikey: apiKey)
-
+                
                 if let navigator = self.navigationController {
+                    viewController.passeapikey = apiKey
                     navigator.pushViewController(viewController, animated: true)
                 }
             }

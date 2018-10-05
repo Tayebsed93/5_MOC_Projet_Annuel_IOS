@@ -467,6 +467,79 @@ public func loadDataLicense() {
 
 
 
+/////
+
+
+public var twitter: [SocialT]?
+
+public func clearDataSocial() {
+    
+    if let context = DataManager.shared.objectContext {
+        
+        do {
+            
+            let entityNames = ["SocialT"]
+            
+            for entityName in entityNames {
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+                
+                let objects = try(context.fetch(fetchRequest)) as? [NSManagedObject]
+                
+                for object in objects! {
+                    context.delete(object)
+                }
+            }
+            
+            try(context.save())
+            
+            
+        } catch let err {
+            print(err)
+        }
+        
+    }
+}
+
+func setupDataSocial(_screen_name: String) {
+    
+    clearDataLicense()
+    if let context = DataManager.shared.objectContext {
+        
+        
+        let soc = NSEntityDescription.insertNewObject(forEntityName: "SocialT", into: context) as! SocialT
+        soc.screen_name = _screen_name
+        
+        
+        do {
+            try(context.save())
+        } catch let err {
+            print(err)
+        }
+    }
+    
+    loadDataLicense()
+    
+}
+
+
+public func loadDataSocial() {
+    
+    if let context = DataManager.shared.objectContext {
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SocialT")
+        
+        do {
+            
+            twitter  = try(context.fetch(fetchRequest)) as? [SocialT]
+            
+        } catch let err {
+            print(err)
+        }
+        
+    }
+}
+
+
 
 
 

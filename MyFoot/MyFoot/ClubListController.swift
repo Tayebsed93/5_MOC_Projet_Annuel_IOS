@@ -13,6 +13,7 @@ struct club {
     let logo : String!
     let name : String!
     let user_id : String!
+    let screen_name : String!
 }
 
 class ClubListController: UITableViewController {
@@ -143,9 +144,9 @@ class ClubListController: UITableViewController {
                         if let clubs = json["clubs"] as? [[String: Any]] {
                             
                             for clubjson in clubs {
-                                if let name = clubjson["nom"], let logo = clubjson["logo"], let user_id = clubjson["user_id"]{
+                                if let name = clubjson["nom"], let logo = clubjson["logo"], let user_id = clubjson["user_id"], let screen_name = clubjson["screen_name"]{
     
-                                    self.clubsStruct.append(club.init(logo: logo as! String, name: name as! String, user_id: (user_id as AnyObject).description))
+                                    self.clubsStruct.append(club.init(logo: logo as! String, name: name as! String, user_id: (user_id as AnyObject).description, screen_name: screen_name as! String))
                                 }
 
                                 self.tableView.reloadData()
@@ -193,6 +194,7 @@ class ClubListController: UITableViewController {
         let name = clubsStruct[(indexPath?.row)!].name
         let logo = clubsStruct[(indexPath?.row)!].logo
         let user_id = clubsStruct[(indexPath?.row)!].user_id
+        let screen_name = clubsStruct[(indexPath?.row)!].screen_name
         setupDataUser(_name: user_id!)
         var role = String()
         
@@ -214,6 +216,7 @@ class ClubListController: UITableViewController {
             
             resultatController?.passnameclub = name!
             resultatController?.passlogo = logo!
+            resultatController?.screen_name = screen_name!
             //Change la page vers Home
             self.present(tabVc, animated: true, completion: nil)
         }

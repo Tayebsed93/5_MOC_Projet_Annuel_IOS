@@ -13,6 +13,7 @@ import Alamofire
 import SwiftyJSON
 
 struct newsMembre {
+    let id : Int!
     let title : String!
     let content : String!
     let photo : String!
@@ -23,6 +24,8 @@ var newsMembreStruct = [newsMembre]()
 
 class ActualityTableViewController: UITableViewController, NVActivityIndicatorViewable
 {
+    
+    
     private let image = UIImage(named: "cancel")!.withRenderingMode(.alwaysTemplate)
     private let topMessage = "News"
     private let bottomMessage = "Aucune news n'est pas disponible pour le moment."
@@ -41,7 +44,6 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
         
         
         callAPI()
-        //callAPIClassement()
         
     }
     
@@ -65,7 +67,6 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
         
     }
     
-    
     @objc func refreshHandler() {
         let deadlineTime = DispatchTime.now() + .seconds(1)
         DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: { [weak self] in
@@ -84,8 +85,6 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
         self.tableView.backgroundView?.isHidden = true
         
     }
-    
-    
     
     // MARK: - Table view data source
     
@@ -112,7 +111,6 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
         else {
             logo.image = UIImage(named: EMPTY_LOGO_IMG)
         }
-        
         
         //Tile
         let title = cell.viewWithTag(1) as! UILabel
@@ -141,7 +139,6 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
     }
     
     func callAPI() {
-        
         newsMembreStruct = []
         
         //Loading
@@ -161,7 +158,6 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
             return
         }
         
-        
         let urlToRequest = addressUrlStringProd+newsUrlString+user_id
         
         Alamofire.request(urlToRequest, method: .get).responseJSON { (responseData) -> Void in
@@ -170,14 +166,14 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
                 
                 if let newsArray = swiftyJsonVar["news"].arrayObject {
                     self.tableView.backgroundView?.isHidden = true
-                    
                     for i in 0..<newsArray.count {
+                        let id = swiftyJsonVar["news"][i]["id"].int
                         let title = swiftyJsonVar["news"][i]["title"].string
                         let content = swiftyJsonVar["news"][i]["content"].string
                         let photo = swiftyJsonVar["news"][i]["photo"].string
                         let created_at = swiftyJsonVar["news"][i]["created_at"].string
                         
-                        newsMembreStruct.append(newsMembre.init(title: title, content: content, photo: photo, created_at: created_at))
+                        newsMembreStruct.append(newsMembre.init(id: id, title: title, content: content, photo: photo, created_at: created_at))
                         
                     }
                     
@@ -200,6 +196,77 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
         }
     }
     
+    
+    func callAPIDelete(user_id: Int) {
+        
+        //Loading
+        DispatchQueue.main.async() {
+            let size = CGSize(width: 30, height: 30)
+            self.startAnimating(size, message: "", type: NVActivityIndicatorType(rawValue: 5))
+            
+        }
+        
+        let x:String = String(describing: user_id)
+        let urlToRequest = addressUrlStringProd+newsUrlString+x
+        
+        var urlRequest = URLRequest(url: URL(string: addressUrlStringProd+newsUrlString+x)!)
+        urlRequest.httpMethod = HTTPMethod.delete.rawValue
+        urlRequest = try! URLEncoding.default.encode(urlRequest, with: nil)
+        urlRequest.setValue(passeapikey, forHTTPHeaderField: "Authorization")
+        
+        Alamofire.request(urlRequest).responseJSON { (responseData) -> Void in
+            if((responseData.result.value) != nil) {
+                let swiftyJsonVar = JSON(responseData.result.value!)
+                print(swiftyJsonVar)
+            }
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            let id = newsMembreStruct[indexPath.row].id
+            
+            // create the alert
+            let alert = UIAlertController(title: "Confirmation", message: "Voulez-vous supprimer l'actualité ?", preferredStyle: UIAlertControllerStyle.alert)
+            
+            print("Deleted")
+            // add the actions (buttons)
+            
+            alert.addAction(UIAlertAction(title: "Non", style: UIAlertActionStyle.destructive, handler: { action in
+                
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Oui", style: UIAlertActionStyle.default, handler: { action in
+                self.callAPIDelete(user_id: id!)
+                newsMembreStruct.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                
+                if newsMembreStruct.count > 0 {
+                    DispatchQueue.main.async() {
+                        self.stopAnimating()
+                        self.tableView.reloadData()
+                        self.tableView.backgroundView?.isHidden = true
+                    }
+                }
+                else {
+                    DispatchQueue.main.async() {
+                        self.stopAnimating()
+                        self.tableView.reloadData()
+                        self.tableView.backgroundView?.isHidden = false
+                    }
+                }
+                
+            }))
+            
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
+            
+            
+            
+        }
+    }
+    
     @IBAction func AddActuality(_ sender: Any) {
         
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddActualityController") as? AddActualityController {
@@ -210,6 +277,7 @@ class ActualityTableViewController: UITableViewController, NVActivityIndicatorVi
             }
         }
     }
+    
     
     
 }

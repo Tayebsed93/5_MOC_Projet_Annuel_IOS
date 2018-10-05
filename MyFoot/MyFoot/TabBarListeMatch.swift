@@ -23,6 +23,8 @@ class TabBarListeMatch: ButtonBarPagerTabStripViewController {
     var league_id = String()
     var urlResult = String()
     var passnameclub = String()
+    var screen_name = String()
+    
     
     let graySpotifyColor = UIColor(red: 21/255.0, green: 21/255.0, blue: 24/255.0, alpha: 1.0)
     let darkGraySpotifyColor = UIColor(red: 19/255.0, green: 20/255.0, blue: 20/255.0, alpha: 1.0)
@@ -62,9 +64,11 @@ class TabBarListeMatch: ButtonBarPagerTabStripViewController {
         let child_2 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ClassementController") as? ClassementController
         child_1?.passnameclub = passnameclub
         child_1?.passlogo = passlogo
+        child_1?.screen_name = screen_name
         
         child_2?.passnameclub = passnameclub
         child_2?.passlogo = passlogo
+        child_2?.screen_name = screen_name
         return [child_1!, child_2!]
     
         

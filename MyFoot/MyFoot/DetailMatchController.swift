@@ -83,6 +83,7 @@ class DetailMatchController: UIViewController, UITableViewDataSource, UITableVie
             }
         }
         
+        
 
     }
     
@@ -93,7 +94,8 @@ class DetailMatchController: UIViewController, UITableViewDataSource, UITableVie
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.tintColor = UIColor.white
-    
+
+        self.refreshHandler()
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -268,19 +270,10 @@ class DetailMatchController: UIViewController, UITableViewDataSource, UITableVie
                             
                         }
                         
-                        
-                        
-                     
-
-                    
-
-              self.tableViewOutlet.reloadData()
-                        
+              self.tableViewOutlet.reloadData()  
                         completion(true, result, nil)
                     }
                 }
-                    
-                    
                 else{
                     completion(false, nil, "error")
                 }
